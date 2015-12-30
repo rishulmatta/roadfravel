@@ -1,0 +1,17 @@
+doctype html
+html(ng-app = "roadFravel")
+	head
+		body
+			if error
+				p ERROR: #{error}
+			form(method="post")
+				span Email:
+				input(type="email" name="email", required="true")
+				br
+
+				span Paswword:
+				input(type="password" name="password", required="true")
+				br
+
+				input(type="submit")
+			a(href="/auth/facebook") Facebook

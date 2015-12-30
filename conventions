@@ -1,0 +1,3 @@
+1. service names to follow camel casing and preceded by 'rf_'
+2. controller names to have capital casing followed by 'Ctrl'
+3. direcrives to hav vendor prefixes like g- google , fb- facebook , rf-road fravel and came casing

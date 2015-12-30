@@ -1,0 +1,163 @@
+  html, body {
+      height: 100% ;margin: 0;padding: 0; 
+      font-family:"Segoe UI";
+      font-size:18px;
+  }
+  #map {
+      height: 100% ;
+  }
+
+  .main-view {
+      position: absolute;
+      z-index:10;
+      bottom:20px;
+ 	  left:50px;
+ 	  right:50px;
+      text-align: center;
+  }
+
+
+/* For home page*/
+
+  .navbar {
+  	width:20%;
+  	margin:auto;
+  	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+1,e5e5e5+100 */
+background: #ffffff; /* Old browsers */
+background: -moz-linear-gradient(top,  #ffffff 1%, #e5e5e5 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  #ffffff 1%,#e5e5e5 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  #ffffff 1%,#e5e5e5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+padding:0.5em;
+border : 0px solid;
+height:5em;
+border-radius : 8px;
+ text-align: justify;
+    -ms-text-justify: distribute-all-lines;
+    text-justify: distribute-all-lines;
+    min-width:15.25em;
+  }
+
+  .nav-item {
+    vertical-align: top;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    border:0px solid;    
+    box-sizing:border-box;
+    height: 100%;
+    text-align:center;
+  }
+
+  .stretch {
+    width: 100%;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0
+}
+
+
+
+.nav-img-container {
+ 
+  height: 3em;
+  width:3em; 
+  background:#f8ecbd;
+  border-radius:50%;
+   display: table-cell;
+  vertical-align: middle;
+}
+
+.nav-img-container .glyphicon{ 
+  font-size:1.5em;
+  left:-0.05em;
+}
+
+.nav-image {
+  font-size:3em;
+}
+
+.child-view {
+  position:absolute;
+  top:10px;
+   
+  z-index:10;
+  right:40px;
+  left:40px;
+
+}
+
+
+.offer-page {
+ 
+
+}
+
+
+
+
+
+
+.profile-pic {
+  border-radius:50px;
+  border:0px solid;
+}
+
+.autocomplete{
+  width:40%;
+  min-width:150px;
+-webkit-box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
+-moz-box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
+box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
+
+}
+
+.map-right {
+  width:18.75em;
+  position:absolute;
+  right:0px;
+  bottom:-12.5em;
+  height:100%;
+}
+
+
+.left {
+  float:left;
+}
+
+.right {
+  float:right;
+}
+
+.source-img {
+  background-image:url("/img/icons/source.png");
+  background-repeat:no-repeat;
+   background-position: center;
+   background-size:14px;
+}
+
+.destination-img {
+  background-image:url("/img/icons/destination.png");
+  background-repeat:no-repeat;
+   background-position: center;
+   background-size:14px;
+}
+
+.offer-page.map-top .form-control {
+  padding : 18px 12px;
+
+}
+
+.offer-page.map-top .autocomplete {
+  border:0px solid;
+  border-radius: 8px;
+  overflow:hidden;
+
+}
+
+
+.map-right .well , .map-right input[type = 'time'] {
+  -webkit-box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
+-moz-box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
+box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
+}

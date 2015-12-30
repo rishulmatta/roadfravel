@@ -1,0 +1,56 @@
+extends layout
+
+block content
+    #wrapper
+      // Sidebar
+      #sidebar-wrapper
+        ul.sidebar-nav
+          li.sidebar-brand
+            a(href='#{user.profileUrl}' target = "_blank")
+              | #{user.name} 
+              img.profile-pic(src = '#{user.profilePicUrl}')
+          li
+            a(href='#') Dashboard
+          li
+            a(href='#') Shortcuts
+          li
+            a(href='#') Overview
+          li
+            a(href='#') Events
+          li
+            a(href='#') About
+          li
+            a(href='#') Services
+          li
+            a(href='#') Contact
+      // /#sidebar-wrapper
+      // Page Content
+      #page-content-wrapper
+        #map
+        .child-view(ng-view)
+        .main-view
+          .navbar
+            a#menu-toggle.nav-item(href='#home')
+              .nav-img-container
+                span.glyphicon.glyphicon-grain(aria-hidden = "true" , aria-label = "Look for people offering vehicle pool")
+              .nav-text Pool
+            &nbsp;
+            a#menu-toggle.nav-item(href='#offer')
+              .nav-img-container
+                span.glyphicon.glyphicon-hand-up(aria-hidden = "true" , aria-label = "Offer a pool")
+              .nav-text Offer
+            &nbsp;
+            a#menu-toggle.nav-item(href='#report')
+              .nav-img-container
+                span.glyphicon.glyphicon-ban-circle(aria-hidden = "true" , aria-label = "Report a traffic violation")
+              .nav-text Report
+            &nbsp;
+            span.stretch
+          script.
+              $("#menu-toggle").click(function(e) {
+              
+                //$("#wrapper").toggleClass("toggled");
+              });
+  
+
+  

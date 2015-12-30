@@ -1,0 +1,25 @@
+form.offer-page.map-top
+	div.left.autocomplete
+		.input-group
+			span#basic-addon1.input-group-addon.source-img
+			input.form-control(type='text', placeholder='Source' ng-model = 'locations.source.name' g-auto-complete)
+	div.right.autocomplete
+		.input-group
+			span#basic-addon1.input-group-addon.destination-img
+			input.form-control(type='text', placeholder='Destination' g-auto-complete)
+.map-right
+	form.offer-page
+		label(ng-bind = 'selDate')
+		uib-datepicker.well.well-sm(ng-model='selDate', min-date='minDate', show-weeks='true', custom-class='getDayClass(date, mode)')
+		div
+			label(ng-bind = 'selTime')
+			input(type = 'time' ng-model = 'selTime')
+		br
+
+		div
+			label(ng-bind = 'selVehicleType') 
+			br
+			select(name='singleSelect', ng-model='selVehicleType')
+				option(value='2') Bike
+				option(value='4') Car
+		input( type = 'button' ng-click = 'persistPool()')

@@ -1,0 +1,39 @@
+doctype html
+html(ng-app = "roadFravel")
+	head
+		title= title
+	script(type="text/javascript", src="/js/lib/jquery.js")
+	script(type="text/javascript", src="/js/lib/angular.js")
+	script(type="text/javascript", src="/js/lib/angular-route.js")
+	script(type="text/javascript", src="/js/lib/bootstrap.js")
+	script(type="text/javascript", src="/js/initialize.js")
+	script(type="text/javascript", src="/js/controllers/controllers.js")
+	
+	body(ng-controller = "GlobalCtrl")
+		form(method="post")
+			span Email:
+			input(type="email" name="email", required="true")
+			br
+
+			span Paswword:
+			input(type="password" name="password", required="true")
+			br
+
+			input(type="submit")	
+	link(rel='stylesheet', href='/css/bootstrap.css')
+	link(rel='stylesheet', href='/css/simple-sidebar.css')
+	link(rel='stylesheet', href='/css/style.css')
+	
+	script(type='text/javascript').
+		var map;
+		function initMap() {
+		map = new google.maps.Map(document.getElementById('map'), {
+		center: {lat: -34.397, lng: 150.644},
+		zoom: 8,
+		mapTypeControl:false
+		});
+		}
+
+	script(async, defer ,src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBab8wu7ql6hGAXF7MYmHN8-KL_xqOZvaw&callback=initMap")
+
+

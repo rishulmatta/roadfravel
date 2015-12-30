@@ -1,0 +1,9 @@
+.row
+  .col-lg-3
+    img.img-circle(ng-src="{{pool.profilePicUrl ? pool.profilePicUrl : 'img/defaults/profile.png'}}", style='max-width:50px', alt='customer image')
+  .col-lg-9
+    div(style='font-weight:bold;')
+      a(ng-click='customerDetail(pool.CustomerId)', style='cursor:pointer') {{pool.name}}
+      span.pull-right(title='Delete customer')
+        i.glyphicon.glyphicon-trash(ng-click='deleteCustomer($event, pool.CustomerId)')
+    div {{pool.Address}} {{pool.Country}} {{pool.ZipCode}}
