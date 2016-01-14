@@ -1,9 +1,17 @@
-.row
-  .col-lg-3
-    img.img-circle(ng-src="{{pool.profilePicUrl ? pool.profilePicUrl : 'img/defaults/profile.png'}}", style='max-width:50px', alt='customer image')
-  .col-lg-9
-    div(style='font-weight:bold;')
-      a(ng-click='customerDetail(pool.CustomerId)', style='cursor:pointer') {{pool.name}}
-      span.pull-right(title='Delete customer')
-        i.glyphicon.glyphicon-trash(ng-click='deleteCustomer($event, pool.CustomerId)')
-    div {{pool.Address}} {{pool.Country}} {{pool.ZipCode}}
+.search-list-container
+  .row.search-item-row(ng-click = 'searchListItemClicked($index)')
+    .col-lg-3
+      img.img-circle(ng-src="{{pool.profilePicUrl ? pool.profilePicUrl : 'img/defaults/profile.png'}}", style='max-width:50px', alt='customer image')
+    .col-lg-9
+      div(style='font-weight:bold;')
+        a {{pool.name}}
+        span.pull-right(title='Facebook Profile')
+          a( target = "_blank" ng-href = "{{pool.profileUrl}}" style='cursor:pointer')
+            img(src = "img/defaults/facebook.png")
+      div.contact
+        div(ng-bind = 'pool.email')
+        div 9845712358
+      div.contact
+        div.time 8:30 AM
+        div.date(ng-bind = 'pool.planneddate')      
+      div {{pool.Address}} {{pool.Country}} {{pool.ZipCode}}

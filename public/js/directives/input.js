@@ -22,7 +22,7 @@ roadFravel.directive('gAutoComplete',[function () {
 
 			   		var obj = {
 			   			name :place.name,
-				   		id :place.id,
+				   		id :place.place_id,
 				   		vicinity :place.vicinity,
 				   		latLng :{
 				   			lat:place.geometry.location.lat(),
@@ -32,6 +32,7 @@ roadFravel.directive('gAutoComplete',[function () {
 			   		
 
 			   		scope.updateLocations(attr.placeholder,obj);
+			   		scope.fetchPolyLine();
 			   });
 			}
 		}

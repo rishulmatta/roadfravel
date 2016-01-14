@@ -116,7 +116,9 @@ box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
   width:18.75em;
   position:absolute;
   right:0px;
-  bottom:-12.5em;
+
+  top:5em;
+  bottom:5em;
   height:100%;
 }
 
@@ -160,4 +162,53 @@ box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
   -webkit-box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
 -moz-box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
 box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
+}
+
+
+/*------------------------------ home/ search pool page------------------------------------------- */
+
+.search-list {
+
+}
+
+.search-item-row {
+
+  padding: 0.3125em;
+  background-color: rgba(255,255,255,0.7);
+  margin: 2px 0px;
+  border: 0px solid;
+  border-radius:2.5em;
+  display: flex;
+}
+
+.contact {
+  font-size : 0.75em;
+}
+
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.time {
+  width:25%;
+  float:left;
+}
+
+
+.date {
+  float:right;
+  width:30%;
+  text-overflow:ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.search-list-container {
+  display:table;
+}
+
+.search-item-row .col-lg-3 , .search-item-row .col-lg-9 {
+  margin:auto;
 }

@@ -21,3 +21,28 @@ roadFravel.factory('g_placesautocomplete', function($http,$q) {
      		}
      	};
 });
+
+
+roadFravel.factory('g_direction', function($http,$q) {
+
+     function getDirectionFromService (inp) {
+          var q = $q.defer();
+           $http.post("/directions",JSON.stringify(inp))
+               .success(function(response){
+                        
+                         q.resolve(response);
+                    }).error(function (response) {
+                         q.reject({data:response});
+                         console.log('directions failed');
+                         console.log(response);
+                    });
+          return q.promise;
+     }
+   
+
+          return {
+               getDirection : function (inp) {
+                    return getDirectionFromService(inp);
+               }
+          };
+});
