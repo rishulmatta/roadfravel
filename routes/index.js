@@ -27,13 +27,13 @@ module.exports = function(app, passport) {
     app.get('/', function(req, res, next) {
         if (req.user) {
             res.render('index', {
-                title: 'Express',
+                title: 'Road Fravel',
                 user: req.user.facebook
 
             });
         } else {
             res.render('index', {
-                title: 'Express',
+                title: 'Road Fravel',
                 user: {}
             });
         }
@@ -69,7 +69,7 @@ module.exports = function(app, passport) {
 
 
     app.get('/logout', function(req, res, next) {
-        req.session.reset();
+        req.session.destroy();
         res.redirect('/');
     });
 
@@ -99,7 +99,6 @@ module.exports = function(app, passport) {
     app.get('/partials/:partialPath', function(req, res) {
 
         res.render('partials/' + req.params.partialPath);
-        console.log('Inside template block' + req.params.partialPath);
 
     });
 
@@ -108,7 +107,7 @@ module.exports = function(app, passport) {
     app.get('/auth/facebook', passport.authenticate('facebook'));
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', {
-            successRedirect: '/',
+            successRedirect: '/#/offer',
             failureRedirect: '/login'
         }));
 }

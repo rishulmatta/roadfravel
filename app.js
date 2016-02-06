@@ -15,8 +15,7 @@ mongoose.connect('mongodb://localhost/roadfravel');
 var MongoStore = require('connect-mongo')(session);
 var elasticsearch = require('elasticsearch');
 var elasticSearchClient = new elasticsearch.Client({
-  host: 'localhost:9200',
-  log: 'trace'
+  host: 'localhost:9200'
 });
 
 
@@ -29,6 +28,7 @@ app.use(session({
   resave:true,
   saveUninitialized:true,
   secret:"wug34t8adp9y0wuetk#$%",
+  ttl: 2 * 24 * 60 * 60,
   store: new MongoStore({mongooseConnection:mongoose.connection})
 }));
 
@@ -37,7 +37,15 @@ app.use(session({
 
  app.use(passport.session());
 
+app.use(function(req, res, next) {
+console.log("++++++++++++++++++++++++++++++++");
+  console.log(req.session);
+  
 
+  console.log(req.user);
+  console.log("------------------------------");
+  next();
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -72,6 +80,9 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+
+
 
 
 

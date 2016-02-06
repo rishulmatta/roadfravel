@@ -1,6 +1,6 @@
 polyLine = null;
 destinationMarker = null;
-
+sourceMarker = null;
 function CustomMarker (obj) {
 
 	var icon , marker;
@@ -26,7 +26,8 @@ function CustomMarker (obj) {
 					position: obj.latLng,
 					map: map,
 					title: 'Hello World!',
-					icon: icon
+					icon: icon,
+					animation: google.maps.Animation.DROP
 				});
 
 	this.index = obj.index;
@@ -92,7 +93,7 @@ roadFravel.controller('HomeCtrl',function ($scope,rf_fetchResults) {
 		//this function iterates over the fetched results
 		function drawAvailablePools (data) {
 			var fetcedData,length,sourceMarker  ;
-			
+			var bounds = new google.maps.LatLngBounds();
 			fetcedData = data.data;
 			length = fetcedData.length;
 
@@ -101,11 +102,13 @@ roadFravel.controller('HomeCtrl',function ($scope,rf_fetchResults) {
 			}
 			
 			for (var ii = 0; ii < length; ++ii) {
+				fetcedData[ii]._source.source.latLng.lng = fetcedData[ii]._source.source.latLng.lon;
+				delete fetcedData[ii]._source.source.latLng.lon;
 				var obj = {
 					type : fetcedData[ii]._source.vehicle,
 					latLng: {
 						lat:fetcedData[ii]._source.source.latLng.lat,
-						lng:fetcedData[ii]._source.source.latLng.lon
+						lng:fetcedData[ii]._source.source.latLng.lng
 					},
 					profilePicUrl : fetcedData[ii]._source.profilePicUrl,
 					name : fetcedData[ii]._source.name,
@@ -123,12 +126,16 @@ roadFravel.controller('HomeCtrl',function ($scope,rf_fetchResults) {
 				};
 
 				$scope.pools.push(obj);
-				sourceMarker = new CustomMarker(obj);
+				sourceMarker = new CustomMarker(obj);				
+				
 				oms.addMarker(sourceMarker);
 				markers.push(sourceMarker);
 
-			}
+				bounds.extend(sourceMarker.getPosition());
+					
 
+			}
+			map.fitBounds(bounds);
 			
 		}
 		
@@ -141,9 +148,10 @@ roadFravel.controller('HomeCtrl',function ($scope,rf_fetchResults) {
 			
 
 			google.maps.event.trigger(markers[index], 'click');
-			map.setCenter(markers[index].latLng);
+			//map.setCenter(markers[index].latLng);
+			
 
-	
+		
 			
 		}
 
@@ -271,7 +279,7 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 		}
 
 
-		var lat,lng,sourceMarker,destinationMarker,bounds;
+		var lat,lng,bounds;
 
 
 		navigator.geolocation.getCurrentPosition(GetLocation);
@@ -341,20 +349,37 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 					icon: '/img/icons/source.png'
 				});
 
-				destinationMarker = new google.maps.Marker({
-					map: map,
-					title: 'Hello World!',
-					icon: '/img/icons/stop.png'
-				});
+			
 
 				oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied:true,markersWontMove: true, markersWontHide: true });
 				var iw = new google.maps.InfoWindow();
-				var clickedMarker;
+				var clickedMarker,previousMarker;
 				oms.addListener('click', function(marker, event) {
-				  iw.setContent(marker.desc);
-				  iw.open(map, marker);
-				  drawDestinationMarker(marker.destination);
+					var t;
+						if (t) {
+							clearTimeout(t);
+				
+						previousMarker.setAnimation(null);
+						destinationMarker.setAnimation(null);
+						}
+						
+					  iw.setContent(marker.desc);
+					  iw.open(map, marker);
+					  drawDestinationMarker(marker.destination);
 		  			drawPolyLine(marker.polyline);
+					var bounds = new google.maps.LatLngBounds();
+					bounds.extend(marker.getPosition());
+					bounds.extend(destinationMarker.getPosition());
+
+					marker.setAnimation(google.maps.Animation.BOUNCE);
+				 	destinationMarker.setAnimation(google.maps.Animation.BOUNCE);
+
+					t = setTimeout(function () {
+						marker.setAnimation(null);
+						destinationMarker.setAnimation(null);
+					},2000)
+					map.fitBounds(bounds);
+					previousMarker = marker;
 				});
 
 
@@ -363,6 +388,7 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 					 var clickedMarker = arguments[2];
 					 iw.setContent(clickedMarker.desc);
 				 	 iw.open(map, clickedMarker);
+				 	 new google.maps.event.trigger( clickedMarker, 'click' );
  					
 				});
 

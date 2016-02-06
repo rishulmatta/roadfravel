@@ -28,11 +28,7 @@ function fetchUserInfo(req, res, response, next) {
             var map, obj;
             map = {};
             for (var ii = 0; ii < users.length; ++ii) {
-                console.log("mongo user profile fetch");
-
-                console.log(users[ii]._id);
-                console.log(users[ii].facebook);
-                console.log(users[ii]);
+            
                 map[users[ii]._id] = users[ii].facebook;
             }
 
@@ -133,9 +129,8 @@ module.exports = function(app, elasticSearchClient) {
         };
 
         request({url:googleConf.direction.url, qs:propertiesObj}, function(err, response, body) {
-          if(err) { console.log(err); return; }
+          if(err) {  return; }
            res.json(response);
-          console.log("Get response: " + response.statusCode);
         });
 
        /* request = https.get(url, function(response) {
