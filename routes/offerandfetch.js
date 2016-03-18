@@ -44,7 +44,7 @@ function fetchUserInfo(req, res, response, next) {
                 }
 
             }
-            return res.json(results);
+            return res.json({results:results,aggregations:response.aggregations});
 
         });
     } else {
@@ -105,9 +105,19 @@ module.exports = function(app, elasticSearchClient) {
 
         var body = req.body;
 
+
         elasticSearchClient.search({
             index: 'roadfravel',
-            type: 'pool'
+            type: 'pool',
+            body: {
+                "aggregations": {
+                        "vehicle": {
+                            "terms": {
+                                "field": "vehicle"
+                            }
+                        }
+                    }
+            }
         }, function(error, response) {
             fetchUserInfo(req, res, response, next);
             //return res.json(response);

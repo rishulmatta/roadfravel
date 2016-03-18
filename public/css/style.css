@@ -164,6 +164,34 @@ box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
 box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
 }
 
+.header-conainer {
+     position:absolute;
+    left:0px;
+    right:0px;
+    z-index:10;
+    top:0px;
+}
+
+.header {
+   display: table;
+    table-layout: fixed;
+  width:100%;
+
+    background-color:rgb(168,202,186);
+}
+
+
+.header div {
+    display: table-cell;
+       height:4em;
+       vertical-align: middle;
+       text-align: right;
+       color:rgb(235,227,170);
+}
+
+label {
+  cursor:pointer;
+}
 
 /*------------------------------ home/ search pool page------------------------------------------- */
 

@@ -65,36 +65,38 @@ function drawPolyLine (polyLinePoints) {
                 strokeWeight: 4,
                 zIndex: 3
             });
-	/*var bounds = new google.maps.LatLngBounds();
 
-
-	var legs = res.routes[0].legs;
-	for (i=0;i<legs.length;i++) {
-	  var steps = legs[i].steps;
-	  for (j=0;j<steps.length;j++) {
-	    var nextSegment = steps[j].path;
-	    for (k=0;k<nextSegment.length;k++) {
-	      polyLine.getPath().push(nextSegment[k]);
-	      bounds.extend(nextSegment[k]);
-	    }
-	  }
-	}*/
 
 
 	polyLine.setMap(map);
 }
 
 roadFravel.controller('HomeCtrl',function ($scope,rf_fetchResults) {
-		var polyLine , polyLinePoints;
+		var polyLine , polyLinePoints , appliedFilters;
 		$scope.clearMarker();  //this method is in global contrl it clears destination marker
-		$scope.pools = [];
+		$scope.pools = [];		
+		
+		$scope.filters = [];
 		markers = [];
+		
+		
+		appliedFilters = []; //tis array will contain the filters that the user has applied
+
+
+
+		$scope.applyFilter = function (filterMeta) {
+			appliedFilters.push( {
+				title : filterMeta.title,
+				key : filterMeta.key
+			})
+		}
+
 
 		//this function iterates over the fetched results
 		function drawAvailablePools (data) {
 			var fetcedData,length,sourceMarker  ;
 			var bounds = new google.maps.LatLngBounds();
-			fetcedData = data.data;
+			fetcedData = data.data.results;
 			length = fetcedData.length;
 
 			if (length == 0) {
@@ -132,26 +134,45 @@ roadFravel.controller('HomeCtrl',function ($scope,rf_fetchResults) {
 				markers.push(sourceMarker);
 
 				bounds.extend(sourceMarker.getPosition());
+
+				
 					
 
 			}
 			map.fitBounds(bounds);
 			
 		}
-		
-		var promise = rf_fetchResults.fetchPool();
-		promise.then(drawAvailablePools);
 
+		function drawFilters (data) {
+			var aggregations ;
+
+			aggregations = data.data.aggregations;
+
+			for (var filter in aggregations) {
+					$scope.filters.push ({
+						title : filter,
+						values : aggregations[filter].buckets
+					});
+			}
+
+
+ 		}
+
+		
+
+		
+		setTimeout(function () {
+			var promise = rf_fetchResults.fetchPool();
+			promise.then(drawAvailablePools);
+			promise.then(drawFilters);
+
+		},1000);
 
 		$scope.searchListItemClicked = function (index) {
 			var promise;
 			
-
 			google.maps.event.trigger(markers[index], 'click');
 			//map.setCenter(markers[index].latLng);
-			
-
-		
 			
 		}
 
@@ -205,6 +226,10 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 			polyline :""
 		};
 
+
+
+
+
 		$scope.fetchPolyLine = function () {
 
 			if ($scope.locations.source.id && $scope.locations.destination.id) {
@@ -241,14 +266,7 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 					destinationMarker.setPosition(obj.latLng);
 					break;
 			}
-		/*	bounds = new google.maps.LatLngBounds();
-				
-				 bounds.extend(sourceMarker.getPosition());
-
-				 bounds.extend(sourceMarker.getPosition());
-			
-
-			map.fitBounds(bounds);  */
+		
 
 
 			

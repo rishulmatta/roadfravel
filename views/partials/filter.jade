@@ -1,0 +1,9 @@
+.filter
+  .title(ng-transclude)
+  .valContainer
+    ul
+      li(ng-repeat='value in values')
+        label(ng-click = "filterClicked($event)" id = "{{value.key}}")
+          input(type = "checkbox")
+          span.value(ng-bind='value.key')
+          span.number ({{value.doc_count}})

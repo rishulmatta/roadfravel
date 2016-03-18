@@ -1,28 +1,19 @@
 extends layout
 
-block content
+block content    
     #wrapper
-      // Sidebar
-      #sidebar-wrapper
-        ul.sidebar-nav
-          li.sidebar-brand
+      div.header-conainer
+        header.header
+          div
+            |ROAD FRAVEL
+          div
+            |I am header
+          div           
             a(href='#{user.profileUrl}' target = "_blank")
               | #{user.name} 
               img.profile-pic(src = '#{user.profilePicUrl}')
-          li
-            a(href='#') Dashboard
-          li
-            a(href='#') Shortcuts
-          li
-            a(href='#') Overview
-          li
-            a(href='#') Events
-          li
-            a(href='#') About
-          li
-            a(href='#') Services
-          li
-            a(href='#') Contact
+
+      
       // /#sidebar-wrapper
       // Page Content
       #page-content-wrapper

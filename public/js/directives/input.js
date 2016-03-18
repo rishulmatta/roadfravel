@@ -37,3 +37,28 @@ roadFravel.directive('gAutoComplete',[function () {
 			}
 		}
 	}]);
+
+
+roadFravel.directive('rFilters',[function () {
+		return {
+			restrict : 'A',
+			scope:{
+				title:"@",
+				values:"=",
+				apply:"&"
+
+			},
+			transclude:true,
+			templateUrl:"partials/filter",
+			link : function (scope ,element ,attr) {
+				
+			   scope.filterClicked = function (event) {
+			   	event.stopPropagation();
+			   	scope.apply({filterMeta :{
+			   		title:scope.title,
+			   		key:event.currentTarget.id
+			   	}})
+			   }
+			}
+		}
+	}]);

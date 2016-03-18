@@ -1,2 +1,25 @@
+
+
+// Sidebar
+#sidebar-wrapper
+  div(ng-repeat = "filter in filters" r-filters title = "{{filter.title}}" values = "filter.values" 	apply="applyFilter(filterMeta)" )
+        div(ng-bind = "filter.title")          
+    ul.sidebar-nav
+      li.sidebar-brand
+      li
+        a(href='#') Dashboard
+      li
+        a(href='#') Shortcuts
+      li
+        a(href='#') Overview
+      li
+        a(href='#') Events
+      li
+        a(href='#') About
+      li
+        a(href='#') Services
+      li
+        a(href='#') Contact
+
 .map-right
-	div(rf-pool-list)
+  div(rf-pool-list)
