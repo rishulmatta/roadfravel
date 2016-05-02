@@ -1,20 +1,26 @@
-var roadFravel = angular.module('roadFravel', ['ngRoute','ui.bootstrap']);
+var roadFravel = angular.module('roadFravel', ['ui.router','ui.bootstrap']);
 
 
-roadFravel.config(['$routeProvider',
-  function($routeProvider) {
-    $routeProvider.
-      when('/home', {
+roadFravel.config(
+  function($stateProvider, $urlRouterProvider) {
+
+      $urlRouterProvider.otherwise("/landing");
+
+    $stateProvider.
+      state('home', {
         templateUrl: 'partials/home',
-        controller: "HomeCtrl"
-      }).when('/login', {
+        controller: "HomeCtrl",
+        url : "/home"
+      }).state('/login', {
         templateUrl: 'partials/login',
         controller: "HomeCtrl"
-       }).when('/offer', {
+       }).state('offer', {
         templateUrl: 'partials/offer',
-        controller: "OfferCtrl"
-      }).
-      otherwise({
-        redirectTo: '/home'
-      });
-  }]);
+        controller: "OfferCtrl",
+        url:"/offer"
+      }).state('landing', {
+        templateUrl: 'partials/landing',
+        controller: "LandingCtrl",
+        url:"/landing"
+      })
+  });

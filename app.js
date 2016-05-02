@@ -8,7 +8,6 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 //var users = require('./routes/users');
 var session = require('express-session');
-var passport = require('passport')
 var app = express();
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/roadfravel');

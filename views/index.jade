@@ -18,20 +18,20 @@ block content
       // Page Content
       #page-content-wrapper
         #map
-        .child-view(ng-view)
+        .child-view(ui-view)
         .main-view
           .navbar
-            a#menu-toggle.nav-item(href='#home')
+            a#menu-toggle.nav-item(ui-sref='home')
               .nav-img-container
                 span.glyphicon.glyphicon-grain(aria-hidden = "true" , aria-label = "Look for people offering vehicle pool")
               .nav-text Pool
             &nbsp;
-            a#menu-toggle.nav-item(href='#offer')
+            a#menu-toggle.nav-item(ui-sref='offer')
               .nav-img-container
                 span.glyphicon.glyphicon-hand-up(aria-hidden = "true" , aria-label = "Offer a pool")
               .nav-text Offer
             &nbsp;
-            a#menu-toggle.nav-item(href='#report')
+            a#menu-toggle.nav-item(ui-sref='report')
               .nav-img-container
                 span.glyphicon.glyphicon-ban-circle(aria-hidden = "true" , aria-label = "Report a traffic violation")
               .nav-text Report

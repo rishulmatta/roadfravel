@@ -315,7 +315,7 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 					streetViewControl:false
 				});
 
-				map.addListener('idle',function() {
+				/*map.addListener('idle',function() {
 					latLng = {lat: map.getCenter().lat(), lng: map.getCenter().lng()};
 					$scope.locations.source.latLng = latLng;
 					$scope.locations.source.name = map.getCenter().lat();
@@ -352,13 +352,7 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 					        }
 					    }
 					);
-
-
-
-
-
-
-				});
+				});*/
 
 				sourceMarker = new google.maps.Marker({
 					position: latLng,
@@ -415,3 +409,9 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 			initMap();
 	 	}
 	});
+
+
+roadFravel.controller('LandingCtrl',function ($scope) { 
+
+
+});
