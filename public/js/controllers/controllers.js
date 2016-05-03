@@ -71,7 +71,121 @@ function drawPolyLine (polyLinePoints) {
 	polyLine.setMap(map);
 }
 
-roadFravel.controller('HomeCtrl',function ($scope,rf_fetchResults) {
+roadFravel.controller('MapCtrl',function ($scope) { 
+	var lat,lng,bounds;
+
+
+		navigator.geolocation.getCurrentPosition(GetLocation);
+		function GetLocation(location) {
+				lat = location.coords.latitude;
+				lng = location.coords.longitude;
+				var latLng = {lat: lat, lng: lng};
+				$scope.locations.source.latLng = latLng;
+			function initMap() {
+			
+				map = new google.maps.Map(document.getElementById('map'), {
+					center: latLng,
+					zoom: 13,
+					mapTypeControl:false,
+					streetViewControl:false
+				});
+
+				/*map.addListener('idle',function() {
+					latLng = {lat: map.getCenter().lat(), lng: map.getCenter().lng()};
+					$scope.locations.source.latLng = latLng;
+					$scope.locations.source.name = map.getCenter().lat();
+					sourceMarker.setPosition(latLng);
+					
+
+					var geocoder;
+					geocoder = new google.maps.Geocoder();
+					var latlngObj = new google.maps.LatLng(latLng.lat, latLng.lng);
+
+					geocoder.geocode(
+					    {'latLng': latlngObj}, 
+					    function(results, status) {
+					        if (status == google.maps.GeocoderStatus.OK) {
+					                if (results[0]) {
+					                 
+					                    var obj = {
+											name:results[0].formatted_address,
+											latLng:latLng,
+											id:results[0].place_id,
+											vicinity:results[1] ? results[1].formatted_address:null 
+					                    }
+					                
+					                   
+					                    $scope.locations.source = obj;
+					                    $scope.$apply();
+					                }
+					                else  {
+					                    console.log("address not found");
+					                }
+					        }
+					         else {
+					             console.log("Geocoder failed due to: " + status);
+					        }
+					    }
+					);
+				});*/
+
+				sourceMarker = new google.maps.Marker({
+					position: latLng,
+					map: map,
+					title: 'Hello World!',
+					icon: '/img/icons/source.png'
+				});
+
+			
+
+				oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied:true,markersWontMove: true, markersWontHide: true });
+				var iw = new google.maps.InfoWindow();
+				var clickedMarker,previousMarker;
+				oms.addListener('click', function(marker, event) {
+					var t;
+						if (t) {
+							clearTimeout(t);
+				
+						previousMarker.setAnimation(null);
+						destinationMarker.setAnimation(null);
+						}
+						
+					  iw.setContent(marker.desc);
+					  iw.open(map, marker);
+					  drawDestinationMarker(marker.destination);
+		  			drawPolyLine(marker.polyline);
+					var bounds = new google.maps.LatLngBounds();
+					bounds.extend(marker.getPosition());
+					bounds.extend(destinationMarker.getPosition());
+
+					marker.setAnimation(google.maps.Animation.BOUNCE);
+				 	destinationMarker.setAnimation(google.maps.Animation.BOUNCE);
+
+					t = setTimeout(function () {
+						marker.setAnimation(null);
+						destinationMarker.setAnimation(null);
+					},2000)
+					map.fitBounds(bounds);
+					previousMarker = marker;
+				});
+
+
+				oms.addListener('spiderfy', function(markers) {
+					 iw.close();
+					 var clickedMarker = arguments[2];
+					 iw.setContent(clickedMarker.desc);
+				 	 iw.open(map, clickedMarker);
+				 	 new google.maps.event.trigger( clickedMarker, 'click' );
+ 					
+				});
+
+
+			}
+			initMap();
+	 	}
+});
+
+roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults) {
 		var polyLine , polyLinePoints , appliedFilters;
 		$scope.clearMarker();  //this method is in global contrl it clears destination marker
 		$scope.pools = [];		
@@ -297,117 +411,7 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 		}
 
 
-		var lat,lng,bounds;
-
-
-		navigator.geolocation.getCurrentPosition(GetLocation);
-		function GetLocation(location) {
-				lat = location.coords.latitude;
-				lng = location.coords.longitude;
-				var latLng = {lat: lat, lng: lng};
-				$scope.locations.source.latLng = latLng;
-			function initMap() {
-			
-				map = new google.maps.Map(document.getElementById('map'), {
-					center: latLng,
-					zoom: 13,
-					mapTypeControl:false,
-					streetViewControl:false
-				});
-
-				/*map.addListener('idle',function() {
-					latLng = {lat: map.getCenter().lat(), lng: map.getCenter().lng()};
-					$scope.locations.source.latLng = latLng;
-					$scope.locations.source.name = map.getCenter().lat();
-					sourceMarker.setPosition(latLng);
-					
-
-					var geocoder;
-					geocoder = new google.maps.Geocoder();
-					var latlngObj = new google.maps.LatLng(latLng.lat, latLng.lng);
-
-					geocoder.geocode(
-					    {'latLng': latlngObj}, 
-					    function(results, status) {
-					        if (status == google.maps.GeocoderStatus.OK) {
-					                if (results[0]) {
-					                 
-					                    var obj = {
-											name:results[0].formatted_address,
-											latLng:latLng,
-											id:results[0].place_id,
-											vicinity:results[1] ? results[1].formatted_address:null 
-					                    }
-					                
-					                   
-					                    $scope.locations.source = obj;
-					                    $scope.$apply();
-					                }
-					                else  {
-					                    console.log("address not found");
-					                }
-					        }
-					         else {
-					             console.log("Geocoder failed due to: " + status);
-					        }
-					    }
-					);
-				});*/
-
-				sourceMarker = new google.maps.Marker({
-					position: latLng,
-					map: map,
-					title: 'Hello World!',
-					icon: '/img/icons/source.png'
-				});
-
-			
-
-				oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied:true,markersWontMove: true, markersWontHide: true });
-				var iw = new google.maps.InfoWindow();
-				var clickedMarker,previousMarker;
-				oms.addListener('click', function(marker, event) {
-					var t;
-						if (t) {
-							clearTimeout(t);
-				
-						previousMarker.setAnimation(null);
-						destinationMarker.setAnimation(null);
-						}
-						
-					  iw.setContent(marker.desc);
-					  iw.open(map, marker);
-					  drawDestinationMarker(marker.destination);
-		  			drawPolyLine(marker.polyline);
-					var bounds = new google.maps.LatLngBounds();
-					bounds.extend(marker.getPosition());
-					bounds.extend(destinationMarker.getPosition());
-
-					marker.setAnimation(google.maps.Animation.BOUNCE);
-				 	destinationMarker.setAnimation(google.maps.Animation.BOUNCE);
-
-					t = setTimeout(function () {
-						marker.setAnimation(null);
-						destinationMarker.setAnimation(null);
-					},2000)
-					map.fitBounds(bounds);
-					previousMarker = marker;
-				});
-
-
-				oms.addListener('spiderfy', function(markers) {
-					 iw.close();
-					 var clickedMarker = arguments[2];
-					 iw.setContent(clickedMarker.desc);
-				 	 iw.open(map, clickedMarker);
-				 	 new google.maps.event.trigger( clickedMarker, 'click' );
- 					
-				});
-
-
-			}
-			initMap();
-	 	}
+		
 	});
 
 

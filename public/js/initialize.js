@@ -7,14 +7,18 @@ roadFravel.config(
       $urlRouterProvider.otherwise("/landing");
 
     $stateProvider.
-      state('home', {
-        templateUrl: 'partials/home',
-        controller: "HomeCtrl",
-        url : "/home"
-      }).state('/login', {
+      state('map', {
+        templateUrl: 'partials/map',
+        controller:"MapCtrl",
+        url : "/map"
+      }).state('map.search', {
+        templateUrl: 'partials/search',
+        controller: "SearchCtrl",
+        url : "/search"
+      }).state('login', {
         templateUrl: 'partials/login',
         controller: "HomeCtrl"
-       }).state('offer', {
+       }).state('map.offer', {
         templateUrl: 'partials/offer',
         controller: "OfferCtrl",
         url:"/offer"

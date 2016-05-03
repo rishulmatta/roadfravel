@@ -16,32 +16,9 @@ block content
       
       // /#sidebar-wrapper
       // Page Content
-      #page-content-wrapper
-        #map
+      #page-content-wrapper        
         .child-view(ui-view)
-        .main-view
-          .navbar
-            a#menu-toggle.nav-item(ui-sref='home')
-              .nav-img-container
-                span.glyphicon.glyphicon-grain(aria-hidden = "true" , aria-label = "Look for people offering vehicle pool")
-              .nav-text Pool
-            &nbsp;
-            a#menu-toggle.nav-item(ui-sref='offer')
-              .nav-img-container
-                span.glyphicon.glyphicon-hand-up(aria-hidden = "true" , aria-label = "Offer a pool")
-              .nav-text Offer
-            &nbsp;
-            a#menu-toggle.nav-item(ui-sref='report')
-              .nav-img-container
-                span.glyphicon.glyphicon-ban-circle(aria-hidden = "true" , aria-label = "Report a traffic violation")
-              .nav-text Report
-            &nbsp;
-            span.stretch
-          script.
-              $("#menu-toggle").click(function(e) {
-              
-                //$("#wrapper").toggleClass("toggled");
-              });
+       
   
 
   
