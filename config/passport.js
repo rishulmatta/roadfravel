@@ -70,9 +70,7 @@ passport.use(new FacebookStrategy({
 					user.update(
 					   {"facebook.id":profile.id},
 					    user,
-					   {
-					     upsert: true
-					   },
+					  
 					   function(err){
 	    				if(err)
 	    					throw err

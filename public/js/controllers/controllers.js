@@ -71,7 +71,7 @@ function drawPolyLine (polyLinePoints) {
 	polyLine.setMap(map);
 }
 
-roadFravel.controller('MapCtrl',function ($scope) { 
+roadFravel.controller('MapCtrl',function ($scope,$state) { 
 	var lat,lng,bounds;
 
 
@@ -90,7 +90,7 @@ roadFravel.controller('MapCtrl',function ($scope) {
 					streetViewControl:false
 				});
 
-				/*map.addListener('idle',function() {
+				map.addListener('idle',function() {
 					latLng = {lat: map.getCenter().lat(), lng: map.getCenter().lng()};
 					$scope.locations.source.latLng = latLng;
 					$scope.locations.source.name = map.getCenter().lat();
@@ -127,7 +127,7 @@ roadFravel.controller('MapCtrl',function ($scope) {
 					        }
 					    }
 					);
-				});*/
+				});
 
 				sourceMarker = new google.maps.Marker({
 					position: latLng,
@@ -182,6 +182,7 @@ roadFravel.controller('MapCtrl',function ($scope) {
 
 			}
 			initMap();
+			
 	 	}
 });
 
@@ -410,7 +411,23 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 			}
 		}
 
+		//shift this event to appear only on landing page
+		$(window).on('mousewheel',function(event) {
+			var navElement = $("nav.navbar.navbar-default");
+			//navElement = navElement.length > 0 ?  navElement.addClass("navbar-fixed-top"):navElement.removeClass("navbar-fixed-top");			
+			//window.scrollY > 5  ? navElement.addClass("navbar-fixed-top") : undefined;
 
+
+			if (navElement.hasClass("navbar-fixed-top") &&  window.scrollY <= 1) {
+				navElement.removeClass("navbar-fixed-top");
+				
+			}else {
+				if (window.scrollY > 1) {
+					navElement.addClass("navbar-fixed-top");
+				}
+				
+			}
+		});
 		
 	});
 

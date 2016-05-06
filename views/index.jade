@@ -1,23 +1,9 @@
 extends layout
 
 block content    
-    #wrapper
-      div.header-conainer
-        header.header
-          div
-            |ROAD FRAVEL
-          div
-            |I am header
-          div           
-            a(href='#{user.profileUrl}' target = "_blank")
-              | #{user.name} 
-              img.profile-pic(src = '#{user.profilePicUrl}')
-
-      
-      // /#sidebar-wrapper
-      // Page Content
-      #page-content-wrapper        
-        .child-view(ui-view)
+   
+           
+      div.first-div(ui-view)
        
   
 

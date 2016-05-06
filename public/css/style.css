@@ -16,10 +16,14 @@
       text-align: center;
   }
 
+  .container {
+    height:100%;
+  }
+
 
 /* For home page*/
 
-  .navbar {
+  .navbar-custom {
   	width:20%;
   	margin:auto;
   	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+1,e5e5e5+100 */
@@ -176,17 +180,27 @@ box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
    display: table;
     table-layout: fixed;
   width:100%;
-
-    background-color:rgb(168,202,186);
 }
 
 
 .header div {
     display: table-cell;
-       height:4em;
+       height:2em;
        vertical-align: middle;
-       text-align: right;
+        padding:0.5em;
        color:rgb(235,227,170);
+}
+
+.text-left {
+   text-align: left;
+}
+
+.text-right {
+   text-align: right;
+}
+
+.text-center {
+   text-align: center;
 }
 
 label {
@@ -197,6 +211,14 @@ label {
 
 .search-list {
 
+}
+
+.profile-pic-circle {
+  border-radius : 50px;
+}
+
+.navbar-added .profile-pic-anchor {
+  padding-top:2px;
 }
 
 .search-item-row {
@@ -240,3 +262,62 @@ label {
 .search-item-row .col-lg-3 , .search-item-row .col-lg-9 {
   margin:auto;
 }
+
+/*-------------------------------------Landing ------------------------------*/
+.navbar-added {
+  z-index : 1030;
+  margin-bottom:0px;
+  border:none;
+  border-radius:0px;
+  background:none;
+
+}
+
+.navbar-added .navbar-brand {
+    color:white;
+}
+
+.navbar-added  .navbar-nav > li > a {
+  color : white;
+}
+
+.navbar-added  .navbar-nav > li > a:hover, .navbar-added  .navbar-nav > li > a:focus {
+    color : #EAE0C8;
+}
+
+
+.navbar-added .navbar-right {
+  margin-right:0px;
+}
+
+.navbar-wrapper {
+  position:absolute;
+  top:0px;
+  right:0px;
+  left:0px;
+}
+
+
+.landing-image {
+  position:absolute;
+  top : 0px;
+}
+
+#landing {
+  background: url("/img/bck/landing.jpg") no-repeat;
+  
+  height:50%;
+  width:100%;
+  margin:auto;
+  background-position: center; 
+}
+
+
+.first-div {
+  height:100%;
+  width:100%;
+  backround:#f8f5e4;
+}
+
+
+/* -------------------- Search Pool  ----------------------------  */

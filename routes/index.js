@@ -98,7 +98,15 @@ module.exports = function(app, passport) {
 
     app.get('/partials/:partialPath', function(req, res) {
 
-        res.render('partials/' + req.params.partialPath);
+        if(req.params.partialPath != 'header') {
+            res.render('partials/' + req.params.partialPath);
+        }else {
+            
+           res.render('partials/' + req.params.partialPath, {
+              user :req.user// get the user out of session and pass to template
+            });
+        }
+        
 
     });
 
@@ -107,7 +115,7 @@ module.exports = function(app, passport) {
     app.get('/auth/facebook', passport.authenticate('facebook'));
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', {
-            successRedirect: '/#/offer',
-            failureRedirect: '/login'
+            successRedirect: '/#/map/offer',
+            failureRedirect: '/#/landing'
         }));
 }
