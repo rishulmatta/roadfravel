@@ -1,7 +1,7 @@
 .filter
   .title(ng-transclude)
-  .valContainer
-    ul
+  .value-container 
+    ul.values-list
       li(ng-repeat='value in values')
         label(ng-click = "filterClicked($event)" id = "{{value.key}}")
           input(type = "checkbox")

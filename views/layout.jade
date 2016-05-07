@@ -1,29 +1,32 @@
 doctype html
 html(ng-app = "roadFravel")
-	head
-		title= title
-		script( type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBab8wu7ql6hGAXF7MYmHN8-KL_xqOZvaw&libraries=places,geometry")
+  head
+      title= title
+      script( type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBab8wu7ql6hGAXF7MYmHN8-KL_xqOZvaw&libraries=places,geometry")
 
-		script(type="text/javascript", src="/js/lib/oms.min.js")
-	
+      script(type="text/javascript", src="/js/lib/oms.min.js")
 
-	body(ng-controller = "GlobalCtrl")
-		block content	
-	link(rel='stylesheet', href='/css/bootstrap.css')
-	link(rel='stylesheet', href='/css/simple-sidebar.css')
-	link(rel='stylesheet', href='/css/style.css')
-	
-	script(type='text/javascript')
-	script(type="text/javascript", src="/js/lib/jquery.js")
-	script(type="text/javascript", src="/js/lib/angular.js")
-	script(type="text/javascript", src="/js/lib/angular-ui-router.js")
-	script(type="text/javascript", src="/js/lib/ui-bootstrap.js")
-	script(type="text/javascript", src="/js/initialize.js")
-	script(type="text/javascript", src="/js/services/thirdParty.js")
-	script(type="text/javascript", src="/js/services/persist.js")
-	script(type="text/javascript", src="/js/services/fetch.js")
-	
-	script(type="text/javascript", src="/js/directives/input.js")
-	script(type="text/javascript", src="/js/directives/rendering.js")
-	script(type="text/javascript"  src="/js/controllers/controllers.js")
-		
+
+  body(ng-controller = "GlobalCtrl")
+      block content	
+  link(rel='stylesheet', href='/css/bootstrap.css')   
+  link(rel='stylesheet', href='/css/angular-wizard.css')
+  link(rel='stylesheet', href='/css/simple-sidebar.css')
+  link(rel='stylesheet', href='/css/style.css')
+  script(type='text/javascript')
+  script(type="text/javascript", src="/js/lib/jquery.js")
+  script(type="text/javascript", src="/js/lib/angular.js")
+  script(type="text/javascript", src="/js/lib/angular-ui-router.js")
+  script(type="text/javascript", src="/js/lib/ui-bootstrap.js")
+  script(type="text/javascript", src="/js/lib/bootstrap.js")
+  script(type="text/javascript", src="/js/lib/angular-wizard.js")
+
+  script(type="text/javascript", src="/js/initialize.js")
+  script(type="text/javascript", src="/js/services/thirdParty.js")
+  script(type="text/javascript", src="/js/services/persist.js")
+  script(type="text/javascript", src="/js/services/fetch.js")
+
+  script(type="text/javascript", src="/js/directives/input.js")
+  script(type="text/javascript", src="/js/directives/rendering.js")
+  script(type="text/javascript"  src="/js/controllers/controllers.js")
+

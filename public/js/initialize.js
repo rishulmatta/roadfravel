@@ -1,4 +1,4 @@
-var roadFravel = angular.module('roadFravel', ['ui.router','ui.bootstrap']);
+var roadFravel = angular.module('roadFravel', ['ui.router','ui.bootstrap','mgo-angular-wizard']);
 
 
 roadFravel.config(
@@ -28,3 +28,19 @@ roadFravel.config(
         url:"/landing"
       })
   });
+
+
+roadFravel.run(function ($rootScope) {
+  $rootScope.$on('$stateChangeStart', 
+  function(event, toState, toParams, fromState, fromParams, options){ 
+     
+      if (toState.name == 'map.offer') {
+        sourceRepositionReqd = false;
+      }else {
+        sourceRepositionReqd = true;
+      }
+      
+      // transitionTo() promise will be rejected with 
+      // a 'transition prevented' error
+  })
+})

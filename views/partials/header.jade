@@ -12,9 +12,9 @@ nav.navbar.navbar-default.navbar-added
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
       ul.nav.navbar-nav.navbar-right
         li
-          a.navbar-color(ui-sref='map.search') Pool
+          a.navbar-color.anchor-as-button(ui-sref='map.search') Pool
         li
-          a.navbar-color(ui-sref='map.offer') Offer
+          a.navbar-color.anchor-as-button(ui-sref='map.offer') Offer
         if user
           li.dropdown
             a.dropdown-toggle.profile-pic-anchor(href= '#{user.facebook.profileUrl}', target = "_blank" ,data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')

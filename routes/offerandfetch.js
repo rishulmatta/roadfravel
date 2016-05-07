@@ -2,6 +2,7 @@ var User = require('./../models/user');
 var googleConf = require('./../config/google');
 var https = require("https");
 var request = require('request');
+var elasticSearchFilterHandler = require('./../config/elastic-search-filter-handler');
 
 
 function fetchUserInfo(req, res, response, next) {
@@ -95,31 +96,68 @@ module.exports = function(app, elasticSearchClient) {
                 }
             }, function(error, response) {
 
-                return res.json(response);
+                if (error) {
+                    return res.json(error);
+                }else {
+                      return res.json(response);
+                }
+              
             });
         }
 
     });
 
+
+
     app.post('/fetch', function(req, res, next) {
 
-        var body = req.body;
+        var searchObj,body,queryWithFilter;
+        body = req.body;
 
+        
+        
 
-        elasticSearchClient.search({
-            index: 'roadfravel',
-            type: 'pool',
-            body: {
-                "aggregations": {
-                        "vehicle": {
-                            "terms": {
-                                "field": "vehicle"
+         if (body.filtersReqd) {
+            searchObj = {
+                    index: 'roadfravel',
+                    type: 'pool',
+                    body: {
+                        "aggregations": {
+                                "vehicle": {
+                                    "terms": {
+                                        "field": "vehicle"
+                                    }
+                                }
                             }
-                        }
                     }
-            }
-        }, function(error, response) {
-            fetchUserInfo(req, res, response, next);
+                };
+        }else {
+
+            if (Object.keys(body.appliedFilters).length === 0) {
+                searchObj = {
+                        index: 'roadfravel',
+                        type: 'pool',
+                        body : {}
+                    };
+            }else {
+                elasticSearchFilterHandler.makeFilterObj(body.appliedFilters);
+
+                searchObj = {
+                        index: 'roadfravel',
+                        type: 'pool',
+                        body: elasticSearchFilterHandler.reqObj
+                    };
+                }
+          
+        }
+
+        elasticSearchClient.search(searchObj, function(error, response) {
+            if(!error) {
+                 fetchUserInfo(req, res, response, next);
+             }else {
+                res.json(error);
+             }
+           
             //return res.json(response);
         });
 

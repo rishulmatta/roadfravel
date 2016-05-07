@@ -25,6 +25,7 @@
 
   .navbar-custom {
   	width:20%;
+    display : none;
   	margin:auto;
   	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+1,e5e5e5+100 */
 background: #ffffff; /* Old browsers */
@@ -83,7 +84,7 @@ border-radius : 8px;
 
 .child-view {
   position:absolute;
-  top:62px;
+  top:0px;
    bottom:0px;
   z-index:1;
   right:0px;
@@ -121,9 +122,9 @@ box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
   position:absolute;
   right:0px;
 
-  top:1em;
+  top:3em;
   bottom:5em;
-  height:90%;
+ 
 }
 
 
@@ -207,14 +208,15 @@ label {
   cursor:pointer;
 }
 
-/*------------------------------ home/ search pool page------------------------------------------- */
+/*------------------------------ search pool page------------------------------------------- */
 
 .search-list {
 
 }
 
 .profile-pic-circle {
-  border-radius : 50px;
+  border-radius : 40px;
+  height:40px;
 }
 
 .navbar-added .profile-pic-anchor {
@@ -263,14 +265,41 @@ label {
   margin:auto;
 }
 
+
+.filter-title {
+  text-transform:capitalize;
+}
+
+.values-list {
+   list-style-type: none;
+   font-size:12px;
+   padding:0px;
+}
+
+.value-container {
+  max-height : 150px;
+  overflow-y:auto;
+  padding:5px;
+}
+
+.value {
+  margin:0px 45px 0px 5px;
+}
+
+.number {
+  color:#747d7d;
+}
 /*-------------------------------------Landing ------------------------------*/
 .navbar-added {
   z-index : 1030;
   margin-bottom:0px;
   border:none;
   border-radius:0px;
-  background:none;
+  top:5px;
+}
 
+.navbar-default.navbar-added {
+  background:none;
 }
 
 .navbar-added .navbar-brand {
@@ -320,4 +349,39 @@ label {
 }
 
 
-/* -------------------- Search Pool  ----------------------------  */
+
+
+/* -------------------- Offer Pool ----------------------------  */
+.offer-wizard {
+  position:absolute;
+  right:10px;
+  left :70%;
+  top : 10%;
+  bottom:40%;
+  background:rgba(211,211,211,0.7);
+  padding:5px;
+}
+
+.remove-float {
+  clear:both;
+}
+
+.steps {
+  height : 80%;
+}
+
+.steps-indicator li a {
+  text-transform:none;
+  font-size:16px;
+}
+
+.anchor-as-button {
+      display: block;
+    height: 37px !important;
+    border-radius: 4px;
+    border: 1px solid black;
+    padding: 0px 15px !important;
+    line-height: 37px !important;
+    margin-left:15px;
+    background:#747D7D;
+  }

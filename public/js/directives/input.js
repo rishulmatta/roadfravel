@@ -49,14 +49,15 @@ roadFravel.directive('rFilters',[function () {
 
 			},
 			transclude:true,
-			templateUrl:"partials/filter",
+			templateUrl:"partials/d_filter",
 			link : function (scope ,element ,attr) {
 				
 			   scope.filterClicked = function (event) {
 			   	event.stopPropagation();
 			   	scope.apply({filterMeta :{
-			   		title:scope.title,
-			   		key:event.currentTarget.id
+			   		type:scope.title,
+			   		value:event.currentTarget.id,
+			   		checked : event.target.checked
 			   	}})
 			   }
 			}

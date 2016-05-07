@@ -87,14 +87,14 @@ passport.use(new FacebookStrategy({
 	));
 
     passport.serializeUser(function(user, done) {
-    	console.log("inside serialize" +user);
+    	//console.log("inside serialize" +user);
         done(null, user.id);
     });
 
     passport.deserializeUser(function(id, done) {
 
     	User.findById(id, function(err, user){
-    		console.log("inside deserializeUser" +user);
+    		//console.log("inside deserializeUser" +user);
 			done(err, user);
 		});
        

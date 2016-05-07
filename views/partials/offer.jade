@@ -1,25 +1,37 @@
-form.offer-page.map-top
-	div.left.autocomplete
-		.input-group
-			span#basic-addon1.input-group-addon.source-img
-			input.form-control(type='text', placeholder='Source' ng-model = 'locations.source.name' g-auto-complete)
-	div.right.autocomplete
-		.input-group
-			span#basic-addon1.input-group-addon.destination-img
-			input.form-control(type='text', placeholder='Destination' g-auto-complete)
-.map-right
-	form.offer-page
-		label(ng-bind = 'selDate')
-		uib-datepicker.well.well-sm(ng-model='selDate', min-date='minDate', show-weeks='true', custom-class='getDayClass(date, mode)')
-		div
-			label(ng-bind = 'selTime')
-			input(type = 'time' ng-model = 'selTime')
-		br
 
-		div
-			label(ng-bind = 'selVehicleType') 
-			br
-			select(name='singleSelect', ng-model='selVehicleType')
-				option(value='2') Bike
-				option(value='4') Car
-		input( type = 'button' ng-click = 'persistPool()')
+wizard.offer-wizard(on-finish='finishedWizard()')
+  wz-step(wz-title='Location')
+    div.left.autocomplete
+      .input-group
+        span#basic-addon1.input-group-addon.source-img
+        input.form-control(type='text', placeholder='Source' ng-model = 'locations.source.name' g-auto-complete)
+    div.right.autocomplete
+      .input-group
+        span#basic-addon1.input-group-addon.destination-img
+        input.form-control(type='text', placeholder='Destination' g-auto-complete)
+    div.remove-float
+      input.btn.btn-primary.pull-right(type='submit', wz-next='', value='Next')
+  wz-step(wz-title='Vehicle')
+    label(ng-bind = 'selVehicleType.value' for = "singleSelect") 
+    br
+    select(name='singleSelect', ng-model='selVehicleType'  ng-options="vehicleType as vehicleType.label for vehicleType in vehicleTypes" ng-change = "changeVehicleType(selVehicleType)")
+    div
+      input.btn.btn-primary(type='submit', wz-next='', value='Next')
+  wz-step(wz-title='Type')
+
+    input.btn.btn-primary(type='submit', wz-next='', value='One time')
+    input.btn.btn-primary(type='submit', wz-next='', value='Repeated')
+  wz-step(wz-title='Time')
+    label(ng-bind = 'selDate')
+    .row
+      .col-md-6
+        p.input-group
+          input.form-control(type='text', uib-datepicker-popup='{{format}}', ng-model='selDate', is-open='popup1.opened', datepicker-options='dateOptions', ng-required='true', close-text='Close', alt-input-formats='altInputFormats')
+          span.input-group-btn
+            button.btn.btn-default(type='button', ng-click='open1()')
+              i.glyphicon.glyphicon-calendar
+
+    div
+      label(ng-bind = 'selTime')
+      input(type = 'time' ng-model = 'selTime')
+    input(type='submit', wz-next='', value='Finish now' ng-click = 'persistPool()')
