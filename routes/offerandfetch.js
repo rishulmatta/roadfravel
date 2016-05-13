@@ -49,6 +49,7 @@ function fetchUserInfo(req, res, response, next) {
 
         });
     } else {
+        return res.json({results:[],aggregations:[]});
         next();
     }
 
@@ -92,7 +93,11 @@ module.exports = function(app, elasticSearchClient) {
                     "planneddate": body.planneddate,
                     "vehicle": body.vehicle,
                     "user_id": req.user._id,
-                    "polyline":body.polyline
+                    "polyline":body.polyline,
+                    "description":body.description,
+                    "registrationnumber":body.registrationnumber,
+                    "iseven":body.iseven,
+                    "cost":body.cost
                 }
             }, function(error, response) {
 
@@ -115,7 +120,7 @@ module.exports = function(app, elasticSearchClient) {
         body = req.body;
 
         
-        
+         elasticSearchFilterHandler.makeFilterObj(body.appliedFilters);
 
          if (body.filtersReqd) {
             searchObj = {
@@ -127,8 +132,14 @@ module.exports = function(app, elasticSearchClient) {
                                     "terms": {
                                         "field": "vehicle"
                                     }
+                                },
+                                "iseven": {
+                                    "terms": {
+                                        "field": "iseven"
+                                    }
                                 }
-                            }
+                            },
+                            'query' : elasticSearchFilterHandler.reqObj.query
                     }
                 };
         }else {
@@ -140,7 +151,7 @@ module.exports = function(app, elasticSearchClient) {
                         body : {}
                     };
             }else {
-                elasticSearchFilterHandler.makeFilterObj(body.appliedFilters);
+               
 
                 searchObj = {
                         index: 'roadfravel',

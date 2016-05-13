@@ -108,7 +108,33 @@ elasticSearch.prototype.getFilterType = function(prop, appliedFilter) {
                 }
             }
         };
-    }
+    }else 
+        if (prop =='source') {
+            return {
+                'geo_distance_range': {
+                    'source.latLng': {
+                        "lat": appliedFilter.lat,
+                        "lon": appliedFilter.lng
+                    },
+                    'to':appliedFilter.dist || '10km',
+                    "optimize_bbox": "memory"
+                    }
+                }
+            }
+        else
+            if (prop =='destination') {
+            return {
+                'geo_distance_range': {
+                    'destination.latLng': {
+                        "lat": appliedFilter.lat,
+                        "lon": appliedFilter.lng
+                    },
+                    'to':appliedFilter.dist || '10km',
+                    "optimize_bbox": "memory"
+                    }
+                }
+            }
+     
 };
 
 elasticSearch.prototype.applyOperators = function(appliedFilters) {

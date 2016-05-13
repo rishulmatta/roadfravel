@@ -33,6 +33,9 @@ roadFravel.directive('gAutoComplete',[function () {
 
 			   		scope.updateLocations(attr.placeholder,obj);
 			   		scope.fetchPolyLine();
+			   		if (scope.applyFilter) {
+			   			scope.applyFilter({type:attr.placeholder.toLowerCase(),value : obj.latLng});
+			   		}
 			   });
 			}
 		}

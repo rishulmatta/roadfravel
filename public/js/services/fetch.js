@@ -12,7 +12,7 @@ roadFravel.factory('rf_fetchResults', function($http,$q) {
      				q.resolve({data:response});
      			}).error(function (response) {
      				q.reject({data:response});
-     				console.log('persist failed');
+     				console.log('fetch failed');
      				console.log(response);
      			});
      	return q.promise;

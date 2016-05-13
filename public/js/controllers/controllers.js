@@ -71,9 +71,9 @@ function drawPolyLine (polyLinePoints) {
 	polyLine.setMap(map);
 }
 
-roadFravel.controller('MapCtrl',function ($scope,$state) { 
-	var lat,lng,bounds;
-
+roadFravel.controller('MapCtrl',function ($scope,$state,$q) { 
+	 var lat,lng, bounds;
+	resultsFetched = false;
 
 		navigator.geolocation.getCurrentPosition(GetLocation);
 		function GetLocation(location) {
@@ -90,14 +90,14 @@ roadFravel.controller('MapCtrl',function ($scope,$state) {
 					streetViewControl:false
 				});
 
-				map.addListener('idle',function() {
-					if (!sourceRepositionReqd && $scope.locations.source.name != '' ) {
+			/*	map.addListener('idle',function() {
+					if (!resultsFetched) {
 					
 						return false;
 					}
 					latLng = {lat: map.getCenter().lat(), lng: map.getCenter().lng()};
 					$scope.locations.source.latLng = latLng;
-					$scope.locations.source.name = map.getCenter().lat();
+					
 					sourceMarker.setPosition(latLng);
 					
 
@@ -131,7 +131,7 @@ roadFravel.controller('MapCtrl',function ($scope,$state) {
 					        }
 					    }
 					);
-				});
+				});*/
 
 					sourceMarker = new google.maps.Marker({
 						position: latLng,
@@ -140,8 +140,11 @@ roadFravel.controller('MapCtrl',function ($scope,$state) {
 						icon: '/img/icons/source.png'
 					});
 				
+				var prom = getTheNameFromLatLng(latLng);
+				prom.then(function (obj) {
+					$scope.locations.source = obj;
+				});
 				
-			
 
 				oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied:true,markersWontMove: true, markersWontHide: true });
 				var iw = new google.maps.InfoWindow();
@@ -190,12 +193,133 @@ roadFravel.controller('MapCtrl',function ($scope,$state) {
 			
 	 	}
 
+
+	 	function getTheNameFromLatLng(latLng) {
+	 		var geocoder;
+					geocoder = new google.maps.Geocoder();
+					var latlngObj = new google.maps.LatLng(latLng.lat, latLng.lng);
+					var defered = $q.defer();
+				 	geocoder.geocode(
+					    {'latLng': latlngObj}, 
+					    function(results, status) {
+					        if (status == google.maps.GeocoderStatus.OK) {
+					                if (results[0]) {
+					                 
+					                    var obj = {
+											name:results[0].formatted_address,
+											latLng:latLng,
+											id:results[0].place_id,
+											vicinity:results[1] ? results[1].formatted_address:null 
+					                    }
+					                
+					                   
+					                    defered.resolve(obj);
+					                    
+					                }
+					                else  {
+					                    console.log("address not found");
+					                }
+					        }
+					         else {
+					             console.log("Geocoder failed due to: " + status);
+					        }
+					    }
+					);
+			return defered.promise
+	 	}
+
+
+	 /*-- code for date picker --*/
+	 $scope.today = function() {
+	    $scope.dt = new Date();
+	  };
+	  $scope.today();
+
+	  $scope.clear = function() {
+	    $scope.dt = null;
+	  };
+
+	  $scope.inlineOptions = {
+	    customClass: getDayClass,
+	    minDate: new Date(),
+	    showWeeks: true
+	  };
+
+	  $scope.dateOptions = {
+	   
+	    formatYear: 'yy',
+	    maxDate: new Date(2020, 5, 22),
+	    minDate: new Date(),
+	    startingDay: 1
+	  };
+
+	 
+
+	 
+
+	  $scope.open1 = function() {
+	    $scope.popup1.opened = true;
+	  };
+
+	 
+	  $scope.setDate = function(year, month, day) {
+	    $scope.dt = new Date(year, month, day);
+	  };
+
+	  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+	  $scope.format = $scope.formats[0];
+	  $scope.altInputFormats = ['M!/d!/yyyy'];
+
+	  $scope.popup1 = {
+	    opened: false
+	  };
+
+	 
+
+	  var tomorrow = new Date();
+	  tomorrow.setDate(tomorrow.getDate() + 1);
+	  var afterTomorrow = new Date();
+	  afterTomorrow.setDate(tomorrow.getDate() + 1);
+	  $scope.events = [
+	    {
+	      date: tomorrow,
+	      status: 'full'
+	    },
+	    {
+	      date: afterTomorrow,
+	      status: 'partially'
+	    }
+	  ];
+
+	  function getDayClass(data) {
+	    var date = data.date,
+	      mode = data.mode;
+	    if (mode === 'day') {
+	      var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+	      for (var i = 0; i < $scope.events.length; i++) {
+	        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+	        if (dayToCheck === currentDay) {
+	          return $scope.events[i].status;
+	        }
+	      }
+	    }
+
+	    return '';
+	  }
+
+	    /*-- code for date picker  END--*/
+
 });
 
-roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults) {
+roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
 		var polyLine , polyLinePoints , appliedFilters;
 		$scope.clearMarker();  //this method is in global contrl it clears destination marker
 		$scope.pools = [];		
+		$scope.searchDate = {
+			selDate :null
+		};
 		
 		$scope.filters = [];
 		markers = [];
@@ -203,22 +327,54 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults) {
 		
 		appliedFilters = []; //tis array will contain the filters that the user has applied
 
-
+		/*$scope.locationChanged = function (name) {
+			if (name == 'source') {
+				$scope.applyFilter({type:'source'});
+			}
+		} */
 
 		$scope.applyFilter = function (filterMeta) {
-			if (filterMeta.checked) {
-				appliedFilters.push( {
-					type : filterMeta.type,
-					value : filterMeta.value
-				})
-			}else {
+
+			function removeFromFilters(type) {
+				//this function checks for types and removes the applied filter.
 				for (var ii in appliedFilters) {
-					if (appliedFilters[ii].value == filterMeta.value && appliedFilters[ii].type == filterMeta.type) {
+					if (appliedFilters[ii].type == type) {
 						appliedFilters.splice(ii,1);
 						break;
 					}
 				}
+			} 
+
+			if (filterMeta.type == 'vehicle') {
+				if (filterMeta.checked) {
+					appliedFilters.push( {
+						type : filterMeta.type,
+						value : filterMeta.value
+					})
+				}else {
+					for (var ii in appliedFilters) {
+						if (appliedFilters[ii].value == filterMeta.value && appliedFilters[ii].type == filterMeta.type) {
+							appliedFilters.splice(ii,1);
+							break;
+						}
+					}
+				}
 			}
+
+			if (filterMeta.type == 'planneddate') {
+				removeFromFilters(filterMeta.type);
+				if (filterMeta.value.from) {
+					appliedFilters.push(filterMeta);
+				}
+					
+				
+			}
+
+			if (filterMeta.type == 'source' || filterMeta.type == 'destination') {
+				removeFromFilters(filterMeta.type);
+				appliedFilters.push(filterMeta);
+			}
+			
 		
 
 			fetchResults();
@@ -229,6 +385,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults) {
 		function drawAvailablePools (data) {
 			var fetcedData,length,sourceMarker  ;
 			var arrMarkerPositions = [];
+			resultsFetched = true; //this is a global variable which decides when the source marker should reposition
 			//each time when the result is fetched the old set of data has to be removed
 			$scope.clearMarker ();
 			$scope.pools = [];
@@ -236,6 +393,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults) {
 			length = fetcedData.length;
 
 			if (length == 0) {
+				toastr.info('Please try clearing the filters or changing the Source', 'No Results Found');
 				return;
 			}
 			
@@ -294,6 +452,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults) {
  		}
 
  		function fetchResults() {
+
 			var promise = rf_fetchResults.fetchPool({appliedFilters:appliedFilters,filtersReqd : $scope.filters.length > 0 ? false:true});
 			promise.then(drawAvailablePools);
 			promise.then(drawFilters);
@@ -303,7 +462,9 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults) {
 		
 
 		
-		setTimeout(fetchResults,1000);
+		setTimeout(function() {
+			$scope.applyFilter({type:'source',value: {lat:$scope.locations.source.latLng.lat , lng:$scope.locations.source.latLng.lng}});
+		},1000);
 
 		$scope.searchListItemClicked = function (index) {
 			var promise;
@@ -313,26 +474,85 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults) {
 			
 		}
 
+		$scope.dateChanged = function () {
+			
+			var minDate,maxDate,type;
+			type = "planneddate";
+			if ($scope.searchDate.selDate) {
+
+				minDate = $scope.searchDate.selDate.getTime();
+				maxDate = $scope.searchDate.selDate.setDate(parseInt($scope.searchDate.selDate.getDate()) + 1);
+			}else {
+				minDate = null;
+				maxDate = null;
+			}
+
+			$scope.applyFilter({
+				type:type,
+				value : {from:minDate,
+						to : maxDate
+					}
+			});
+
+		}
+
 	});
 
 
 roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool) {
 		
 		$scope.clearMarker(); 
-		
+
+
+		$scope.vehicleInfo = {
+			registrationnumber:null,
+			description:null,
+			type : null
+		};
+
+		$scope.tripInfo = {
+			cost:null
+		};
+
+		$scope.poolInfo = {
+			type:null,
+			dateAndTime : {
+				selDate :new Date(),
+				selTime : new Date()
+			}
+		};
+
 		$scope.minDate = new Date();
-		$scope.selDate = new Date();
-		$scope.selTime = new Date();
+		//$scope.selDate = new Date();
+		//$scope.selTime = new Date();
 		var vehicleTypeValue;
+
+		function generateDateAndTime () {
+			var milliSeconds;
+			$scope.poolInfo.dateAndTime.selDate.setHours($scope.poolInfo.dateAndTime.selTime.getHours());
+			$scope.poolInfo.dateAndTime.selDate.setMinutes($scope.poolInfo.dateAndTime.selTime.getMinutes());
+			$scope.poolInfo.dateAndTime.selDate.setSeconds("0");
+			$scope.poolInfo.dateAndTime.selDate.setMilliseconds("0");
+
+
+			milliSeconds = $scope.poolInfo.dateAndTime.selDate.getTime();
+
+			return milliSeconds;
+		}
+
 		//this function is called to persist pool to elastic search
 		$scope.persistPool = function () {
 			var inp = {
 				source:$scope.locations.source,
 				destination:$scope.locations.destination,
-				creationdate: new Date(),
-				planneddate:$scope.selDate,
-				vehicle:vehicleTypeValue,
-				polyline:$scope.locations.polyline
+				creationdate: new Date().getTime(),
+				planneddate:generateDateAndTime(),
+				vehicle:$scope.vehicleInfo.type.value,
+				polyline:$scope.locations.polyline,
+				description:$scope.vehicleInfo.description,
+				registrationnumber : $scope.vehicleInfo.registrationnumber,
+				iseven : $scope.vehicleInfo.registrationnumber % 2 == 0 ? true : false,
+				cost:$scope.tripInfo.cost || 0
 			}
 
 			var prom = rf_persistPool.savePool(inp);
@@ -342,99 +562,34 @@ roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool) {
 
 		}
 
-		$scope.changeVehicleType = function (arg) {
-			vehicleTypeValue = arg.value;
-		}
 
 
 		$scope.vehicleTypes = [{
-		   value: '2',
+		   value: 2,
 		   label: 'Bike'
 		 }, {
-		   value: '4',
+		   value: 4,
 		   label: 'Car'
 		 }];  
-		/*-- code for date picker --*/
-		$scope.today = function() {
-		   $scope.dt = new Date();
-		 };
-		 $scope.today();
-
-		 $scope.clear = function() {
-		   $scope.dt = null;
-		 };
-
-		 $scope.inlineOptions = {
-		   customClass: getDayClass,
-		   minDate: new Date(),
-		   showWeeks: true
-		 };
-
-		 $scope.dateOptions = {
-		  
-		   formatYear: 'yy',
-		   maxDate: new Date(2020, 5, 22),
-		   minDate: new Date(),
-		   startingDay: 1
-		 };
-
 		
 
-		
 
-		 $scope.open1 = function() {
-		   $scope.popup1.opened = true;
-		 };
 
-	
-		 $scope.setDate = function(year, month, day) {
-		   $scope.dt = new Date(year, month, day);
-		 };
 
-		 $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-		 $scope.format = $scope.formats[0];
-		 $scope.altInputFormats = ['M!/d!/yyyy'];
+		   /* --   code for time picker --*/
+		   $scope.mytime = new Date();
 
-		 $scope.popup1 = {
-		   opened: false
-		 };
+		  $scope.hstep = 1;
+		  $scope.mstep = 15;
 
-	
 
-		 var tomorrow = new Date();
-		 tomorrow.setDate(tomorrow.getDate() + 1);
-		 var afterTomorrow = new Date();
-		 afterTomorrow.setDate(tomorrow.getDate() + 1);
-		 $scope.events = [
-		   {
-		     date: tomorrow,
-		     status: 'full'
-		   },
-		   {
-		     date: afterTomorrow,
-		     status: 'partially'
-		   }
-		 ];
 
-		 function getDayClass(data) {
-		   var date = data.date,
-		     mode = data.mode;
-		   if (mode === 'day') {
-		     var dayToCheck = new Date(date).setHours(0,0,0,0);
 
-		     for (var i = 0; i < $scope.events.length; i++) {
-		       var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
 
-		       if (dayToCheck === currentDay) {
-		         return $scope.events[i].status;
-		       }
-		     }
-		   }
 
-		   return '';
-		 }
 
-		   /*-- code for date picker  END--*/
+
+     /* --   code for time picker END --*/
 	});
 
 
