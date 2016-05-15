@@ -90,7 +90,7 @@ elasticSearch.prototype.makeFilterObj = function(searchArray) {
 }
 
 elasticSearch.prototype.getFilterType = function(prop, appliedFilter) {
-    if (prop == 'vehicle' || prop == 'tags') {
+    if (prop == 'vehicle' || prop == 'iseven') {
         return {
             'term': {
                 [prop]: appliedFilter
@@ -134,20 +134,39 @@ elasticSearch.prototype.getFilterType = function(prop, appliedFilter) {
                     }
                 }
             }
+            else
+                if (prop == 'validitydate') {
+                return {
+                    'range': {
+                        'validitydate': {
+                           "gte": appliedFilter.presentdate
+                        }
+                    }
+                };
+            }
      
 };
 
 elasticSearch.prototype.applyOperators = function(appliedFilters) {
 
     var obj, length;
-    var filter = {};
-    filter.and = [];
+    var filter = {bool : {
+        must : [],
+        should :[],
+        "minimum_number_should_match" : 0
+    }};
+    
 
     for (var prop in appliedFilters) {
 
         obj = {};
         length = appliedFilters[prop].length;
-
+        if (prop == 'validitydate') {
+            
+            obj = this.getFilterType(prop, appliedFilters[prop][0]);
+           filter.bool.should.push(obj);
+            continue;
+        }
         if (length > 1) {
             obj.or = [];
 
@@ -160,8 +179,29 @@ elasticSearch.prototype.applyOperators = function(appliedFilters) {
             obj = this.getFilterType(prop, appliedFilters[prop][0]);
         }
 
-        filter.and.push(obj);
+        filter.bool.must.push(obj);
     }
+
+    //if teh planneddate filter is there then there has to be an 'or' with recur pools else we get no results
+
+    for (var index in filter.bool.must) {
+        if (filter.bool.must[index]["range"]){
+            if (filter.bool.must[index]["range"]['planneddate'])  {
+            var newObj = {
+                "bool" : {
+                    "should" : filter.bool.should
+                }
+            }
+
+            newObj.bool.should.push({"range":filter.bool.must[index]["range"]});
+            filter.bool.must[index] = newObj;
+            delete filter.bool.should;
+            break;
+         }
+        }
+    }
+
+
 
     this.reqObj.query.filtered.filter = filter;
 }

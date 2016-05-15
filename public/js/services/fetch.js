@@ -1,6 +1,21 @@
 roadFravel.factory('rf_fetchResults', function($http,$q) {
 
+     var aggregationsRequired = true;
+
 	function fetch (inp) {
+          var validityFilterExist = false;
+
+          for (var ii  in inp.appliedFilters) {
+               if (inp.appliedFilters[ii].type == 'validitydate') {
+                    validityFilterExist = true;
+               }
+          }
+
+          if (!validityFilterExist) {
+               inp.appliedFilters.push({type:'validitydate',value: {presentdate: new Date().getTime()}});
+          }
+
+
 		var q = $q.defer();
 		 $http({
                method:'POST',
@@ -22,6 +37,7 @@ roadFravel.factory('rf_fetchResults', function($http,$q) {
      	return {
      		fetchPool : function (inp) {
      			return fetch(inp);
-     		}
+     		},
+               aggregationsRequired : aggregationsRequired
      	};
 });

@@ -42,13 +42,14 @@ roadFravel.directive('gAutoComplete',[function () {
 	}]);
 
 
-roadFravel.directive('rFilters',[function () {
+roadFravel.directive('rFilters',["rf_fetchResults",function (rf_fetchResults) {
 		return {
 			restrict : 'A',
 			scope:{
 				title:"@",
 				values:"=",
-				apply:"&"
+				apply:"&",
+				aggregations:"=aggregationsRequired"
 
 			},
 			transclude:true,
@@ -57,6 +58,7 @@ roadFravel.directive('rFilters',[function () {
 				
 			   scope.filterClicked = function (event) {
 			   	event.stopPropagation();
+		  		rf_fetchResults.aggregationsRequired = false;
 			   	scope.apply({filterMeta :{
 			   		type:scope.title,
 			   		value:event.currentTarget.id,

@@ -292,6 +292,11 @@ label {
 
 .number {
   color:#747d7d;
+  float:right;
+}
+
+.values-list label {
+  width:80%;
 }
 /*-------------------------------------Landing ------------------------------*/
 .navbar-added {

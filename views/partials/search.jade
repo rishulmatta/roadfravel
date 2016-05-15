@@ -15,8 +15,8 @@
       span.input-group-btn
         button.btn.btn-default(type='button', ng-click='open1()')
           i.glyphicon.glyphicon-calendar
-  div(ng-repeat = "filter in filters" r-filters title = "{{filter.title}}" values = "filter.values" 	apply="applyFilter(filterMeta)" )
-        div.filter-title(ng-bind = "filter.title")          
+   div(ng-repeat = "filter in filters", r-filters, title = "{{filter.title}}" , values = "filter.values" , aggregations = "$parent.aggregationsRequired",apply="applyFilter(filterMeta)" )
+        div.filter-title(ng-bind = "filter.uiValue")          
    
 
 .map-right

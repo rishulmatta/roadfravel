@@ -11,10 +11,10 @@ function CustomMarker (obj) {
 		case 'destination' :
 			icon = '/img/icons/destination.png';
 			break;
-		case '2':
+		case 2:
 			icon = '/img/icons/bike.png';
 			break;
-		case '4':
+		case 4:
 			icon = '/img/icons/car.png';
 			break;
 		case 'need':
@@ -333,7 +333,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
 			}
 		} */
 
-		$scope.applyFilter = function (filterMeta) {
+		$scope.applyFilter = function (filters) {
 
 			function removeFromFilters(type) {
 				//this function checks for types and removes the applied filter.
@@ -345,35 +345,54 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
 				}
 			} 
 
-			if (filterMeta.type == 'vehicle') {
-				if (filterMeta.checked) {
-					appliedFilters.push( {
-						type : filterMeta.type,
-						value : filterMeta.value
-					})
-				}else {
-					for (var ii in appliedFilters) {
-						if (appliedFilters[ii].value == filterMeta.value && appliedFilters[ii].type == filterMeta.type) {
-							appliedFilters.splice(ii,1);
-							break;
+			function filterLogic(filterMeta) {
+				if (filterMeta.type == 'vehicle' || filterMeta.type == 'iseven') {
+					if (filterMeta.checked) {
+						appliedFilters.push( {
+							type : filterMeta.type,
+							value : filterMeta.value
+						})
+					}else {
+						for (var ii in appliedFilters) {
+							if (appliedFilters[ii].value == filterMeta.value && appliedFilters[ii].type == filterMeta.type) {
+								appliedFilters.splice(ii,1);
+								break;
+							}
 						}
 					}
 				}
-			}
 
-			if (filterMeta.type == 'planneddate') {
-				removeFromFilters(filterMeta.type);
-				if (filterMeta.value.from) {
+				if (filterMeta.type == 'planneddate') {
+					removeFromFilters(filterMeta.type);
+					if (filterMeta.value.from) {
+						appliedFilters.push(filterMeta);
+					}
+						
+					
+				}
+
+				if (filterMeta.type == 'source' || filterMeta.type == 'destination') {
+					removeFromFilters(filterMeta.type);
 					appliedFilters.push(filterMeta);
 				}
-					
-				
+
+
+				if (filterMeta.type == 'validitydate') {
+					removeFromFilters(filterMeta.type);
+					appliedFilters.push(filterMeta);
+				}
 			}
 
-			if (filterMeta.type == 'source' || filterMeta.type == 'destination') {
-				removeFromFilters(filterMeta.type);
-				appliedFilters.push(filterMeta);
+
+			if (typeof filters.length != "undefined") {
+				for (var ii in filters) {
+					filterLogic(filters[ii]);
+				}
+			}else {
+				filterLogic(filters);
 			}
+			
+
 			
 		
 
@@ -389,6 +408,9 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
 			//each time when the result is fetched the old set of data has to be removed
 			$scope.clearMarker ();
 			$scope.pools = [];
+			if (data.data.statusCode) {
+				return;
+			}
 			fetcedData = data.data.results;
 			length = fetcedData.length;
 
@@ -438,13 +460,19 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
 
 		function drawFilters (data) {
 			var aggregations ;
+			if (!rf_fetchResults.aggregationsRequired) {
+				return;
+			}else {
+				$scope.filters = [];
+			}
 
 			aggregations = data.data.aggregations;
 
 			for (var filter in aggregations) {
 					$scope.filters.push ({
 						title : filter,
-						values : aggregations[filter].buckets
+						values : aggregations[filter].buckets,
+						uiValue : aggregations[filter].uiValue
 					});
 			}
 
@@ -452,8 +480,19 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
  		}
 
  		function fetchResults() {
+ 			var recurtype = null;
+ 			if ($scope.searchDate.selDate ) {
+ 				var day = $scope.searchDate.selDate.getDay();
+ 				if (day >0 && day < 6) {
+ 					recurtype = "wd";
+ 				}
+ 				else {
+ 					recurtype = "we";
+ 				}
+ 			}
+ 			 
 
-			var promise = rf_fetchResults.fetchPool({appliedFilters:appliedFilters,filtersReqd : $scope.filters.length > 0 ? false:true});
+			var promise = rf_fetchResults.fetchPool({appliedFilters:appliedFilters,filtersReqd : rf_fetchResults.aggregationsRequired,postQueryFilter: recurtype ? [{value:recurtype,type:"recurtype"}]:undefined});
 			promise.then(drawAvailablePools);
 			promise.then(drawFilters);
 
@@ -463,7 +502,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
 
 		
 		setTimeout(function() {
-			$scope.applyFilter({type:'source',value: {lat:$scope.locations.source.latLng.lat , lng:$scope.locations.source.latLng.lng}});
+			$scope.applyFilter([{type:'source',value: {lat:$scope.locations.source.latLng.lat , lng:$scope.locations.source.latLng.lng}}]);
 		},1000);
 
 		$scope.searchListItemClicked = function (index) {
@@ -475,24 +514,28 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
 		}
 
 		$scope.dateChanged = function () {
-			
-			var minDate,maxDate,type;
+			rf_fetchResults.aggregationsRequired = true;
+			var minDate,maxDate,type,selectedDate;
 			type = "planneddate";
 			if ($scope.searchDate.selDate) {
 
+
+
 				minDate = $scope.searchDate.selDate.getTime();
-				maxDate = $scope.searchDate.selDate.setDate(parseInt($scope.searchDate.selDate.getDate()) + 1);
+
+				selectedDate =  new Date(minDate);
+				maxDate = selectedDate.setDate(parseInt($scope.searchDate.selDate.getDate()) + 1);
 			}else {
 				minDate = null;
 				maxDate = null;
 			}
 
-			$scope.applyFilter({
+			$scope.applyFilter([{
 				type:type,
 				value : {from:minDate,
 						to : maxDate
 					}
-			});
+			},{type:'validitydate',value: {presentdate: minDate}}]);
 
 		}
 
@@ -503,6 +546,7 @@ roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool) {
 		
 		$scope.clearMarker(); 
 
+		var todaysDate = new Date();
 
 		$scope.vehicleInfo = {
 			registrationnumber:null,
@@ -515,14 +559,16 @@ roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool) {
 		};
 
 		$scope.poolInfo = {
-			type:null,
+			isOneTime:null,
 			dateAndTime : {
-				selDate :new Date(),
-				selTime : new Date()
-			}
+				selDate :null,
+				selTime : todaysDate
+			},
+			validityDate: null,
+			recurType :null
 		};
 
-		$scope.minDate = new Date();
+		$scope.minDate = todaysDate;
 		//$scope.selDate = new Date();
 		//$scope.selTime = new Date();
 		var vehicleTypeValue;
@@ -546,13 +592,15 @@ roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool) {
 				source:$scope.locations.source,
 				destination:$scope.locations.destination,
 				creationdate: new Date().getTime(),
-				planneddate:generateDateAndTime(),
+				planneddate: $scope.poolInfo.dateAndTime.selDate ? generateDateAndTime():null,
 				vehicle:$scope.vehicleInfo.type.value,
 				polyline:$scope.locations.polyline,
 				description:$scope.vehicleInfo.description,
 				registrationnumber : $scope.vehicleInfo.registrationnumber,
 				iseven : $scope.vehicleInfo.registrationnumber % 2 == 0 ? true : false,
-				cost:$scope.tripInfo.cost || 0
+				cost:$scope.tripInfo.cost || 0,
+				recurtype : $scope.poolInfo.recurType || "all",
+				validitydate : $scope.poolInfo.validityDate ? $scope.poolInfo.validityDate.getTime() : null
 			}
 
 			var prom = rf_persistPool.savePool(inp);
@@ -593,7 +641,7 @@ roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool) {
 	});
 
 
-roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
+roadFravel.controller('GlobalCtrl',function ($scope,g_direction,rf_fetchResults) {
 		
 		$scope.locations = {
 			source :{
@@ -612,6 +660,7 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 			polyline :""
 		};
 
+		
 
 
 		 	$scope.fitInAllMarkers = function (arrMarkerPositions) {
@@ -623,14 +672,18 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 		 					}
 
 			 			}else {
-			 				bounds.extend(sourceMarker.getPosition());
-			 				if (destinationMarker) {
+			 				
+			 				if (destinationMarker && destinationMarker.getPosition()) {
 			 					bounds.extend(destinationMarker.getPosition());
 			 				}
 			 				
 			 			}
-			 			
+			 			bounds.extend(sourceMarker.getPosition());
 			 			map.fitBounds(bounds);
+
+			 			setTimeout(function() { 
+			 				map.setZoom(map.zoom - 2);
+			 			},1000) 
 
 
 			 	}
@@ -662,6 +715,7 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 		$scope.updateLocations = function (type,obj) {
 			type = type.toLowerCase();
 			$scope.locations[type] = obj;
+			rf_fetchResults.aggregationsRequired = true;
 
 			switch (type) {
 				case 'source':
@@ -675,15 +729,10 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction) {
 					
 					$scope.fitInAllMarkers();
 					map.panBy(200,0);
-					map.setZoom(map.zoom - 1);
+					
 					break;
 
-				
-
 			}
-		
-
-
 			
 		}
 

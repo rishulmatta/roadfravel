@@ -40,14 +40,14 @@ wizard.offer-wizard(on-finish='finishedWizard()')
           input.btn.btn-primary.pull-right(type='submit', wz-next='', value='Next')
 
 
-  wz-step(wz-title='Type' )
-    button.btn.btn-primary.btn-lg.btn-block.custom-height(type='Submit'  , wz-next='')  One time
+  wz-step(wz-title='Type' wz-data = "poolInfo" )
+    button.btn.btn-primary.btn-lg.btn-block.custom-height(type='Submit'  , wz-next ng-click = 'poolInfo.isOneTime = true')  One time
     br
-    button.btn.btn-primary.btn-lg.btn-block.custom-height(type='submit', wz-next='') Repeated
+    button.btn.btn-primary.btn-lg.btn-block.custom-height(type='submit', wz-next ng-click = 'poolInfo.isOneTime = false') Recurring
 
 
   wz-step(wz-title='Time' wz-data ="poolInfo")
-   form
+   form(ng-show = "poolInfo.isOneTime")
      .form-group
        label(for='date') Date
        p.input-group
@@ -58,6 +58,25 @@ wizard.offer-wizard(on-finish='finishedWizard()')
      .form-group
        label(for='time') Time
        uib-timepicker#time(ng-model='poolInfo.dateAndTime.selTime',  hour-step='hstep', minute-step='mstep', show-meridian='true')
+
+    form(ng-hide = "poolInfo.isOneTime")
+      .form-group
+        label(for='date') Recur Upto
+        p.input-group
+          input#date.form-control(type='text', uib-datepicker-popup='{{format}}', ng-model='poolInfo.validityDate', is-open='popup1.opened', datepicker-options='dateOptions', ng-required='true', close-text='Close', alt-input-formats='altInputFormats')
+          span.input-group-btn
+            button.btn.btn-default(type='button', ng-click='open1()')
+              i.glyphicon.glyphicon-calendar
+      .form-group
+        label(for='time') Repeat on
+        .radio
+          label
+            input(type='radio', name='recurtype', value='wd', checked ng-model = "poolInfo.recurType")
+            |     Weekdays (Mon - Fri)
+        .radio
+          label
+            input(type='radio', name='recurtype', value='we' ng-model = "poolInfo.recurType")
+            |     Weekends (Sat & Sun)
 
     input.btn.btn-primary.pull-right(type='submit', wz-next='', value='Finish now' ng-click = 'persistPool()')
   

@@ -4,6 +4,35 @@ var https = require("https");
 var request = require('request');
 var elasticSearchFilterHandler = require('./../config/elastic-search-filter-handler');
 
+function addUiValueForAggregations (aggregations) {
+
+    for (var name in aggregations) {
+        if (name == 'vehicle' ) {
+            aggregations[name].uiValue = "Vehicle Type";
+            for (var key in aggregations[name].buckets) {
+                if (aggregations[name].buckets[key].key == 2) {
+                    aggregations[name].buckets[key].uiValue = "Two Wheeler";
+                }else
+                    if (aggregations[name].buckets[key].key == 4) {
+                        aggregations[name].buckets[key].uiValue = "Four Wheeler";
+                    } 
+            }
+        }else
+            if (name == 'iseven') {
+                 aggregations[name].uiValue = "Registration Number";
+                for (var key in aggregations[name].buckets) {
+                    if (aggregations[name].buckets[key].key == 0) {
+                        aggregations[name].buckets[key].uiValue = "Odd";
+                    }else
+                        if (aggregations[name].buckets[key].key == 1) {
+                            aggregations[name].buckets[key].uiValue = "Even";
+                        } 
+                }
+            }
+    }
+
+    return aggregations;
+}
 
 function fetchUserInfo(req, res, response, next) {
     var userIdsArray, results, length, userId;
@@ -45,7 +74,8 @@ function fetchUserInfo(req, res, response, next) {
                 }
 
             }
-            return res.json({results:results,aggregations:response.aggregations});
+             
+            return res.json({results:results,aggregations:addUiValueForAggregations(response.aggregations)});
 
         });
     } else {
@@ -97,7 +127,9 @@ module.exports = function(app, elasticSearchClient) {
                     "description":body.description,
                     "registrationnumber":body.registrationnumber,
                     "iseven":body.iseven,
-                    "cost":body.cost
+                    "cost":body.cost,
+                    "recurtype":body.recurtype,
+                    "validitydate":body.validitydate
                 }
             }, function(error, response) {
 
@@ -116,8 +148,10 @@ module.exports = function(app, elasticSearchClient) {
 
     app.post('/fetch', function(req, res, next) {
 
-        var searchObj,body,queryWithFilter;
+        var searchObj,body,queryWithFilter,postQueryFilter;
         body = req.body;
+        postQueryFilter = body.postQueryFilter;
+
 
         
          elasticSearchFilterHandler.makeFilterObj(body.appliedFilters);
@@ -148,7 +182,9 @@ module.exports = function(app, elasticSearchClient) {
                 searchObj = {
                         index: 'roadfravel',
                         type: 'pool',
-                        body : {}
+                        body : {
+                            query:{}
+                        }
                     };
             }else {
                
@@ -159,6 +195,18 @@ module.exports = function(app, elasticSearchClient) {
                         body: elasticSearchFilterHandler.reqObj
                     };
                 }
+          
+        }
+
+        if (typeof postQueryFilter != "undefined") {
+            for (var ii in postQueryFilter) {
+               if (postQueryFilter[ii].type == 'recurtype')
+                 searchObj.body.filter = {
+                   "terms" : {
+                       "recurtype" : [postQueryFilter[ii].value,"all"]
+                   }
+                 }; 
+            }
           
         }
 
