@@ -25,6 +25,10 @@ function isLoggedIn(req, res, next) {
 module.exports = function(app, passport) {
     /* GET home page. */
     app.get('/', function(req, res, next) {
+  
+        console.log("--------------------------");
+        console.log(req.session);
+         console.log("--------------------------");
         if (req.user) {
             res.render('index', {
                 title: 'Road Fravel',
@@ -38,6 +42,12 @@ module.exports = function(app, passport) {
             });
         }
 
+    });
+
+
+    app.post('/isLoggedIn', function(req, res, next) {
+      
+      res.json({isLoggedIn : req.isAuthenticated()});
     });
 
 

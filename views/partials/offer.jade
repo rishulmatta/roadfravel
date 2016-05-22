@@ -1,5 +1,10 @@
 
 wizard.offer-wizard(on-finish='finishedWizard()')
+  wz-step(wz-title='Offer' wz-data = "poolInfo" )
+    button.btn.btn-primary.btn-lg.btn-block.custom-height(type='Submit'  , wz-next ng-click = 'poolInfo.isClassified = false')  Offer a pool
+    br
+    button.btn.btn-primary.btn-lg.btn-block.custom-height(type='submit', wz-next ng-click = 'poolInfo.isClassified = true') Looking for a pool
+
   wz-step(wz-title='Location' wz-data = "tripInfo")
     form
       .form-group
@@ -11,7 +16,7 @@ wizard.offer-wizard(on-finish='finishedWizard()')
         label(for='destination') Destination
         #destination.input-group
           span#basic-addon1.input-group-addon.destination-img
-          input.form-control(type='text', placeholder='Destination', g-auto-complete='g-auto-complete')
+          input.form-control(type='text', placeholder='Destination', g-auto-complete='g-auto-complete' , page = "offer")
       .form-group
         label(for='cost') Estimated total trip cost
         .input-group
@@ -21,7 +26,7 @@ wizard.offer-wizard(on-finish='finishedWizard()')
       input.btn.btn-primary.pull-right(type='submit', wz-next='', value='Next')
 
 
-  wz-step(wz-title='Vehicle' wz-data = "vehicleInfo")
+  wz-step(wz-title='Vehicle' wz-data = "vehicleInfo" wz-disabled = "{{poolInfo.isClassified}}")
    form.form-horizontal
      .form-group
        label.col-sm-2.control-label(for='inputVehicleType') Type

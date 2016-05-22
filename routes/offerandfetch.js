@@ -8,7 +8,7 @@ function addUiValueForAggregations (aggregations) {
 
     for (var name in aggregations) {
         if (name == 'vehicle' ) {
-            aggregations[name].uiValue = "Vehicle Type";
+            aggregations[name].uiValue = "Result Type";
             for (var key in aggregations[name].buckets) {
                 if (aggregations[name].buckets[key].key == 2) {
                     aggregations[name].buckets[key].uiValue = "Two Wheeler";
@@ -16,6 +16,10 @@ function addUiValueForAggregations (aggregations) {
                     if (aggregations[name].buckets[key].key == 4) {
                         aggregations[name].buckets[key].uiValue = "Four Wheeler";
                     } 
+                    else
+                        if (aggregations[name].buckets[key].key == 0) {
+                            aggregations[name].buckets[key].uiValue = "Looking";
+                        } 
             }
         }else
             if (name == 'iseven') {

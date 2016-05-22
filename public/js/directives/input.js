@@ -32,7 +32,10 @@ roadFravel.directive('gAutoComplete',[function () {
 			   		
 
 			   		scope.updateLocations(attr.placeholder,obj);
-			   		scope.fetchPolyLine();
+			   		if (attr.page != 'search')  {
+
+			   			scope.fetchPolyLine();
+			   		}
 			   		if (scope.applyFilter) {
 			   			scope.applyFilter({type:attr.placeholder.toLowerCase(),value : obj.latLng});
 			   		}
@@ -48,9 +51,7 @@ roadFravel.directive('rFilters',["rf_fetchResults",function (rf_fetchResults) {
 			scope:{
 				title:"@",
 				values:"=",
-				apply:"&",
-				aggregations:"=aggregationsRequired"
-
+				apply:"&"
 			},
 			transclude:true,
 			templateUrl:"partials/d_filter",
@@ -62,7 +63,8 @@ roadFravel.directive('rFilters',["rf_fetchResults",function (rf_fetchResults) {
 			   	scope.apply({filterMeta :{
 			   		type:scope.title,
 			   		value:event.currentTarget.id,
-			   		checked : event.target.checked
+			   		checked : event.target.checked,
+			   		page:scope.page
 			   	}})
 			   }
 			}

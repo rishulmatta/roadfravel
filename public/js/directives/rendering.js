@@ -18,7 +18,7 @@ roadFravel.directive('rfPoolRow',[function () {
 			templateUrl:'partials/poolRow',
 			link : function (scope ,element ,attr) {
 				
-		
+				console.log('things');
 			}
 		}
 	}]);

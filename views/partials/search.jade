@@ -7,7 +7,7 @@
     input.form-control(type='text', placeholder='Source' g-auto-complete ng-model = "locations.source.name" )
   div.filter-container
     div.filter-title Destination
-    input.form-control(type='text', placeholder='Destination' g-auto-complete ng-bind = "locations.source.name")
+    input.form-control(type='text', placeholder='Destination' page = "search", g-auto-complete ng-bind = "locations.source.name")
   div.filter-container
     div.filter-title Date
     p.input-group
@@ -15,9 +15,15 @@
       span.input-group-btn
         button.btn.btn-default(type='button', ng-click='open1()')
           i.glyphicon.glyphicon-calendar
-   div(ng-repeat = "filter in filters", r-filters, title = "{{filter.title}}" , values = "filter.values" , aggregations = "$parent.aggregationsRequired",apply="applyFilter(filterMeta)" )
+   div(ng-repeat = "filter in filters", r-filters, title = "{{filter.title}}" , values = "filter.values" , apply="applyFilter(filterMeta)" )
         div.filter-title(ng-bind = "filter.uiValue")          
    
 
-.map-right
+.map-bottom
+  
   div(rf-pool-list)
+  div.container-fluid
+    div.row
+      
+      div.col-md-2.col-md-offset-5.text-center.search-result
+        Showing 1-5 of 50

@@ -67,7 +67,7 @@ passport.use(new FacebookStrategy({
 					user.facebook.profileUrl = profile.profileUrl;
 					user.facebook.profilePicUrl = profile.photos[0].value;
 
-					user.update(
+					User.update(
 					   {"facebook.id":profile.id},
 					    user,
 					  

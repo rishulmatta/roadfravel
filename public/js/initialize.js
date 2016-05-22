@@ -15,10 +15,7 @@ roadFravel.config(
         templateUrl: 'partials/search',
         controller: "SearchCtrl",
         url : "/search"
-      }).state('login', {
-        templateUrl: 'partials/login',
-        controller: "HomeCtrl"
-       }).state('map.offer', {
+      }).state('map.offer', {
         templateUrl: 'partials/offer',
         controller: "OfferCtrl",
         url:"/offer"
@@ -26,6 +23,10 @@ roadFravel.config(
         templateUrl: 'partials/landing',
         controller: "LandingCtrl",
         url:"/landing"
+      }).state('login', {
+        templateUrl: 'partials/login',
+        controller: "LoginCtrl",
+        url:"/login"
       })
   });
 

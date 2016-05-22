@@ -17,7 +17,7 @@ function CustomMarker (obj) {
 		case 4:
 			icon = '/img/icons/car.png';
 			break;
-		case 'need':
+		case 0: //this means that person need the pool
 			icon = '/img/icons/need.png';
 			break;
 	}
@@ -71,23 +71,74 @@ function drawPolyLine (polyLinePoints) {
 	polyLine.setMap(map);
 }
 
-roadFravel.controller('MapCtrl',function ($scope,$state,$q) { 
+
+Date.prototype.getFormattedDate = function () {
+
+
+	var monthNames = [
+	  "Jan", "Feb", "Mar",
+	  "Apr", "May", "Jun", "Jul",
+	  "Aug", "Sep", "Oct",
+	  "Nov", "Dec"
+	];
+
+	
+	var day = this.getDate();
+	var monthIndex = this.getMonth();
+	var year = this.getFullYear().toString().substring(2);
+
+	return day + '-' + monthNames[monthIndex] + '-' + year;
+}
+
+Date.prototype.getFormattedTime = function () {
+
+	var medidian , hours , minutes;
+
+	hours = this.getHours();
+
+	meridian = hours >= 12 ? "PM" : "AM";
+
+	hours = hours > 12 ? hours - 12 : 12;
+	hours = hours > 9 ? hours : "0" + hours;
+
+	minutes = this.getMinutes() > 9 ?  this.getMinutes() : "0"+this.getMinutes() 
+	console.log(hours);
+	console.log(minutes);
+	
+
+
+	return hours + ':' + minutes+ ' ' + meridian;
+}
+
+
+roadFravel.controller('MapCtrl',function ($scope,$state,$q,$timeout) { 
 	 var lat,lng, bounds;
 	resultsFetched = false;
 
-		navigator.geolocation.getCurrentPosition(GetLocation);
-		function GetLocation(location) {
-				lat = location.coords.latitude;
-				lng = location.coords.longitude;
-				var latLng = {lat: lat, lng: lng};
-				$scope.locations.source.latLng = latLng;
-			function initMap() {
+
+	//google.maps.event.addDomListener(window, 'load', initialize);
+
+	$timeout(initialize,1);
+
+	function initialize () {
+		var latLng;
+		$scope;
+		latLng = navigator.geolocation.getCurrentPosition(GetLocation);
+
+	}
+
+		
+			function initMap(latLng) {
 			
 				map = new google.maps.Map(document.getElementById('map'), {
 					center: latLng,
-					zoom: 13,
 					mapTypeControl:false,
-					streetViewControl:false
+					streetViewControl:false,
+					 zoom: 10,
+					 maxZoom:15,
+					 zoomControlOptions: {
+				        position: google.maps.ControlPosition.RIGHT_CENTER
+				    },
 				});
 
 			/*	map.addListener('idle',function() {
@@ -183,13 +234,20 @@ roadFravel.controller('MapCtrl',function ($scope,$state,$q) {
 					 var clickedMarker = arguments[2];
 					 iw.setContent(clickedMarker.desc);
 				 	 iw.open(map, clickedMarker);
-				 	 new google.maps.event.trigger( clickedMarker, 'click' );
- 					
+				 	 //new google.maps.event.trigger( clickedMarker, 'click' );
+						
 				});
 
 
 			}
-			initMap();
+
+		function GetLocation(location) {
+				lat = location.coords.latitude;
+				lng = location.coords.longitude;
+				var latLng = {lat: lat, lng: lng};
+				$scope.locations.source.latLng = latLng;
+				initMap(latLng);
+				return latLng;
 			
 	 	}
 
@@ -313,7 +371,7 @@ roadFravel.controller('MapCtrl',function ($scope,$state,$q) {
 
 });
 
-roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
+roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$timeout) {
 		var polyLine , polyLinePoints , appliedFilters;
 		$scope.clearMarker();  //this method is in global contrl it clears destination marker
 		$scope.pools = [];		
@@ -402,7 +460,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
 
 		//this function iterates over the fetched results
 		function drawAvailablePools (data) {
-			var fetcedData,length,sourceMarker  ;
+			var fetcedData,length,sourceMarker,time,date  ;
 			var arrMarkerPositions = [];
 			resultsFetched = true; //this is a global variable which decides when the source marker should reposition
 			//each time when the result is fetched the old set of data has to be removed
@@ -422,6 +480,19 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
 			for (var ii = 0; ii < length; ++ii) {
 				fetcedData[ii]._source.source.latLng.lng = fetcedData[ii]._source.source.latLng.lon;
 				delete fetcedData[ii]._source.source.latLng.lon;
+				if (fetcedData[ii]._source.recurtype == 'wd') {
+					time = "Weekdays";
+				}
+				else 
+					if (fetcedData[ii]._source.recurtype == 'we') {
+						time = "Weekends";
+					}
+					else {
+						var fetchedDate = new Date(fetcedData[ii]._source.planneddate);
+						date = fetchedDate.getFormattedDate();
+						time = fetchedDate.getFormattedTime();
+					}
+
 				var obj = {
 					type : fetcedData[ii]._source.vehicle,
 					latLng: {
@@ -439,7 +510,12 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
 						lat : fetcedData[ii]._source.destination.latLng.lat,
 						lng : fetcedData[ii]._source.destination.latLng.lon
 					},
-					polyLine:fetcedData[ii]._source.polyline
+					polyLine:fetcedData[ii]._source.polyline,
+					registrationnumber:fetcedData[ii]._source.registrationnumber,
+					description : fetcedData[ii]._source.description,
+					cost :fetcedData[ii]._source.cost,
+					time : time,
+					date : date
 
 				};
 
@@ -501,7 +577,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
 		
 
 		
-		setTimeout(function() {
+		$timeout(function() {
 			$scope.applyFilter([{type:'source',value: {lat:$scope.locations.source.latLng.lat , lng:$scope.locations.source.latLng.lng}}]);
 		},1000);
 
@@ -542,11 +618,26 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr) {
 	});
 
 
-roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool) {
+roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool,rf_auth,$uibModal,$state) {
 		
+		var todaysDate,authProm;
 		$scope.clearMarker(); 
 
-		var todaysDate = new Date();
+		todaysDate = new Date();
+
+		authProm = rf_auth.isLoggedIn();
+		authProm.then(function (res) {
+			if (!res.isLoggedIn) {
+				$state.go("login");
+				/*var modalInstance = $uibModal.open({
+				     animation: true,
+				     templateUrl: 'partials/loginModal',
+				     //controller: 'ModalInstanceCtrl',
+				    keyboard :false,
+				    backdrop :"static"
+				   });*/
+			}
+		});
 
 		$scope.vehicleInfo = {
 			registrationnumber:null,
@@ -565,7 +656,8 @@ roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool) {
 				selTime : todaysDate
 			},
 			validityDate: null,
-			recurType :null
+			recurType :null,
+			isClassified: false
 		};
 
 		$scope.minDate = todaysDate;
@@ -587,13 +679,14 @@ roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool) {
 		}
 
 		//this function is called to persist pool to elastic search
+		//if the person is looking for the pool then we pass vehicle type as 0
 		$scope.persistPool = function () {
 			var inp = {
 				source:$scope.locations.source,
 				destination:$scope.locations.destination,
 				creationdate: new Date().getTime(),
 				planneddate: $scope.poolInfo.dateAndTime.selDate ? generateDateAndTime():null,
-				vehicle:$scope.vehicleInfo.type.value,
+				vehicle:$scope.poolInfo.isClassified ? 0 : $scope.vehicleInfo.type.value,
 				polyline:$scope.locations.polyline,
 				description:$scope.vehicleInfo.description,
 				registrationnumber : $scope.vehicleInfo.registrationnumber,
@@ -629,12 +722,6 @@ roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool) {
 
 		  $scope.hstep = 1;
 		  $scope.mstep = 15;
-
-
-
-
-
-
 
 
      /* --   code for time picker END --*/
@@ -681,9 +768,10 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction,rf_fetchResults)
 			 			bounds.extend(sourceMarker.getPosition());
 			 			map.fitBounds(bounds);
 
-			 			setTimeout(function() { 
+			 			//this might not be required
+			 			/*setTimeout(function() { 
 			 				map.setZoom(map.zoom - 2);
-			 			},1000) 
+			 			},1000) */
 
 
 			 	}
@@ -783,6 +871,11 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction,rf_fetchResults)
 
 
 roadFravel.controller('LandingCtrl',function ($scope) { 
+
+
+});
+
+roadFravel.controller('LoginCtrl',function ($scope) { 
 
 
 });

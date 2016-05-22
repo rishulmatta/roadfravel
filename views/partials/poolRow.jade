@@ -10,8 +10,7 @@
             img(src = "img/defaults/facebook.png")
       div.contact
         div(ng-bind = 'pool.email')
-        div 9845712358
+        div(ng-bind = "pool.date")
       div.contact
-        div.time 8:30 AM
-        div.date(ng-bind = 'pool.planneddate')      
+        div.time(ng-bind = "pool.time")     
       div {{pool.Address}} {{pool.Country}} {{pool.ZipCode}}
