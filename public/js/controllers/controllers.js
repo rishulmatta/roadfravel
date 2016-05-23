@@ -136,9 +136,7 @@ roadFravel.controller('MapCtrl',function ($scope,$state,$q,$timeout) {
 					streetViewControl:false,
 					 zoom: 10,
 					 maxZoom:15,
-					 zoomControlOptions: {
-				        position: google.maps.ControlPosition.RIGHT_CENTER
-				    },
+					 zoomControl:false
 				});
 
 			/*	map.addListener('idle',function() {
@@ -618,24 +616,35 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 	});
 
 
-roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool,rf_auth,$uibModal,$state) {
+roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool,rf_auth,$uibModal,$state,$timeout,$interval) {
 		
 		var todaysDate,authProm;
 		$scope.clearMarker(); 
-
+		$scope.timer = 5;
 		todaysDate = new Date();
 
 		authProm = rf_auth.isLoggedIn();
 		authProm.then(function (res) {
 			if (!res.isLoggedIn) {
-				$state.go("login");
-				/*var modalInstance = $uibModal.open({
+
+
+				
+				var modalInstance = $uibModal.open({
 				     animation: true,
 				     templateUrl: 'partials/loginModal',
+				     scope:$scope,
 				     //controller: 'ModalInstanceCtrl',
 				    keyboard :false,
 				    backdrop :"static"
-				   });*/
+				   });
+
+				$timeout(function() {
+					$state.go("login");
+				},5000)
+
+				$interval(function () {
+					$scope.timer--;
+				},1000)
 			}
 		});
 
@@ -876,6 +885,11 @@ roadFravel.controller('LandingCtrl',function ($scope) {
 });
 
 roadFravel.controller('LoginCtrl',function ($scope) { 
+
+
+});
+
+roadFravel.controller('FaqCtrl',function ($scope) { 
 
 
 });

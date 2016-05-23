@@ -10,11 +10,14 @@ nav.navbar.navbar-default.navbar-added
       a.navbar-brand(ui-sref='landing') Brand
     // Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
-      ul.nav.navbar-nav.navbar-right
+      ul.nav.navbar-nav.navbar-left
         li
           a.navbar-color.anchor-as-button(ui-sref='map.search') Pool
         li
           a.navbar-color.anchor-as-button(ui-sref='map.offer') Offer
+      ul.nav.navbar-nav.navbar-right
+        li
+          a.navbar-color.anchor-as-button(ui-sref='faq') FAQ
         if user
           li.dropdown
             a.dropdown-toggle.profile-pic-anchor(href= '#{user.facebook.profileUrl}', target = "_blank" ,data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
@@ -32,7 +35,6 @@ nav.navbar.navbar-default.navbar-added
                 a(href='#') Logout
         else
           li.dropdown
-            a.dropdown-toggle(href='/auth/facebook', role='button', )
-              | Login              
+            a.navbar-color.anchor-as-button(ui-sref='login') Login             
       // /.navbar-collapse
   // /.container-fluid

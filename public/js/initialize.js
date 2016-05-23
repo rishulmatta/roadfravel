@@ -27,6 +27,10 @@ roadFravel.config(
         templateUrl: 'partials/login',
         controller: "LoginCtrl",
         url:"/login"
+      }).state('faq', {
+        templateUrl: 'partials/faq',
+        controller: "FaqCtrl",
+        url:"/faq"
       })
   });
 

@@ -1,1 +1,10 @@
-h1 you are not logged in
+div.navbar-wrapper.nobck-page
+  div(ng-include="'partials/header'")
+#login
+  .login-container
+    .login-header Offer or Request a Pool
+    p You can offer a pool service or submit a request for a pool. Meet like minded travellers on the road and reduce your carbon foot print.
+    a(href='/auth/facebook')
+      button.btn.btn-primary.btn-block.facebookbtn(type='button' ) 
+        .facebookicon
+        div.facebookicontext Sign in with Facebook
