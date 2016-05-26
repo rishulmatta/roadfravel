@@ -23,7 +23,7 @@
   
   div(rf-pool-list)
   div.container-fluid
-    div.row
+    div.text-center
       
-      div.col-md-2.col-md-offset-5.text-center.search-result
-        Showing 1-5 of 50
+      div.search-result
+        uib-pagination(total-items='totalItems', items-per-page = "3",ng-model='currentPage', ng-change='pageChanged()')

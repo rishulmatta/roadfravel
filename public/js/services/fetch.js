@@ -20,6 +20,7 @@ roadFravel.factory('rf_fetchResults', function($http,$q) {
 		 $http({
                method:'POST',
                url:'/fetch',
+               params:{page:inp.page},
                data:JSON.stringify(inp)
            })
      		.success(function(response){

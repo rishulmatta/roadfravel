@@ -79,7 +79,7 @@ function fetchUserInfo(req, res, response, next) {
 
             }
              
-            return res.json({results:results,aggregations:addUiValueForAggregations(response.aggregations)});
+            return res.json({results:results,aggregations:addUiValueForAggregations(response.aggregations),resultMeta : {total:response.hits.total}});
 
         });
     } else {
@@ -152,10 +152,10 @@ module.exports = function(app, elasticSearchClient) {
 
     app.post('/fetch', function(req, res, next) {
 
-        var searchObj,body,queryWithFilter,postQueryFilter;
+        var searchObj,body,queryWithFilter,postQueryFilter,pageNum;
         body = req.body;
         postQueryFilter = body.postQueryFilter;
-
+        pageNum = req.query.page;
 
         
          elasticSearchFilterHandler.makeFilterObj(body.appliedFilters);
@@ -164,6 +164,8 @@ module.exports = function(app, elasticSearchClient) {
             searchObj = {
                     index: 'roadfravel',
                     type: 'pool',
+                    from: (pageNum - 1) * 3,
+                    size: 3,    
                     body: {
                         "aggregations": {
                                 "vehicle": {
@@ -186,6 +188,8 @@ module.exports = function(app, elasticSearchClient) {
                 searchObj = {
                         index: 'roadfravel',
                         type: 'pool',
+                        from: (pageNum - 1) * 3,
+                        size: 3,   
                         body : {
                             query:{}
                         }
@@ -196,6 +200,8 @@ module.exports = function(app, elasticSearchClient) {
                 searchObj = {
                         index: 'roadfravel',
                         type: 'pool',
+                        from: (pageNum - 1) * 3,
+                        size: 3,   
                         body: elasticSearchFilterHandler.reqObj
                     };
                 }

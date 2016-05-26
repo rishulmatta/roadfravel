@@ -373,6 +373,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 		var polyLine , polyLinePoints , appliedFilters;
 		$scope.clearMarker();  //this method is in global contrl it clears destination marker
 		$scope.pools = [];		
+		$scope.currentPage = 1;
 		$scope.searchDate = {
 			selDate :null
 		};
@@ -389,8 +390,12 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 			}
 		} */
 
-		$scope.applyFilter = function (filters) {
+		$scope.pageChanged = function () {
+			fetchResults();
+		}
 
+		$scope.applyFilter = function (filters) {
+			$scope.currentPage = 1;
 			function removeFromFilters(type) {
 				//this function checks for types and removes the applied filter.
 				for (var ii in appliedFilters) {
@@ -463,10 +468,12 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 			resultsFetched = true; //this is a global variable which decides when the source marker should reposition
 			//each time when the result is fetched the old set of data has to be removed
 			$scope.clearMarker ();
+
 			$scope.pools = [];
 			if (data.data.statusCode) {
 				return;
 			}
+			
 			fetcedData = data.data.results;
 			length = fetcedData.length;
 
@@ -475,6 +482,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 				return;
 			}
 			
+			$scope.totalItems = data.data.resultMeta.total;
 			for (var ii = 0; ii < length; ++ii) {
 				fetcedData[ii]._source.source.latLng.lng = fetcedData[ii]._source.source.latLng.lon;
 				delete fetcedData[ii]._source.source.latLng.lon;
@@ -566,7 +574,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
  			}
  			 
 
-			var promise = rf_fetchResults.fetchPool({appliedFilters:appliedFilters,filtersReqd : rf_fetchResults.aggregationsRequired,postQueryFilter: recurtype ? [{value:recurtype,type:"recurtype"}]:undefined});
+			var promise = rf_fetchResults.fetchPool({appliedFilters:appliedFilters,filtersReqd : rf_fetchResults.aggregationsRequired,postQueryFilter: recurtype ? [{value:recurtype,type:"recurtype"}]:undefined,page:$scope.currentPage});
 			promise.then(drawAvailablePools);
 			promise.then(drawFilters);
 
