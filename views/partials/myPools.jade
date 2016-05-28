@@ -1,0 +1,17 @@
+div.navbar-wrapper
+  div(ng-include="'partials/header'")
+#myPools
+  .my-pools-container
+    .panel.panel-default
+      // Default panel contents
+      .panel-heading 
+        | Pools offered by me
+      .panel-body
+        | This section the list of pools that you have offered. You cannot edit these , but you can delete the ones which are scheduled for the future. The ones which happened in the past have been disabled.
+      // List group
+      .list-group
+        div(rf-my-pool-row ng-repeat = "pool in myPools" ng-init = "pool.index = $index")
+    div.text-center
+      uib-pagination(total-items='totalItems', items-per-page = "{{itemsPerPage}}",ng-model='currentPage', ng-change='pageChanged()')
+
+

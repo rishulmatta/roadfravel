@@ -26,4 +26,4 @@
     div.text-center
       
       div.search-result
-        uib-pagination(total-items='totalItems', items-per-page = "3",ng-model='currentPage', ng-change='pageChanged()')
+        uib-pagination(total-items='totalItems', items-per-page = "{{itemsPerPage}}",ng-model='currentPage', ng-change='pageChanged()')

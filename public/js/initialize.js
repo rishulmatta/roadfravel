@@ -31,6 +31,10 @@ roadFravel.config(
         templateUrl: 'partials/faq',
         controller: "FaqCtrl",
         url:"/faq"
+      }).state('mypools', {
+        templateUrl: 'partials/myPools',
+        controller: "MyPoolsCtrl",
+        url:"/mypools"
       })
   });
 

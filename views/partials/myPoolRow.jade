@@ -1,0 +1,38 @@
+
+a.list-group-item(href='javascript:;' , ng-class = '{disabled:pool.disabled,active:pool.active}')
+  div.text-right
+    span.glyphicon.glyphicon-remove.my-pool-del-icon(ng-click = "deleteMyPool()")
+  div.my-places-meta
+    div
+      b Source : 
+      span(ng-bind = "pool.source")
+    div
+      b Destination : 
+      span(ng-bind = "pool.destination")
+  
+  div.my-places-time(ng-switch = "pool.template")
+    div(ng-switch-when = "once")
+      | You offered a 
+      b {{pool.vehicle}} 
+      | wheeler on 
+      b {{pool.date}} 
+      | at 
+      b {{pool.time}}
+    div(ng-switch-when = "recur")
+      | You offered a recurring pool of 
+      b {{pool.vehicle}} 
+      | wheeler on 
+      b {{pool.frequency}} 
+      | valid upto 
+      b {{pool.validityDate}}
+    div(ng-switch-when = "lookingonce")
+      | You are looking for a pool on 
+      b {{pool.date}} 
+      | at 
+      b {{pool.time}}
+    div(ng-switch-when = "lookingrecur")
+      | You are looking for a pool on 
+      b {{pool.frequency}} 
+      | valid upto 
+      b {{pool.validityDate}}
+  div.my-places-description(ng-bind="pool.description")

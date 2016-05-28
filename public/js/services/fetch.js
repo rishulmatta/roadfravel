@@ -20,7 +20,7 @@ roadFravel.factory('rf_fetchResults', function($http,$q) {
 		 $http({
                method:'POST',
                url:'/fetch',
-               params:{page:inp.page},
+               params:{page:inp.page,pageSize:inp.pageSize},
                data:JSON.stringify(inp)
            })
      		.success(function(response){
@@ -41,4 +41,41 @@ roadFravel.factory('rf_fetchResults', function($http,$q) {
      		},
                aggregationsRequired : aggregationsRequired
      	};
+});
+
+
+
+
+roadFravel.factory('rf_fetchMyPools', function($http,$q) {
+
+    
+
+     function fetch (inp) {
+    
+
+
+          var q = $q.defer();
+           $http({
+               method:'GET',
+               url:'/fetch/mypools',
+               params:{page:inp.page,pageSize:inp.pageSize},
+               data:JSON.stringify(inp)
+           })
+               .success(function(response){
+                         console.log(response);
+                         q.resolve(response);
+                    }).error(function (response) {
+                         q.reject(response);
+                         console.log('my pools fetch failed');
+                         console.log(response);
+                    });
+          return q.promise;
+     }
+   
+
+          return {
+               fetchPool : function (inp) {
+                    return fetch(inp);
+               }
+          };
 });

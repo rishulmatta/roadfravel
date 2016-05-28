@@ -1,5 +1,6 @@
   html, body {
       height: 100% ;margin: 0;padding: 0; 
+      font-family: "Lato,Vollkorn";
     
   }
   #map {
@@ -361,7 +362,7 @@ label {
   border:none;
   border-radius:0px;
   padding:5px;
-  background-color:black !important;
+  background-color:rgba(0,0,0,0.6) !important;
   box-sizing:border-box;
 }
 
@@ -385,6 +386,7 @@ label {
 .navbar-added  .navbar-nav > li > a {
   color : white;
   margin-top:10px;
+  text-transform: uppercase;
 }
 
 .navbar-added  .navbar-nav > li > a:hover, .navbar-added  .navbar-nav > li > a:focus {
@@ -638,3 +640,49 @@ label {
   line-height:30px;
 }
 
+
+
+/*------------------------My Pools --------------------------------------*/
+
+
+.my-pools-container {
+  width:950px;
+  margin:auto;
+  margin-top:100px;
+}
+
+
+.my-pools-item-container {
+  
+}
+
+.my-places-meta div{
+  width:45%;
+  
+  display:inline-block;
+}
+
+.my-places-time {
+  margin: 10px 0px;
+}
+
+
+.my-pool-del-icon {
+  visibility:hidden;
+
+}
+
+.active .my-pool-del-icon {
+  visibility:visible;
+  
+}
+
+
+.my-pool-deletion-modal {
+  margin:40px;
+}
+
+.space-top {
+
+  margin-top:50px;
+}

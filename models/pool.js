@@ -1,10 +1,10 @@
 var mongoose = require('mongoose');
 
 var poolSchema = mongoose.Schema({
-	 "source": {
+   "source": {
         "type": "[Number]"
       },
-	  "destination": {
+    "destination": {
         "type": "[Number]"
       },
       "userid": {
@@ -22,11 +22,13 @@ var poolSchema = mongoose.Schema({
       "gender": {
         "type": "String"
       },
-	  "vehicle" :{
-		  "type":"integer"
-	  }
+    "vehicle" :{
+      "type":"integer"
+    }
 });
 
 
 
 module.exports = mongoose.model('Pool', poolSchema);
+
+

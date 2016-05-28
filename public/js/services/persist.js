@@ -25,3 +25,30 @@ roadFravel.factory('rf_persistPool', function($http,$q) {
      		}
      	};
 });
+
+roadFravel.factory('rf_deleteMyPool', function($http,$q) {
+
+     function persistPool (inp) {
+          var q = $q.defer();
+           $http({
+               method:'DELETE',
+               url:'/fetch/mypools/'+inp.id,
+           })
+               .success(function(response){
+                         console.log(response);
+                         q.resolve(response);
+                    }).error(function (response) {
+                         q.reject(response);
+                         console.log('deletion failed');
+                         console.log(response);
+                    });
+          return q.promise;
+     }
+   
+
+          return {
+               deleteMyPool : function (inp) {
+                    return persistPool(inp);
+               }
+          };
+});

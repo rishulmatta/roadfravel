@@ -374,6 +374,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 		$scope.clearMarker();  //this method is in global contrl it clears destination marker
 		$scope.pools = [];		
 		$scope.currentPage = 1;
+		$scope.itemsPerPage = 4;
 		$scope.searchDate = {
 			selDate :null
 		};
@@ -392,6 +393,8 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 
 		$scope.pageChanged = function () {
 			fetchResults();
+
+
 		}
 
 		$scope.applyFilter = function (filters) {
@@ -574,7 +577,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
  			}
  			 
 
-			var promise = rf_fetchResults.fetchPool({appliedFilters:appliedFilters,filtersReqd : rf_fetchResults.aggregationsRequired,postQueryFilter: recurtype ? [{value:recurtype,type:"recurtype"}]:undefined,page:$scope.currentPage});
+			var promise = rf_fetchResults.fetchPool({appliedFilters:appliedFilters,filtersReqd : rf_fetchResults.aggregationsRequired,postQueryFilter: recurtype ? [{value:recurtype,type:"recurtype"}]:undefined,page:$scope.currentPage,pageSize:$scope.itemsPerPage});
 			promise.then(drawAvailablePools);
 			promise.then(drawFilters);
 
@@ -901,3 +904,64 @@ roadFravel.controller('FaqCtrl',function ($scope) {
 
 
 });
+
+
+roadFravel.controller('MyPoolsCtrl',function ($scope,rf_fetchMyPools) { 
+
+	function fetchMyPools (inp) {
+		var prom = rf_fetchMyPools.fetchPool({page:inp.page,pageSize:inp.pageSize});
+		prom.then(drawMyPools);
+	}
+
+	function drawMyPools (data) {
+		var obj;
+		$scope.myPools = [];
+
+		if (!data.hits) {
+			return false;
+		}
+		$scope.totalItems = data.hits.total;
+		for (var ii in data.hits.hits) {
+			obj =  {
+				source:data.hits.hits[ii]._source.source.name,
+				destination:data.hits.hits[ii]._source.destination.name,
+				vehicle:data.hits.hits[ii]._source.vehicle,
+				description:data.hits.hits[ii]._source.description,
+				id:data.hits.hits[ii]._id
+			}
+
+			if (data.hits.hits[ii]._source.recurtype == 'all') {
+				obj.date = new Date(data.hits.hits[ii]._source.planneddate).getFormattedDate();
+				obj.time = new Date(data.hits.hits[ii]._source.planneddate).getFormattedTime();
+				obj.disabled = new Date().getTime() > data.hits.hits[ii]._source.planneddate ? true:false;
+				obj.template = obj.vehicle == 0 ? "lookingonce": "once";
+			}else 
+			if (data.hits.hits[ii]._source.recurtype == 'wd' || data.hits.hits[ii]._source.recurtype == 'we' ) {
+				obj.frequency = data.hits.hits[ii]._source.recurtype == 'wd' ? "weekdays": "weekends";
+				obj.validityDate = new Date(data.hits.hits[ii]._source.validitydate).getFormattedDate();
+				obj.disabled = new Date().getTime() > data.hits.hits[ii]._source.validitydate ? true:false;
+				obj.template = obj.vehicle == 0 ? "lookingrecur": "recur";	
+			}
+			obj.active = false;
+			$scope.myPools.push(obj);
+		}
+		console.log(data);
+
+		
+	}
+
+
+
+	$scope.totalItems;
+	$scope.itemsPerPage = 5;
+	$scope.currentPage = 1; 
+	$scope.pageChanged = function () {
+		fetchMyPools({page:$scope.currentPage,pageSize:$scope.itemsPerPage});
+	}
+
+	fetchMyPools({page:$scope.currentPage,pageSize:$scope.itemsPerPage});
+
+
+});
+
+

@@ -1,4 +1,5 @@
 var User = require('./../models/user');
+var DeletedPool = require('./../models/deleted');
 var googleConf = require('./../config/google');
 var https = require("https");
 var request = require('request');
@@ -152,11 +153,11 @@ module.exports = function(app, elasticSearchClient) {
 
     app.post('/fetch', function(req, res, next) {
 
-        var searchObj,body,queryWithFilter,postQueryFilter,pageNum;
+        var searchObj,body,queryWithFilter,postQueryFilter,pageNum,pageSize;
         body = req.body;
         postQueryFilter = body.postQueryFilter;
         pageNum = req.query.page;
-
+        pageSize = req.query.pageSize;
         
          elasticSearchFilterHandler.makeFilterObj(body.appliedFilters);
 
@@ -164,8 +165,8 @@ module.exports = function(app, elasticSearchClient) {
             searchObj = {
                     index: 'roadfravel',
                     type: 'pool',
-                    from: (pageNum - 1) * 3,
-                    size: 3,    
+                    from: (pageNum - 1) * pageSize,
+                    size: pageSize,    
                     body: {
                         "aggregations": {
                                 "vehicle": {
@@ -188,8 +189,8 @@ module.exports = function(app, elasticSearchClient) {
                 searchObj = {
                         index: 'roadfravel',
                         type: 'pool',
-                        from: (pageNum - 1) * 3,
-                        size: 3,   
+                        from: (pageNum - 1) * pageSize,
+                        size: pageSize,   
                         body : {
                             query:{}
                         }
@@ -200,8 +201,8 @@ module.exports = function(app, elasticSearchClient) {
                 searchObj = {
                         index: 'roadfravel',
                         type: 'pool',
-                        from: (pageNum - 1) * 3,
-                        size: 3,   
+                        from: (pageNum - 1) * pageSize,
+                        size: pageSize,   
                         body: elasticSearchFilterHandler.reqObj
                     };
                 }
@@ -276,5 +277,104 @@ module.exports = function(app, elasticSearchClient) {
 
     });
 
+    app.get('/fetch/mypools', function(req, res, next) {
+        var body, pageNum,pageSize,searchObj;
+        body = req.body;
+        pageNum = req.query.page;
+        pageSize = req.query.pageSize;
 
+       
+        
+        if (req.user._id) {
+           
+            searchObj = {
+                index: 'roadfravel',
+                type: 'pool',
+                from: (pageNum - 1) * pageSize,
+                size: pageSize,   
+                    query:{
+                        "query_string": {
+                            "query": req.user._id,
+                            "fields": ["user_id"]
+                        }
+                    }
+                };
+            elasticSearchClient.search(searchObj, function(error, response) {
+                if(!error) {
+                       res.json(response);
+                 }else {
+                    res.json(error);
+                 }
+               
+                //return res.json(response);
+            });
+
+        }else {
+            return res.json({status:false});
+        }
+
+       
+
+
+    });
+
+
+     app.delete('/fetch/mypools/:id', function(req, res, next) {
+        var body, id,searchObj;
+        id = req.params.id;
+       
+        
+        if (req.user._id) {
+          
+
+            elasticSearchClient.get({
+                index: 'roadfravel',
+                type: 'pool',
+                id: id
+                }, function (error, response) {
+                    if(!error) {
+                        console.log(response);
+                        var metaObj = response._source;
+                             var deletedPool = new DeletedPool({ 
+                            "source":  metaObj.source.name,
+                            "destination":  metaObj.destination.name,
+                            "userid":  metaObj.user_id,
+                            "creationdate":  metaObj.creationdate,
+                            "planneddate":  metaObj.planneddate,
+                            "vehicle" :metaObj.vehicle,
+                            "recurtype" :  metaObj.recurtype,
+                            "deletiondate" : new Date().getTime()
+                        });
+
+
+                        deletedPool.save(function (err,response) {
+                            if (err) 
+                                return res.json(error);
+                            
+                            elasticSearchClient.delete({
+                                index: 'roadfravel',
+                                type: 'pool',
+                                id: id
+                                }, function(error,response) {
+                                    if (error) 
+                                       return res.json(error);
+                                    else
+                                       return res.json({status:true});
+                                }
+                            );
+
+                        })
+
+                     }else {
+                       return res.json(error);
+                     }
+                    
+                
+             });
+        }
+
+        else {
+             res.json({status:false});
+        }
+    });
 };
