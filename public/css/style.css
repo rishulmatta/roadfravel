@@ -236,6 +236,18 @@ label {
 
 /*------------------------------ search pool page------------------------------------------- */
 
+.info-window-container {
+     
+}
+
+.info-window-container .well {
+  margin:10px 0px;
+}
+
+
+
+
+
 .search-result .pagination {
 
 }
@@ -277,19 +289,9 @@ label {
   padding-top:2px;
 }
 
-.search-item-row {
 
-  padding: 0.3125em;
-  background-color: rgba(255,255,255,0.7);
-  margin: 2px 0px;
-  border: 0px solid;
-  border-radius:2.5em;
-  display: flex;
-}
 
-.contact {
-  font-size : 0.75em;
-}
+
 
 .helper {
     display: inline-block;
@@ -297,27 +299,52 @@ label {
     vertical-align: middle;
 }
 
-.time {
-  width:25%;
-  float:left;
-}
 
-
-.date {
-  float:right;
-  width:30%;
-  text-overflow:ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-}
 
 .search-list-container {
-  display:table;
+  cursor:pointer;
+  overflow: hidden;   
+  margin: 2px 0px;
+  border: 0px solid;
+  border-radius:2.5em;
+ 
 }
 
-.search-item-row .col-lg-3 , .search-item-row .col-lg-9 {
-  margin:auto;
+ .search-list-contents {
+   display: flex;
+     align-items:center;
+   padding: 10px;
+  background-color: rgba(255,255,255,0.7);
+ }
+
+
+.search-list-container   .search-list-contents  div  {
+  overflow:hidden;
+  text-overflow: ellipsis;
+  max-width:110px;
+  white-space:nowrap;
+  font-size : 0.9em;
 }
+
+.search-item-left , .search-item-right {
+  display:inline-block;
+   align-self: center;
+}
+
+.search-item-left {
+  flex-grow:1;  padding-right:10px;
+}
+
+.search-item-right {
+  flex-grow:2;
+}
+
+
+
+.search-list-contents ul {
+  margin-bottom:0px;
+}
+
 
 
 .filter-title {
@@ -657,7 +684,7 @@ label {
 }
 
 .my-places-meta div{
-  width:45%;
+  width:49%;
   
   display:inline-block;
 }
@@ -685,4 +712,8 @@ label {
 .space-top {
 
   margin-top:50px;
+}
+
+.my-places-meta div:last-child {
+  text-align:right;
 }

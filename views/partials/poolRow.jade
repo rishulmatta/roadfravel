@@ -1,16 +1,21 @@
-.search-list-container
-  .row.search-item-row(ng-click = 'searchListItemClicked($index)')
-    .col-lg-3
-      img.img-circle(ng-src="{{pool.profilePicUrl ? pool.profilePicUrl : 'img/defaults/profile.png'}}", style='max-width:50px', alt='customer image')
-    .col-lg-9
+.search-list-container(ng-click = 'searchListItemClicked($index)')
+  .search-list-contents
+    .search-item-left
+      a(target = "_blank" ng-href = "{{pool.profileUrl}}")
+        img.media-object.img-circle(ng-src="{{pool.profilePicUrl ? pool.profilePicUrl : 'img/defaults/profile.png'}}", style='max-width:50px', alt='customer image')
+    .search-item-right
       div(style='font-weight:bold;')
-        a {{pool.name}}
-        span.pull-right(title='Facebook Profile')
-          a( target = "_blank" ng-href = "{{pool.profileUrl}}" style='cursor:pointer')
-            img(src = "img/defaults/facebook.png")
-      div.contact
+        a(  target = "_blank" ng-href = "{{pool.profileUrl}}") {{pool.name}}
+        //span.pull-right(title='Facebook Profile')
+          //a( target = "_blank" ng-href = "{{pool.profileUrl}}" style='cursor:pointer')
+            //img(src = "img/defaults/facebook.png")
+      
+      div
         div(ng-bind = 'pool.email')
-        div(ng-bind = "pool.date")
-      div.contact
-        div.time(ng-bind = "pool.time")     
-      div {{pool.Address}} {{pool.Country}} {{pool.ZipCode}}
+      div
+        ul.list-inline
+          li(ng-bind = "pool.date")
+          li(ng-bind = "pool.time")
+      div(ng-show="pool.cost")
+        Cost : {{pool.cost}}
+

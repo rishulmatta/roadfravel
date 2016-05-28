@@ -1,6 +1,79 @@
 polyLine = null;
 destinationMarker = null;
 sourceMarker = null;
+
+function getInfoWindowTemplate(obj) {
+	var mainTemplate, templateObj,timetemplate;
+
+	mainTemplate = '<div class="info-window-container">     <div class="my-places-meta">     <div><b>Source :  </b> <span>{{source}}</span> </div>     <div><b>Destination : </b> <span>{{destination}}</span> </div>   </div>   <div class="well">{{timetemplate}}</div> <div class="my-places-meta">   <div class="info-window-reg-nos">Registration nos : {{registrationnumber}}</div>  <div class="info-window-charge">Charge : {{cost}}</div> </div> <div class="info-window-description"><em>{{description}}</em></div> </div>';
+	templateObj = getTemplateType(obj);
+
+	switch (templateObj.template) {
+		case "lookingonce": 
+			timetemplate = "<div><a href = '{{profileUrl}}' target = '_blank'>{{name}}</a> is looking for a pool on <b>{{date}} </b>at <b>{{time}}</b></div>";
+			break;
+
+		case "once":
+			timetemplate = "<div><a href = '{{profileUrl}}' target = '_blank' >{{name}}</a> has offered a <b>{{vehicle}} </b>wheeler on <b>{{date}} </b>at <b>{{time}}</b></div>";
+			break;
+
+		case "lookingrecur": 
+			timetemplate = "<div><a href = '{{profileUrl}}' target = '_blank' >{{name}}</a> is looking for a pool on <b>{{frequency}} </b>valid upto <b>{{validityDate}}</b></div>";
+			break;
+
+		case "recur" :
+			timetemplate = "<div><a href = '{{profileUrl}}' target = '_blank'>{{name}}</a> has offered a recurring pool of <b>{{vehicle}} </b>wheeler on <b>{{frequency}} </b>valid upto <b>{{validityDate}}</b></div>";
+			break;
+	}
+
+	mainTemplate = mainTemplate.replace(/{{timetemplate}}/,timetemplate);
+
+	//extra properties added
+	templateObj.vehicle = obj.vehicle;
+	templateObj.description = obj.description ? obj.description: "Click on the name link to open the profile and ask more about this offering.";
+	templateObj.registrationnumber = obj.registrationnumber ? obj.registrationnumber: "Contact the user for details";
+	templateObj.name = obj.name;
+	templateObj.profilePicUrl = obj.profilePicUrl;
+	templateObj.profileUrl = obj.profileUrl;
+	templateObj.cost = obj.cost ? obj.cost : "It is free yay!";
+
+	for (var prop in templateObj) {
+		mainTemplate = mainTemplate.replace("{{"+prop+"}}",templateObj[prop])
+	}
+
+	return mainTemplate;
+
+
+}
+
+
+function getTemplateType(info) {
+				var obj =  {
+					source:info.source.name,
+					destination:info.destination.name,
+					vehicle:info.vehicle,
+					description:info.description,
+					id:info.id
+				}
+
+				if (info.recurtype == 'all') {
+					obj.date = new Date(info.planneddate).getFormattedDate();
+					obj.time = new Date(info.planneddate).getFormattedTime();
+					obj.disabled = new Date().getTime() > info.planneddate ? true:false;
+					obj.template = obj.vehicle == 0 ? "lookingonce": "once";
+				}else 
+				if (info.recurtype == 'wd' || info.recurtype == 'we' ) {
+					obj.frequency = info.recurtype == 'wd' ? "weekdays": "weekends";
+					obj.validityDate = new Date(info.validitydate).getFormattedDate();
+					obj.disabled = new Date().getTime() > info.validitydate ? true:false;
+					obj.template = obj.vehicle == 0 ? "lookingrecur": "recur";	
+				}
+				obj.active = false;
+
+				return obj;
+			}
+
+
 function CustomMarker (obj) {
 
 	var icon , marker;
@@ -23,7 +96,7 @@ function CustomMarker (obj) {
 	}
 
 	google.maps.Marker.call(this,{
-					position: obj.latLng,
+					position: obj.source.latLng,
 					map: map,
 					title: 'Hello World!',
 					icon: icon,
@@ -34,6 +107,19 @@ function CustomMarker (obj) {
 	this.source = obj.source;
 	this.destination = obj.destination;
 	this.polyline = obj.polyLine;
+	this.vehicle = obj.type;
+	this.description = obj.description;
+	this.planneddate = obj.planneddate;
+	this.recurtype = obj.recurtype;
+	this.validitydate = obj.validitydate;
+	this.registrationnumber = obj.registrationnumber;
+	this.name = obj.name;
+	this.profilePicUrl = obj.profilePicUrl;
+	this.profileUrl = obj.profileUrl;
+	this.cost = obj.cost;
+	
+
+
 
 }
 
@@ -46,7 +132,7 @@ function drawDestinationMarker (destination) {
 	}
 
 	destinationMarker = new google.maps.Marker({
-					position: destination,
+					position: destination.latLng,
 					map: map,
 					title: 'Hello World!',
 					icon: '/img/icons/stop.png'
@@ -206,14 +292,16 @@ roadFravel.controller('MapCtrl',function ($scope,$state,$q,$timeout) {
 						previousMarker.setAnimation(null);
 						destinationMarker.setAnimation(null);
 						}
-						
-					  iw.setContent(marker.desc);
+					
+
+					  iw.setContent(getInfoWindowTemplate(marker));
 					  iw.open(map, marker);
 					  drawDestinationMarker(marker.destination);
 		  			drawPolyLine(marker.polyline);
 					var bounds = new google.maps.LatLngBounds();
-					bounds.extend(marker.getPosition());
-					bounds.extend(destinationMarker.getPosition());
+					//bounds.extend(marker.getPosition());
+					//bounds.extend(destinationMarker.getPosition());
+					map.setCenter(marker.source.latLng)
 
 					marker.setAnimation(google.maps.Animation.BOUNCE);
 				 	destinationMarker.setAnimation(google.maps.Animation.BOUNCE);
@@ -222,7 +310,7 @@ roadFravel.controller('MapCtrl',function ($scope,$state,$q,$timeout) {
 						marker.setAnimation(null);
 						destinationMarker.setAnimation(null);
 					},2000)
-					map.fitBounds(bounds);
+					//map.fitBounds(bounds);
 					previousMarker = marker;
 				});
 
@@ -230,9 +318,7 @@ roadFravel.controller('MapCtrl',function ($scope,$state,$q,$timeout) {
 				oms.addListener('spiderfy', function(markers) {
 					 iw.close();
 					 var clickedMarker = arguments[2];
-					 iw.setContent(clickedMarker.desc);
-				 	 iw.open(map, clickedMarker);
-				 	 //new google.maps.event.trigger( clickedMarker, 'click' );
+					 //new google.maps.event.trigger( clickedMarker, 'click' );
 						
 				});
 
@@ -305,7 +391,7 @@ roadFravel.controller('MapCtrl',function ($scope,$state,$q,$timeout) {
 	   
 	    formatYear: 'yy',
 	    maxDate: new Date(2020, 5, 22),
-	    minDate: new Date(),
+	    //minDate: new Date(),
 	    startingDay: 1
 	  };
 
@@ -392,8 +478,8 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 		} */
 
 		$scope.pageChanged = function () {
+			//invoked during pagination
 			fetchResults();
-
 
 		}
 
@@ -410,6 +496,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 			} 
 
 			function filterLogic(filterMeta) {
+				//this function deals with applying all the filters 
 				if (filterMeta.type == 'vehicle' || filterMeta.type == 'iseven') {
 					if (filterMeta.checked) {
 						appliedFilters.push( {
@@ -438,12 +525,14 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 				if (filterMeta.type == 'source' || filterMeta.type == 'destination') {
 					removeFromFilters(filterMeta.type);
 					appliedFilters.push(filterMeta);
+					
+					
 				}
 
 
 				if (filterMeta.type == 'validitydate') {
 					removeFromFilters(filterMeta.type);
-					appliedFilters.push(filterMeta);
+					filterMeta.value.presentdate  ? appliedFilters.push(filterMeta) : null;
 				}
 			}
 
@@ -488,7 +577,9 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 			$scope.totalItems = data.data.resultMeta.total;
 			for (var ii = 0; ii < length; ++ii) {
 				fetcedData[ii]._source.source.latLng.lng = fetcedData[ii]._source.source.latLng.lon;
+				fetcedData[ii]._source.destination.latLng.lng = fetcedData[ii]._source.destination.latLng.lon;
 				delete fetcedData[ii]._source.source.latLng.lon;
+				delete fetcedData[ii]._source.destination.latLng.lon;
 				if (fetcedData[ii]._source.recurtype == 'wd') {
 					time = "Weekdays";
 				}
@@ -515,16 +606,15 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 					profileUrl : fetcedData[ii]._source.profileUrl,
 					index:ii,
 					source :fetcedData[ii]._source.source,
-					destination: {
-						lat : fetcedData[ii]._source.destination.latLng.lat,
-						lng : fetcedData[ii]._source.destination.latLng.lon
-					},
+					destination: fetcedData[ii]._source.destination,
 					polyLine:fetcedData[ii]._source.polyline,
 					registrationnumber:fetcedData[ii]._source.registrationnumber,
 					description : fetcedData[ii]._source.description,
 					cost :fetcedData[ii]._source.cost,
 					time : time,
-					date : date
+					date : date,
+					recurtype:fetcedData[ii]._source.recurtype,
+					validitydate:fetcedData[ii]._source.validitydate
 
 				};
 
@@ -615,6 +705,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 				maxDate = null;
 			}
 
+			//here two fileters are being sent because one is for the one time pools i.e. plannedate and the other is for recurring pools that depend on validity date i.e. to recur uptil what date
 			$scope.applyFilter([{
 				type:type,
 				value : {from:minDate,
@@ -713,7 +804,7 @@ roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool,rf_auth,$uibMo
 				iseven : $scope.vehicleInfo.registrationnumber % 2 == 0 ? true : false,
 				cost:$scope.tripInfo.cost || 0,
 				recurtype : $scope.poolInfo.recurType || "all",
-				validitydate : $scope.poolInfo.validityDate ? $scope.poolInfo.validityDate.getTime() : null
+				validitydate : $scope.poolInfo.validityDate ? $scope.poolInfo.validityDate.getTime() : generateDateAndTime()
 			}
 
 			var prom = rf_persistPool.savePool(inp);
@@ -922,27 +1013,9 @@ roadFravel.controller('MyPoolsCtrl',function ($scope,rf_fetchMyPools) {
 		}
 		$scope.totalItems = data.hits.total;
 		for (var ii in data.hits.hits) {
-			obj =  {
-				source:data.hits.hits[ii]._source.source.name,
-				destination:data.hits.hits[ii]._source.destination.name,
-				vehicle:data.hits.hits[ii]._source.vehicle,
-				description:data.hits.hits[ii]._source.description,
-				id:data.hits.hits[ii]._id
-			}
 
-			if (data.hits.hits[ii]._source.recurtype == 'all') {
-				obj.date = new Date(data.hits.hits[ii]._source.planneddate).getFormattedDate();
-				obj.time = new Date(data.hits.hits[ii]._source.planneddate).getFormattedTime();
-				obj.disabled = new Date().getTime() > data.hits.hits[ii]._source.planneddate ? true:false;
-				obj.template = obj.vehicle == 0 ? "lookingonce": "once";
-			}else 
-			if (data.hits.hits[ii]._source.recurtype == 'wd' || data.hits.hits[ii]._source.recurtype == 'we' ) {
-				obj.frequency = data.hits.hits[ii]._source.recurtype == 'wd' ? "weekdays": "weekends";
-				obj.validityDate = new Date(data.hits.hits[ii]._source.validitydate).getFormattedDate();
-				obj.disabled = new Date().getTime() > data.hits.hits[ii]._source.validitydate ? true:false;
-				obj.template = obj.vehicle == 0 ? "lookingrecur": "recur";	
-			}
-			obj.active = false;
+			data.hits.hits[ii]._source.id = data.hits.hits[ii]._id;
+			obj = getTemplateType(data.hits.hits[ii]._source);
 			$scope.myPools.push(obj);
 		}
 		console.log(data);

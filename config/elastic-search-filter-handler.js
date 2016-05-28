@@ -144,6 +144,16 @@ elasticSearch.prototype.getFilterType = function(prop, appliedFilter) {
                     }
                 };
             }
+           /* else
+                if (prop == 'gtepresentdate') {
+                return {
+                    'range': {
+                        'planneddate': {
+                           "gte": appliedFilter.presentdate
+                        }
+                    }
+                };
+            }*/
      
 };
 
@@ -164,7 +174,7 @@ elasticSearch.prototype.applyOperators = function(appliedFilters) {
         if (prop == 'validitydate') {
             
             obj = this.getFilterType(prop, appliedFilters[prop][0]);
-           filter.bool.should.push(obj);
+           filter.bool.must.push(obj);
             continue;
         }
         if (length > 1) {
