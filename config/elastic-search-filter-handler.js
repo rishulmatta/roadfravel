@@ -116,7 +116,7 @@ elasticSearch.prototype.getFilterType = function(prop, appliedFilter) {
                         "lat": appliedFilter.lat,
                         "lon": appliedFilter.lng
                     },
-                    'to':appliedFilter.dist || '10km',
+                    'to':appliedFilter.proximity || '10km',
                     "optimize_bbox": "memory"
                     }
                 }

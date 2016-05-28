@@ -1,4 +1,4 @@
-var roadFravel = angular.module('roadFravel', ['ui.router','ui.bootstrap','mgo-angular-wizard','toastr']);
+var roadFravel = angular.module('roadFravel', ['ui.router','ui.bootstrap','mgo-angular-wizard','toastr','rzModule']);
 
 
 roadFravel.config(

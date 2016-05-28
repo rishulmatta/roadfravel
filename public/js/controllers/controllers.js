@@ -5,7 +5,7 @@ sourceMarker = null;
 function getInfoWindowTemplate(obj) {
 	var mainTemplate, templateObj,timetemplate;
 
-	mainTemplate = '<div class="info-window-container">     <div class="my-places-meta">     <div><b>Source :  </b> <span>{{source}}</span> </div>     <div><b>Destination : </b> <span>{{destination}}</span> </div>   </div>   <div class="well">{{timetemplate}}</div> <div class="my-places-meta">   <div class="info-window-reg-nos">Registration nos : {{registrationnumber}}</div>  <div class="info-window-charge">Charge : {{cost}}</div> </div> <div class="info-window-description"><em>{{description}}</em></div> </div>';
+	mainTemplate = '<div class="info-window-container">     <div class="my-places-meta">     <div><b>Source :  </b> <span>{{source}}</span> </div>     <div><b>Destination : </b> <span>{{destination}}</span> </div>   </div>   <div class="well">{{timetemplate}}</div> <div class="my-places-meta">   <div class="info-window-reg-nos"><b>Registration nos :</b> {{registrationnumber}}</div>  <div class="info-window-charge"><b>Charge : </b>{{cost}}</div> </div> <div class="info-window-description"><em>{{description}}</em></div> </div>';
 	templateObj = getTemplateType(obj);
 
 	switch (templateObj.template) {
@@ -456,7 +456,7 @@ roadFravel.controller('MapCtrl',function ($scope,$state,$q,$timeout) {
 });
 
 roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$timeout) {
-		var polyLine , polyLinePoints , appliedFilters;
+		var polyLine , polyLinePoints , appliedFilters , proximity;
 		$scope.clearMarker();  //this method is in global contrl it clears destination marker
 		$scope.pools = [];		
 		$scope.currentPage = 1;
@@ -464,10 +464,31 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 		$scope.searchDate = {
 			selDate :null
 		};
+
+		proximity = 10;
+
+		$scope.slider = {
+		  value: 10,
+		  options: {
+		    floor: 5,
+		    ceil: 100,
+		    step:5,
+		    onEnd: sliderEnd
+		  }
+		};
 		
 		$scope.filters = [];
 		markers = [];
 		
+
+		function sliderEnd(sliderId, modelValue, highValue) {
+			if (!$scope.locations.source) {
+				return;
+			}
+			proximity = modelValue;
+			$scope.applyFilter({type:'source',value: {lat:$scope.locations.source.latLng.lat , lng:$scope.locations.source.latLng.lng,proximity:proximity+"km"}});
+
+		}
 		
 		appliedFilters = []; //tis array will contain the filters that the user has applied
 
@@ -671,13 +692,17 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 			promise.then(drawAvailablePools);
 			promise.then(drawFilters);
 
+
+
 		}
 
 		
 
 		
 		$timeout(function() {
-			$scope.applyFilter([{type:'source',value: {lat:$scope.locations.source.latLng.lat , lng:$scope.locations.source.latLng.lng}}]);
+			//this is the default set of filter which is sent on the page load there are others in the service definitioon ie inside this call
+			$scope.applyFilter([{type:'source',value: {lat:$scope.locations.source.latLng.lat , lng:$scope.locations.source.latLng.lng,proximity:proximity+"km"}}]);
+
 		},1000);
 
 		$scope.searchListItemClicked = function (index) {
