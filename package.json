@@ -17,10 +17,10 @@
 	"passport-facebook":"~2.1.1",
 	"express-session":"~1.13.0",
 	"mongoose":"~4.4.19",
-	"connect-mongo":"~1.2.0"
-  },
-  "devDependencies": {
+	"connect-mongo":"~1.2.0",	
     "elasticsearch": "^11.0.1",
     "request": "^2.72.0"
+  },
+  "devDependencies": {
   }
 }
