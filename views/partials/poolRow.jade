@@ -1,4 +1,4 @@
-.search-list-container(ng-click = 'searchListItemClicked($index)')
+.search-list-container(ng-click = 'searchListItemClicked($index)' , ng-class = "{'search-item-active':selectedSearchItem == $index}")
   .search-list-contents
     .search-item-left
       a(target = "_blank" ng-href = "{{pool.profileUrl}}")
@@ -11,11 +11,11 @@
             //img(src = "img/defaults/facebook.png")
       
       div
-        div(ng-bind = 'pool.email')
-      div
+        a( href = 'mailto: {{pool.email}}',ng-bind = 'pool.email' target="_blank")
+      div.search-item-meta
         ul.list-inline
           li(ng-bind = "pool.date")
           li(ng-bind = "pool.time")
-      div(ng-show="pool.cost")
-        Cost : {{pool.cost}}
+      div(ng-show="pool.cost").search-item-meta
+        | Cost : {{pool.cost}}
 

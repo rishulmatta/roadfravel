@@ -12,12 +12,13 @@ nav.navbar.navbar-default.navbar-added
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
       ul.nav.navbar-nav.navbar-left
         li
-          a.navbar-color.anchor-as-button(ui-sref='map.search') Pool
+          a.navbar-color.anchor-as-button(ui-sref='faq' , ng-class = "{'active-nav-bar': activeNav =='faq'}") FAQ
         li
-          a.navbar-color.anchor-as-button(ui-sref='map.offer') Offer
+          a.navbar-color.anchor-as-button(ui-sref='map.search' , ng-class = "{'active-nav-bar': activeNav =='pool'}") Pool
+        
       ul.nav.navbar-nav.navbar-right
         li
-          a.navbar-color.anchor-as-button(ui-sref='faq') FAQ
+          a.navbar-color.anchor-as-button(ui-sref='map.offer',  ng-class = "{'active-nav-bar': activeNav =='offer'}") Offer
         if user
           li.dropdown
             a.dropdown-toggle.profile-pic-anchor(href= '#{user.facebook.profileUrl}', target = "_blank" ,data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')

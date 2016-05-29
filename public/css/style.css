@@ -247,7 +247,6 @@ label {
 
 
 
-
 .search-result .pagination {
 
 }
@@ -318,6 +317,25 @@ label {
  }
 
 
+.search-item-active .search-list-contents {
+  background-color:rgba(0,0,0,0.8) !important;
+  color:#FF6600;
+}
+
+.search-item-active .search-list-contents a:hover , .search-item-active .search-list-contents a:focus {
+  color:  #4787BE;
+} 
+
+.search-item-active .search-list-contents a , .search-item-active .search-list-contents a {
+  color:  #ABC8E1;
+} 
+
+
+.search-item-meta {
+  color:#FF6600;
+}
+
+
 .search-list-container   .search-list-contents  div  {
   overflow:hidden;
   text-overflow: ellipsis;
@@ -349,11 +367,12 @@ label {
 
 .filter-title {
   text-transform:capitalize;
-  margin-bottom:10px;
+ 
 }
 
 .filter-container {
   padding : 5px;
+   margin-bottom:10px;
 }
 
 .values-list {
@@ -382,6 +401,37 @@ label {
 }
 /*-------------------------------------Landing ------------------------------*/
 
+
+.mask {
+  position:absolute;
+  height:100%;
+   width:100%;
+  background-color:rgba(0,0,0,0.3);
+  transition: transform 1000ms;
+  -ms-transform: translate(-100%,-100%); /* IE 9 */
+    -webkit-transform: translate(-100%,-100%); /* Chrome, Safari, Opera */
+    transform: translate(-100%,-100%);
+    padding-bottom:30px;
+    box-sizing: border-box;
+}
+
+
+.mouse-entered-on-mask.mask {
+  -ms-transform: translate(0px,0px); /* IE 9 */
+    -webkit-transform: translate(0px,0px); /* Chrome, Safari, Opera */
+    transform: translate(0px,0px);
+}
+
+  .mask-container {
+   height:100%;
+   display:flex;
+     align-items:flex-end;
+     justify-content:center;
+  }
+.mask-meta {
+ cursor: pointer;
+ text-align:center;
+}
 
 .navbar-added {
   z-index : 1030;
@@ -464,7 +514,7 @@ label {
   border-bottom:1px solid #e1e1e1;
   text-align:center;
   background-color:#f6f7f0;
-  border-radius:20px ;
+  border-radius:10px ;
 }
 
 .feature-header {
@@ -525,12 +575,15 @@ label {
 }
 
 .feature-content {
-
+  width:70%;
+  margin:10px auto;
+  color:#3D72A4;
 }
 
 .landing-row1 {
   
-  padding-bottom:10px;
+  padding:30px 0px;
+  background-color:#B2B39F;
 }
 
 .feature-row2{
@@ -538,10 +591,11 @@ label {
 }
 
 .section-feature {
-  color:#ea8576;
+  color:#d2776a;
   text-align: center;
   font-size:3em;
   padding:10px;
+  background-color:#dbdbdb;
 }
 
 .contact-container {
@@ -591,6 +645,15 @@ label {
     line-height: 37px !important;
     margin-left:15px;
    
+  }
+
+  .active-nav-bar {
+    border: 1px solid  #FF6600;
+ 
+  }
+
+  .navbar-added .navbar-nav > li > a.active-nav-bar {
+       color:  #FF6600;
   }
 
 

@@ -98,7 +98,7 @@ function CustomMarker (obj) {
 	google.maps.Marker.call(this,{
 					position: obj.source.latLng,
 					map: map,
-					title: 'Hello World!',
+					title: 'From ' + obj.source.name + " to " + obj.destination.name,
 					icon: icon,
 					animation: google.maps.Animation.DROP
 				});
@@ -465,6 +465,8 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 			selDate :null
 		};
 
+		$scope.setActiveNav("pool");
+
 		proximity = 10;
 
 		$scope.slider = {
@@ -692,6 +694,8 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 			promise.then(drawAvailablePools);
 			promise.then(drawFilters);
 
+			$scope.selectedSearchItem = undefined;
+
 
 
 		}
@@ -707,6 +711,8 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 
 		$scope.searchListItemClicked = function (index) {
 			var promise;
+
+			$scope.selectedSearchItem = index;
 			
 			google.maps.event.trigger(markers[index], 'click');
 			//map.setCenter(markers[index].latLng);
@@ -743,12 +749,14 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 	});
 
 
-roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool,rf_auth,$uibModal,$state,$timeout,$interval) {
+roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool,rf_auth,$uibModal,$state,$timeout,$interval,$state) {
 		
 		var todaysDate,authProm;
 		$scope.clearMarker(); 
 		$scope.timer = 5;
 		todaysDate = new Date();
+
+		$scope.setActiveNav("offer");
 
 		authProm = rf_auth.isLoggedIn();
 		authProm.then(function (res) {
@@ -835,6 +843,7 @@ roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool,rf_auth,$uibMo
 			var prom = rf_persistPool.savePool(inp);
 			prom.then(function () {
 				console.log('persisted');
+				$state.go("map.search");
 			});
 
 		}
@@ -882,6 +891,10 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction,rf_fetchResults)
 			intermediate : [] ,
 			polyline :""
 		};
+
+		$scope.setActiveNav = function (val) {
+			$scope.activeNav = val;
+		}
 
 		
 
@@ -986,7 +999,7 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction,rf_fetchResults)
 		}
 
 		//shift this event to appear only on landing page
-		$(window).on('mousewheel',function(event) {
+		/*$(window).on('mousewheel',function(event) {
 			var navElement = $("nav.navbar.navbar-default");
 			//navElement = navElement.length > 0 ?  navElement.addClass("navbar-fixed-top"):navElement.removeClass("navbar-fixed-top");			
 			//window.scrollY > 5  ? navElement.addClass("navbar-fixed-top") : undefined;
@@ -1001,24 +1014,24 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction,rf_fetchResults)
 				}
 				
 			}
-		});
+		});*/
 		
 	});
 
 
 roadFravel.controller('LandingCtrl',function ($scope) { 
-
+	$scope.setActiveNav("landing");
 
 });
 
 roadFravel.controller('LoginCtrl',function ($scope) { 
-
+	$scope.setActiveNav("login");
 
 });
 
 roadFravel.controller('FaqCtrl',function ($scope) { 
 
-
+	$scope.setActiveNav("faq");
 });
 
 

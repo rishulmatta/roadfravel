@@ -24,6 +24,44 @@ roadFravel.directive('rfPoolRow',[function () {
 	}]);
 
 
+roadFravel.directive('rfMask',["$timeout","$location",function ($timeout,$location) {
+		return {
+			restrict : 'A',
+			scope:{
+				'btntext' : '@',
+				'redirecturl' : '@'
+			},
+			transclude:true,
+			templateUrl:'partials/d_mask',
+			link : function (scope ,element ,attr) {
+
+				element.css("position","relative");
+				element.css("overflow","hidden");
+				
+				element.on('mouseenter', function(event) {
+					scope.mouseInside = true;
+					$timeout(function(){
+						if (scope.mouseInside) {
+							scope.$apply();
+						}
+					},300)
+					
+				});
+
+				element.on('mouseleave', function(event) {
+					scope.mouseInside = false;
+					scope.$apply();
+				});
+
+				scope.buttonClick = function () {
+					$location.path(scope.redirecturl);
+				}
+
+				
+			}
+		}
+	}]);
+
 roadFravel.directive('rfMyPoolRow',["$uibModal","rf_deleteMyPool",function ($uibModal,rf_deleteMyPool) {
 		return {
 			restrict : 'A',

@@ -6,30 +6,38 @@
 .container-fluid.landing-row1
   .row
     .col-md-5.col-md-offset-1
-      .feature-container
+      .feature-container(rf-mask,  btntext = "Experience It" , redirecturl = "/map/search")
         .feature-header.header-1
           | Seamless
         .feature-image.image-1
         .feature-content
+          | The user interface is extremely intuitive and the integration with google maps gives an amazing experience. No crazy forums! Road fravel is here to stay.
     .col-md-5
-      .feature-container
+      .feature-container(rf-mask ,  btntext = "Cheg Out" ,  redirecturl = "/map/search")
         .feature-header.header-2
           | Even - Odd
         .feature-image.image-2
         .feature-content
+          | This is specially designed for people living in New Delhi. Filter results based on the registration number of vehicles being even or odd.
   .row.feature-row2
     .col-md-5.col-md-offset-1
-      .feature-container
+      .feature-container(rf-mask ,  btntext = "Cheg Out" ,  redirecturl = "/map/offer")
         .feature-header.header-2
-          | Even - Odd
+          | Offer or Ask
         .feature-image.image-2
         .feature-content
+          | Travelling expenses getting over the limit ?
+          div
+            | or You don't own a vehicle?
+          div 
+            | No problems! Just post your routes and let others find you.
     .col-md-5
-      .feature-container
+      .feature-container(rf-mask ,  btntext = "It's Easy" , redirecturl = "/map/offer")
         .feature-header.header-3
           | Advanced
         .feature-image.image-3
         .feature-content
+          | This site gives you options of recurring pools, posting your pool requirements with the most advanced search features. Use it dude!
 .container-fluid.landing-row2
   .row
     .col-md-3
