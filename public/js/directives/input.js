@@ -8,13 +8,18 @@ roadFravel.directive('gPlaces',["g_placesautocomplete",function (autocomplete) {
 		}
 	}]);
 
-roadFravel.directive('gAutoComplete',[function () {
+roadFravel.directive('gAutoComplete',["$state",function ($state) {
 		return {
 			restrict : 'A',
 			scope:true,
 			link : function (scope ,element ,attr) {
 				
 			var autocomplete = new google.maps.places.Autocomplete(element[0]);
+				element.on('keyup',function () {
+					console.log("user typed something");
+					scope.resetMarkers(attr.placeholder);
+				});
+
 			   autocomplete.addListener('place_changed', function() { 
 			   		var place , name ,id , latLng , vicinity;
 			   		
@@ -32,11 +37,11 @@ roadFravel.directive('gAutoComplete',[function () {
 			   		
 
 			   		scope.updateLocations(attr.placeholder,obj);
-			   		if (attr.page != 'search')  {
+			   		if ($state.$current.name != 'map.search')  {
 
 			   			scope.fetchPolyLine();
 			   		}
-			   		if (scope.applyFilter) {
+			   		if (scope.applyFilter) { //this checks if the user is in search route have to change this
 			   			scope.applyFilter({type:attr.placeholder.toLowerCase(),value : obj.latLng});
 			   		}
 			   });

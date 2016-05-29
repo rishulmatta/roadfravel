@@ -173,10 +173,10 @@ box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
 }
 
 .destination-img {
-  background-image:url("/img/icons/destination.png");
+  background-image:url("/img/icons/stop.png");
   background-repeat:no-repeat;
    background-position: center;
-   background-size:14px;
+   background-size:24px;
 }
 
 .offer-page.map-top .form-control {
@@ -232,6 +232,7 @@ box-shadow: 3px 6px 14px 7px rgba(140,129,130,1);
 
 label {
   cursor:pointer;
+  margin-bottom:2px;
 }
 
 /*------------------------------ search pool page------------------------------------------- */
@@ -809,11 +810,14 @@ footer .container-fluid.landing-row2 a:focus, footer .container-fluid.landing-ro
 
 .my-pools-container {
   position:absolute;
-  top:70px;
+  top:100px;
   left:10%;
   right:10%;
 }
 
+.my-pools-container .bg-info {
+  background-color:#d9edf7 ;
+}
 
 .my-pools-item-container {
   
@@ -821,8 +825,8 @@ footer .container-fluid.landing-row2 a:focus, footer .container-fluid.landing-ro
 
 .my-places-meta div{
   width:49%;
-  
-  display:inline-block;
+  height:100%;
+  display:inline-table;
 }
 
 .my-places-time {

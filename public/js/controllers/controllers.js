@@ -134,7 +134,7 @@ function drawDestinationMarker (destination) {
 	destinationMarker = new google.maps.Marker({
 					position: destination.latLng,
 					map: map,
-					title: 'Hello World!',
+					title: destination.name,
 					icon: '/img/icons/stop.png'
 				});
 }
@@ -457,7 +457,7 @@ roadFravel.controller('MapCtrl',function ($scope,$state,$q,$timeout) {
 
 roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$timeout) {
 		var polyLine , polyLinePoints , appliedFilters , proximity;
-		$scope.clearMarker();  //this method is in global contrl it clears destination marker
+		$scope.clearMarker(true);  //this method is in global contrl it clears destination marker
 		$scope.pools = [];		
 		$scope.currentPage = 1;
 		$scope.itemsPerPage = 4;
@@ -547,7 +547,9 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 
 				if (filterMeta.type == 'source' || filterMeta.type == 'destination') {
 					removeFromFilters(filterMeta.type);
-					appliedFilters.push(filterMeta);
+					if (filterMeta.value.lat) {
+						appliedFilters.push(filterMeta);
+					}
 					
 					
 				}
@@ -582,7 +584,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 			var arrMarkerPositions = [];
 			resultsFetched = true; //this is a global variable which decides when the source marker should reposition
 			//each time when the result is fetched the old set of data has to be removed
-			$scope.clearMarker ();
+			$scope.clearMarker (false);
 
 			$scope.pools = [];
 			if (data.data.statusCode) {
@@ -752,7 +754,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool,rf_auth,$uibModal,$state,$timeout,$interval,$state) {
 		
 		var todaysDate,authProm;
-		$scope.clearMarker(); 
+		$scope.clearMarker(true); 
 		$scope.timer = 5;
 		todaysDate = new Date();
 
@@ -949,6 +951,32 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction,rf_fetchResults)
 			}
 		}
 
+		$scope.resetMarkers = function (type) {
+			type = type.toLowerCase();
+			switch (type) {
+				case 'source':
+
+					$scope.locations.source = {
+																		name:"",
+																		latLng:{},
+																		id:"",
+																		vicinity:""
+																	};
+					break;
+				case 'destination':
+
+				$scope.locations.destination = {
+																	name:"",
+																	latLng:{},
+																	id:"",
+																	vicinity:""
+																};
+					
+					break;
+
+			}
+		}
+
 		$scope.updateLocations = function (type,obj) {
 			type = type.toLowerCase();
 			$scope.locations[type] = obj;
@@ -956,16 +984,15 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction,rf_fetchResults)
 
 			switch (type) {
 				case 'source':
-					sourceMarker.setPosition(obj.latLng);
+					sourceMarker ? sourceMarker.setPosition(obj.latLng) : null;
 					map.setCenter(obj.latLng);
 					$scope.fitInAllMarkers();
 					break;
 				case 'destination':
 
-					destinationMarker ? destinationMarker.setPosition(obj.latLng) : drawDestinationMarker(obj.latLng);
+					destinationMarker ? destinationMarker.setPosition(obj.latLng) : drawDestinationMarker(obj);
 					
 					$scope.fitInAllMarkers();
-					map.panBy(200,0);
 					
 					break;
 
@@ -973,17 +1000,25 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction,rf_fetchResults)
 			
 		}
 
-		$scope.clearMarker = function () {
+		$scope.clearMarker = function (clearDestinationMarker) {
 			var lenth;
-			destinationMarker ? destinationMarker.setPosition(null) : null;
 
 			if (polyLine) {
 				polyLine.setMap(null);
 			}
 
-			if (destinationMarker) {
+			if (destinationMarker && clearDestinationMarker) {
 				destinationMarker.setMap(null);
+				destinationMarker = null;
+				$scope.locations.destination = {
+																	name:"",
+																	latLng:{},
+																	id:"",
+																	vicinity:""
+																};
 			}
+
+			
 
 		
 			if (typeof markers == 'undefined') {
@@ -1066,6 +1101,8 @@ roadFravel.controller('FaqCtrl',function ($scope) {
 
 
 roadFravel.controller('MyPoolsCtrl',function ($scope,rf_fetchMyPools) { 
+
+		$scope.setActiveNav("mypools");
 
 	function fetchMyPools (inp) {
 		var prom = rf_fetchMyPools.fetchPool({page:inp.page,pageSize:inp.pageSize});

@@ -12,7 +12,12 @@
     "express": "~4.13.1",
     "jade": "~1.11.0",
     "morgan": "^1.6.1",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+	"passport":"~0.3.2",
+	"passport-facebook":"~2.1.1",
+	"express-session":"~1.13.0",
+	"mongoose":"~4.4.19",
+	"connect-mongo":"~1.2.0"
   },
   "devDependencies": {
     "elasticsearch": "^11.0.1",
