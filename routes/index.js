@@ -58,53 +58,17 @@ module.exports = function(app, passport) {
     });
 
 
-    app.get('/login', function(req, res, next) {
-        if (req.session && req.session.user) {
-            User_c.findOne({
-                email: req.session.user.email
-            }, function(err, user) {
-                if (!user) {
-                    req.session.reset();
-                    res.render('login');
-                } else {
-                    res.locals.user = user;
-                    res.redirect('/dashboard');
-                }
-            })
-        } else {
-            res.render('login');
-        }
-    });
+    
 
 
 
     app.get('/logout', function(req, res, next) {
-        req.session.destroy();
-        res.redirect('/');
+        
+        res.redirect('/unlink/facebook');
     });
 
 
-    app.post('/login', function(req, res, next) {
-        User_c.findOne({
-            email: req.body.email
-        }, function(err, user) {
-            if (!user) {
-                res.render('login.jade', {
-                    error: 'Invalid emial of password'
-                });
-            } else {
-                if (req.body.password == user.password) {
-                    req.session.user = user;
-                    res.render('dashboard');
-                } else {
-
-                    res.render('login', {
-                        error: 'Invalid  password'
-                    });
-                }
-            }
-        })
-    });
+    
 
     app.get('/partials/:partialPath', function(req, res) {
 
@@ -128,4 +92,16 @@ module.exports = function(app, passport) {
             successRedirect: '/#/map/offer',
             failureRedirect: '/#/landing'
         }));
+
+     app.get('/unlink/facebook', function(req,res) {
+        var user = req.user;
+        user.facebook.token = null;
+        user.save(function(err) {
+            if (err) 
+                throw err;
+            req.session.destroy();
+
+            res.redirect("/#/landing");
+        });
+     });
 }

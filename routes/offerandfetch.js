@@ -69,13 +69,15 @@ function fetchUserInfo(req, res, response, next) {
 
             for (var ii = 0; ii < length; ++ii) {
                 userId = results[ii]._source.user_id;
-                if (userId) {
+                if (userId && map[userId]) {
                     obj = map[userId];
                     results[ii]._source.name = obj.name;
                     results[ii]._source.email = obj.email;
                     results[ii]._source.gender = obj.gender;
                     results[ii]._source.profileUrl = obj.profileUrl;
                     results[ii]._source.profilePicUrl = obj.profilePicUrl;
+                }else {
+                    return res.json({results:[],aggregations:[],resultMeta : {total:null}});
                 }
 
             }
