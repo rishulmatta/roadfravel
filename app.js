@@ -21,7 +21,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/roadfravel');
+//mongoose.connect('mongodb://localhost/roadfravel');
+
+mongoose.connect(' mongodb://roadfravel:roadfravel123!@ds019033.mlab.com:19033/heroku_hc77r703');
+
 var MongoStore = require('connect-mongo')(session);
 var elasticsearch = require('elasticsearch');
 var elasticSearchClient = new elasticsearch.Client({
