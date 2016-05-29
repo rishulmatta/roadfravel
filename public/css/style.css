@@ -401,12 +401,15 @@ label {
 }
 /*-------------------------------------Landing ------------------------------*/
 
+.mask-btn-text {
+  color: #d2776a;
+}
 
 .mask {
   position:absolute;
   height:100%;
    width:100%;
-  background-color:rgba(0,0,0,0.3);
+  background-color:rgba(0,0,0,0.8);
   transition: transform 1000ms;
   -ms-transform: translate(-100%,-100%); /* IE 9 */
     -webkit-transform: translate(-100%,-100%); /* Chrome, Safari, Opera */
@@ -583,11 +586,18 @@ label {
 .landing-row1 {
   
   padding:30px 0px;
-  background-color:#B2B39F;
+  background-color:rgba(100,72,0,0.3);  
 }
 
+
+/* -------------------- Footer ----------------------------  */
 .feature-row2{
   margin-top:20px;
+}
+
+.footer-social-icons {
+  height:80px;
+  width:80px;
 }
 
 .section-feature {
@@ -600,11 +610,31 @@ label {
 
 .contact-container {
   height:150px;
-  text-align:center;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+ 
+}
+
+.contact-container div {
+  margin:10px;
+}
+
+.flex-vertical {
+   flex-direction:column;
+}
+
+footer .container-fluid.landing-row2 a {
+  color:#cccccc;
+}
+
+footer .container-fluid.landing-row2 a:focus, footer .container-fluid.landing-row2 a:hover {
+  color:white;
+  text-decoration: none;
 }
 
 .landing-row2 {
-  background-color:rgba(57, 56, 61, 1);
+  background-color:#696770;
   color:white;
 }
 /* -------------------- Offer Pool ----------------------------  */
@@ -672,7 +702,49 @@ label {
   width:40%;
 }
 
+/*---------------------------- FAQ ----------------------------*/
+#faq {
+  background: url("/img/bck/faq.jpg") no-repeat;
+   background-size:auto;
+  height:85%;
+  width:100%;
+  margin:auto;
+  background-size: cover;
+  background-position: 0% 0%; 
+   background-image: 
+    linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0)
+    ),
+    url("/img/bck/faq.jpg");
+    position:relative;
+}
 
+
+
+.row {
+  margin-right: 0px;
+  margin-left:0px;
+}
+
+.faq-questions-container {
+  max-width:950px;
+  margin:auto;
+  padding-bottom:20px;
+}
+
+.faq-container {
+  background-color:rgba(0,0,0,0.5);
+  align-self: center;
+  height:50%;
+  padding:3em;
+  color:white;
+  border-radius:4px;
+  text-align:center;
+  width:40%;
+  position:absolute;
+  bottom:0px;
+}
 
 /*---------------------------- Login ----------------------------*/
 

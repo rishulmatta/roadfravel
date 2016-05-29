@@ -1028,10 +1028,40 @@ roadFravel.controller('LoginCtrl',function ($scope) {
 	$scope.setActiveNav("login");
 
 });
+roadFravel.controller('AboutUsCtrl',function ($scope) { 
+	$scope.setActiveNav("aboutus");
+
+});
 
 roadFravel.controller('FaqCtrl',function ($scope) { 
 
 	$scope.setActiveNav("faq");
+
+	$scope.questions = [
+	{
+		header : "Q1. Does Road Fravel also assure the safety?",
+		answer: "No. It is just a platform to connect the people who are looking for pooling. However the security has to be assured by the users . They must verify from the social media profile of a person if the user is genuine and also can ask for identity card before pooling with another person."
+	},
+	{
+		header : "Q2. Are the pools charged?",
+		answer: " This completely depends upon the person who is offering the pool. You must ensure the pricing of the pool (if any) before taking up the pool with the offerer . Road Fravel takes no cut in the pooling amount it is completely free :)"
+	},
+	{
+		header : "Q3. What is this even and odd?",
+		answer: "In New Delhi a system was started in which depending on the even and odd dates of a month vehicles were allowed on the roads , e.g. on 2nd of any month only the vehicles having even registration number were allowed. So while offering the pool the user can enter the registration number of the vehicle this will allow others to search on the filter of even and odd."
+	},
+	{
+		header : "Q4. I can't find pools on my route . How can I ask for a pool like a classified?",
+		answer: "You can navigate to the offer tab and there select the second option i.e. Looking for a pool. Then complete the wizard. Your resquest will start appearing in the search results if any other user does a same search then he/she might connect with you and it might be your lucky day."
+	},
+	{
+		header : "Q5. I don't have a facebook account can I offer pools?",
+		answer: "No.Keeping in mind the genuine users the site allows registration only by facebook so that others can confirm your background. However you can still search for pool."
+	}
+
+
+
+	]
 });
 
 

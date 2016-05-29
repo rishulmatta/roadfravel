@@ -35,6 +35,10 @@ roadFravel.config(
         templateUrl: 'partials/myPools',
         controller: "MyPoolsCtrl",
         url:"/mypools"
+      }).state('aboutus', {
+        templateUrl: 'partials/aboutUs',
+        controller: "AboutUsCtrl",
+        url:"/aboutus"
       })
   });
 

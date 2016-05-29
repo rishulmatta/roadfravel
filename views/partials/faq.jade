@@ -1,3 +1,13 @@
 div.navbar-wrapper
   div(ng-include="'partials/header'")
-div dude you are in faq section
+#faq
+  .faq-container
+    .login-header Frequently Asked Questions
+    p Go thorough the commonly asked questions about the usage of this site. Incase of further clarification please feel free to drop us a mail at our email address mentioned in the footer.
+.faq-questions-container
+  uib-accordion(close-others='oneAtATime')
+    uib-accordion-group( ng-repeat = "que in questions" , is-open="status.open"  )
+      uib-accordion-heading
+        | {{que.header}} 
+        i.pull-right.glyphicon(ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}")
+      | {{que.answer}}
