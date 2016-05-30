@@ -587,7 +587,7 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 			$scope.clearMarker (false);
 
 			$scope.pools = [];
-			if (data.data.statusCode) {
+			if (!data.data.results) {
 				return;
 			}
 			

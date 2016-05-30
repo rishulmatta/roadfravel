@@ -1,14 +1,15 @@
 var passport = require('passport')
 var FacebookStrategy = require('passport-facebook').Strategy;
-var configAuth = require('./../config/auth')
+//var configAuth = require('./../config/auth')
 var User       = require('./../models/user');
+var configAuth = require('./../config/env.js')[process.env.NODE_ENV || 'development'];
 
 
 module.exports = function(passport) {
 passport.use(new FacebookStrategy({
-	    clientID: configAuth.facebookAuth.clientID,
-	    clientSecret: configAuth.facebookAuth.clientSecret,
-	    callbackURL: configAuth.facebookAuth.callbackURL,
+	    clientID: configAuth.facebook.CLIENTID,
+	    clientSecret: configAuth.facebook.CLIENTSECRET,
+	    callbackURL: configAuth.facebook.CALLBACKURL,
 	    passReqToCallback: true,
 	    profileFields: ['id', 'email', 'gender', 'link', 'locale', 'displayName', 'timezone', 'photos'],
   

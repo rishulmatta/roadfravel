@@ -4,31 +4,27 @@ var morgan = require('morgan');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-//var cookieParser = require('cookie-parser');
+var config = require('./config/env.js')[process.env.NODE_ENV || 'development'];
 var bodyParser = require('body-parser');
-//var routes = require('./routes/index');
 var passport = require('passport');
-//var users = require('./routes/users');
 var session = require('express-session');
  
 // view engine setup  https://www.airpair.com/express/posts/expressjs-and-passportjs-sessions-deep-dive
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.locals.pretty = true;
-
+app.locals.pretty = true; //check how to avoid this in prod
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
 var mongoose = require('mongoose');
-//mongoose.connect('mongodb://localhost/roadfravel');
+mongoose.connect(config.mongodb.MONGO_URI);
 
-mongoose.connect('mongodb://roadfravel:roadfravel123!@ds019033.mlab.com:19033/heroku_hc77r703');
+//mongoose.connect('mongodb://roadfravel:roadfravel123!@ds019033.mlab.com:19033/heroku_hc77r703');
 
 var MongoStore = require('connect-mongo')(session);
 var elasticsearch = require('elasticsearch');
 var elasticSearchClient = new elasticsearch.Client({
-  host: 'localhost:9200'
+  host: config.elasticsearch.HOST
 });
 
 
@@ -43,7 +39,7 @@ app.use(session({
   saveUninitialized:true,
   secret:"wug34t8adp9y0wuetk#$%",
   cookie:{
-      maxAge : 2 * 24 * 60 * 60 * 1000
+      maxAge : 7 * 24 * 60 * 60 * 1000
     },
   store: new MongoStore({mongooseConnection:mongoose.connection})
 }));
@@ -53,29 +49,13 @@ app.use(session({
 
  app.use(passport.session());
 
-/*app.use(function(req, res, next) {
-
-
-
-  next();
-});*/
-
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 
-
-
-//app.use(isLoggedIn);
-
-
-
-
 require('./routes/index')(app,passport);
-//app.use('/', routes);
-//app.use('/users', users);
+
 
 require('./routes/offerandfetch')(app,elasticSearchClient);
 
