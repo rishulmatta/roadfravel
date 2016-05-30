@@ -6,8 +6,8 @@ module.exports = {
         "MONGO_OPTIONS": { "db": { "safe": true } }
     	},
     	"facebook":{
-    		"CLIENTID":"739055686226660",
-    		"CLIENTSECRET" :"7590557bf46ddfdbd470613ff05f961f",
+    		"CLIENTID":"820895068042721",
+    		"CLIENTSECRET" :"b2594fa78457875acb9778c5f541dc49",
     		"CALLBACKURL" :"http://localhost:3000/auth/facebook/callback"
     	},
     	"elasticsearch":{

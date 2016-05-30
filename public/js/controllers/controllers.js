@@ -203,14 +203,17 @@ roadFravel.controller('MapCtrl',function ($scope,$state,$q,$timeout) {
 
 
 	//google.maps.event.addDomListener(window, 'load', initialize);
-
+	//for using geolocation api the protocol must be https which sucks! as i got to know this after moving into prod
 	$timeout(initialize,1);
 
 	function initialize () {
 		var latLng;
-		$scope;
-		latLng = navigator.geolocation.getCurrentPosition(GetLocation);
+		latLng = navigator.geolocation.getCurrentPosition(GetLocation,geoError);
 
+	}
+
+	function geoError () {
+		initMap({lat:12.9715987,lng:77.5945627});
 	}
 
 		

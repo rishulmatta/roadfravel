@@ -2,13 +2,21 @@ doctype html
 html(ng-app = "roadFravel")
   head
       title= title
-      script( type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBab8wu7ql6hGAXF7MYmHN8-KL_xqOZvaw&libraries=places,geometry")
+      meta(name='viewport', content='width=device-width, initial-scale=1')
+      -if (env == 'development') 
+        script( type="text/javascript", src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry")
+        script
+          |var googleBrowserKey = "AIzaSyDfm10vYkgpP5WFVcScDm64iiAtGV4l4jI";
+      -else
+        script( type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBab8wu7ql6hGAXF7MYmHN8-KL_xqOZvaw&libraries=places,geometry")
+        script
+          |var googleBrowserKey = "AIzaSyBab8wu7ql6hGAXF7MYmHN8-KL_xqOZvaw";
 
       script(type="text/javascript", src="/js/lib/oms.min.js")
 
 
   body(ng-controller = "GlobalCtrl")
-      block content	
+      block content 
   link(rel='stylesheet', href='/css/bootstrap.css')   
   link(rel='stylesheet', href='/css/angular-wizard.css')
   link(rel='stylesheet', href='/css/simple-sidebar.css')

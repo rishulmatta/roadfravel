@@ -21,11 +21,12 @@ passport.use(new FacebookStrategy({
 					User.findOne({'facebook.id': profile.id}, function(err, user){
 		    			if(err)
 		    				return done(err);
+		    			console.log(profile);
 		    			if(user){
 		    				if(!user.facebook.token){
 		    					user.facebook.token = accessToken;
 		    					user.facebook.name = profile.displayName;
-		    					user.facebook.email = profile.emails[0].value;
+		    					user.facebook.email = profile.emails ? profile.emails[0].value:null;
 		    					user.facebook.id = profile.id;
 		    					user.facebook.gender = profile.gender;
 		    					user.facebook.profileUrl = profile.profileUrl;
@@ -42,7 +43,7 @@ passport.use(new FacebookStrategy({
 		    				var newUser = new User();
 	    						newUser.facebook.token = accessToken;
 		    					newUser.facebook.name = profile.displayName;
-		    					newUser.facebook.email = profile.emails[0].value;
+		    					newUser.facebook.email = profile.emails ? profile.emails[0].value:null;
 		    					newUser.facebook.id = profile.id;
 		    					newUser.facebook.gender = profile.gender;
 		    					newUser.facebook.profileUrl = profile.profileUrl;
@@ -62,7 +63,7 @@ passport.use(new FacebookStrategy({
 	    			var user = req.user;
 					user.facebook.token = accessToken;
 					user.facebook.name = profile.displayName;
-					user.facebook.email = profile.emails[0].value;
+					user.facebook.email = profile.emails ?profile.emails[0].value:null;
 					user.facebook.id = profile.id;
 					user.facebook.gender = profile.gender;
 					user.facebook.profileUrl = profile.profileUrl;

@@ -8,7 +8,8 @@ var config = require('./config/env.js')[process.env.NODE_ENV || 'development'];
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
- 
+
+app.locals.env = process.env.NODE_ENV || 'development';
 // view engine setup  https://www.airpair.com/express/posts/expressjs-and-passportjs-sessions-deep-dive
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
