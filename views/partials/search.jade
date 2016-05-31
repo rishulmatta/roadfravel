@@ -1,7 +1,8 @@
 
 
 // Sidebar
-#sidebar-wrapper
+span.glyphicon.collapse-action-icon-search( ng-click = 'toggle()' ng-class = "{'glyphicon-menu-left' : isExpanded,'glyphicon-menu-right' : !isExpanded}" ng-style = "{'top':height,'left':left}")
+#sidebar-wrapper(ng-class = '{"zero-width":!isExpanded}')
   div.filter-container
     div.filter-title Source
     input.form-control(type='text', placeholder='Source' g-auto-complete ng-model = "locations.source.name" )

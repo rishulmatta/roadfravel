@@ -2,7 +2,18 @@ doctype html
 html(ng-app = "roadFravel")
   head
       title= title
+      meta(name='ROBOTS', content='INDEX, FOLLOW')
+      meta(charset='UTF-8')
       meta(name='viewport', content='width=device-width, initial-scale=1')
+      meta(name='description', content='Road Fravel is a map based vehicle pooling app with seamless interface and advanced features.')
+      meta(property='og:title', content='Road Fravel')
+      meta(property='og:type', content='website')
+      meta(property='og:image', content='http://www.roadfravel.com/img/bck/faq.jpg')
+      meta(property='og:url', content='http://www.roadfravel.com')
+      meta(property='og:description', content='Road Fravel is a next generation vehicle pooling application with a map based interface and advanced filtering options')
+      meta(name='keywords', content='car,pooling,road,fravel,even,odd,rishul,matta')
+
+
       -if (env == 'development') 
         script( type="text/javascript", src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry")
         script
@@ -14,16 +25,15 @@ html(ng-app = "roadFravel")
 
       script(type="text/javascript", src="/js/lib/oms.min.js")
 
-
-  body(ng-controller = "GlobalCtrl")
-      block content 
   link(rel='stylesheet', href='/css/bootstrap.css')   
   link(rel='stylesheet', href='/css/angular-wizard.css')
-  link(rel='stylesheet', href='/css/simple-sidebar.css')
   link(rel='stylesheet', href='/css/angular-toastr.css')
   link(rel='stylesheet', href='/css/rzslider.css')
   link(rel='stylesheet', href='/css/style.css')
-  script(type='text/javascript')
+
+  body(ng-controller = "GlobalCtrl")
+      block content 
+  
   script(type="text/javascript", src="/js/lib/jquery.js")
   script(type="text/javascript", src="/js/lib/angular.js")
   script(type="text/javascript", src="/js/lib/angular-ui-router.js")

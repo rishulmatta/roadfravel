@@ -509,6 +509,17 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 
 		}
 
+     //for collapsable sidebar
+		$scope.height = window.screen.availHeight/2 ;
+		$scope.isExpanded = true;
+		$scope.left = 260;
+		$scope.toggle = function () {
+					$scope.isExpanded  = !$scope.isExpanded;
+					$scope.left = $scope.isExpanded ? 260 : 5;
+				}
+
+		 //for collapsable sidebar ends
+
 		$scope.applyFilter = function (filters) {
 			$scope.currentPage = 1;
 			function removeFromFilters(type) {
