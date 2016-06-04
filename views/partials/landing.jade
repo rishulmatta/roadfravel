@@ -1,42 +1,49 @@
 .navbar-wrapper.nobck-page
   div(ng-include="'partials/header'")
 #landing
-.section-feature
-  | Road Fravel
-.container-fluid.landing-row1
-  .row
-    .col-md-5.col-md-offset-1
-      .feature-container(rf-mask,  btntext = "Experience It" , redirecturl = "/map/search")
-        .feature-header.header-1
-          | Seamless
-        .feature-image.image-1
-        .feature-content
-          | The user interface is extremely intuitive and the integration with google maps gives an amazing experience. No crazy forums! Road fravel is here to stay.
-    .col-md-5
-      .feature-container(rf-mask ,  btntext = "Cheg Out" ,  redirecturl = "/map/search")
-        .feature-header.header-2
-          | Even - Odd
-        .feature-image.image-2
-        .feature-content
-          | This is specially designed for people living in New Delhi. Filter results based on the registration number of vehicles being even or odd.
-  .row.feature-row2
-    .col-md-5.col-md-offset-1
-      .feature-container(rf-mask ,  btntext = "Cheg Out" ,  redirecturl = "/map/offer")
-        .feature-header.header-2
-          | Offer or Ask
-        .feature-image.image-2
-        .feature-content
-          | Travelling expenses getting over the limit ?
-          div
-            | or You don't own a vehicle?
-          div 
-            | No problems! Just post your routes and let others find you.
-    .col-md-5
-      .feature-container(rf-mask ,  btntext = "It's Easy" , redirecturl = "/map/offer")
-        .feature-header.header-3
-          | Advanced
-        .feature-image.image-3
-        .feature-content
-          | This site gives you options of recurring pools, posting your pool requirements with the most advanced search features. Use it dude!
+div.landing-rows-container
+  .section-feature
+    | Road Fravel
+  .caption
+    | Find a friend on the road.
+  .container-fluid.landing-row1
+    .row
+      .col-md-3
+        .feature-container(rf-mask,  btntext = "Experience It" , redirecturl = "/map/search")
+          .feature-header.header-1
+            | Seamless
+          .feature-image.image-1
+          .feature-content
+            | Vehicle Pooling. 
+      .col-md-3
+        .feature-container(rf-mask ,  btntext = "Cheg Out" ,  redirecturl = "/map/search")
+          .feature-header.header-2
+            | Even - Odd
+          .feature-image.image-2
+          .feature-content
+            | Advanced filtering options.
+      .col-md-3
+        .feature-container(rf-mask ,  btntext = "Cheg Out" ,  redirecturl = "/map/offer")
+          .feature-header.header-2
+            | Offer or Ask
+          .feature-image.image-2
+          .feature-content
+            | All that you ever thought of.
+      .col-md-3
+        .feature-container(rf-mask ,  btntext = "It's Easy" , redirecturl = "/map/offer")
+          .feature-header.header-3
+            | Advanced
+          .feature-image.image-3
+          .feature-content
+            | Explore yourself.
+    .row.quote-row
+      .col-md-12
+        blockquote.landing-blockquote
+          p
+            | I know you love your car very much. So think about it this way - What will you do when there is not enough pure oxygen left for your car to breathe?
+          footer
+            | Nah Nah I am not famous I just made this website.
+
+
 div(ng-include="'partials/footer'")
 
