@@ -1,18 +1,18 @@
 doctype html
-html(ng-app = "roadFravel")
+html(ng-app = "roadFravel" , xmlns:og="http://ogp.me/ns#")
   head
-      title= title
-      meta(name='ROBOTS', content='INDEX, FOLLOW')
-      meta(charset='UTF-8')
-      meta(name='viewport', content='width=device-width, initial-scale=1')
-      meta(name='description', content='Road Fravel is a map based vehicle pooling app with seamless interface and advanced features.')
-      meta(property='og:title', content='Road Fravel')
-      meta(property='og:type', content='website')
-      meta(property='og:image', content='http://www.roadfravel.com/img/bck/faq.jpg')
-      meta(property='og:url', content='http://www.roadfravel.com')
-      meta(property='og:description', content='Road Fravel is a next generation vehicle pooling application with a map based interface and advanced filtering options')
-      meta(name='keywords', content='car,pooling,road,fravel,even,odd,rishul,matta')
-
+      title=title
+      meta(name='ROBOTS', content='INDEX, FOLLOW')/
+      meta(charset='UTF-8')/
+      meta(name='viewport', content='width=device-width, initial-scale=1')/
+      meta(name='description', content='Road Fravel is a map based vehicle pooling app with seamless interface and advanced features.')/
+      meta(property='og:title', content='Road Fravel')/
+      meta(property='og:type', content='website')/
+      meta(property='og:image', content='http://www.roadfravel.com/img/bck/faq.jpg')/
+      meta(property='og:url', content='http://www.roadfravel.com/#/landing')/
+      meta(property='og:description', content='Road Fravel is a next generation vehicle pooling application with a map based interface and advanced filtering options')/
+      meta(name='keywords', content='car,pooling,road,fravel,even,odd,rishul,matta')/
+      meta(property="fb:app_id" , content="739055686226660" )/
 
       -if (env == 'development') 
         script( type="text/javascript", src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry")
@@ -23,7 +23,7 @@ html(ng-app = "roadFravel")
         script
           |var googleBrowserKey = "AIzaSyBab8wu7ql6hGAXF7MYmHN8-KL_xqOZvaw";
 
-      script(type="text/javascript", src="/js/lib/oms.min.js")
+      
 
   link(rel='stylesheet', href='/css/bootstrap.css')   
   link(rel='stylesheet', href='/css/angular-wizard.css')
@@ -33,23 +33,26 @@ html(ng-app = "roadFravel")
 
   body(ng-controller = "GlobalCtrl")
       block content 
-  
-  script(type="text/javascript", src="/js/lib/jquery.js")
-  script(type="text/javascript", src="/js/lib/angular.js")
-  script(type="text/javascript", src="/js/lib/angular-ui-router.js")
-  script(type="text/javascript", src="/js/lib/ui-bootstrap.js")
-  script(type="text/javascript", src="/js/lib/bootstrap.js")
-  script(type="text/javascript", src="/js/lib/angular-wizard.js")
-  script(type="text/javascript", src="/js/lib/angular-toastr.js")
-  script(type="text/javascript", src="/js/lib/rzslider.js")
 
-  script(type="text/javascript", src="/js/initialize.js")
-  script(type="text/javascript", src="/js/services/thirdParty.js")
-  script(type="text/javascript", src="/js/services/persist.js")
-  script(type="text/javascript", src="/js/services/fetch.js")
-  script(type="text/javascript", src="/js/services/auth.js")
+  -if (env != 'development')
+    script(type="text/javascript", src="dist/built.min.js")
+  -else
+    script(type="text/javascript", src="/js/lib/oms.min.js")
+    script(type="text/javascript", src="/js/lib/jquery.js")
+    script(type="text/javascript", src="/js/lib/angular.js")
+    script(type="text/javascript", src="/js/lib/angular-ui-router.js")
+    script(type="text/javascript", src="/js/lib/ui-bootstrap.js")
+    script(type="text/javascript", src="/js/lib/bootstrap.js")
+    script(type="text/javascript", src="/js/lib/angular-wizard.js")
+    script(type="text/javascript", src="/js/lib/angular-toastr.js")
+    script(type="text/javascript", src="/js/lib/rzslider.js")
 
-  script(type="text/javascript", src="/js/directives/input.js")
-  script(type="text/javascript", src="/js/directives/rendering.js")
-  script(type="text/javascript"  src="/js/controllers/controllers.js")
+    script(type="text/javascript", src="/js/initialize.js")
+    script(type="text/javascript", src="/js/services/thirdParty.js")
+    script(type="text/javascript", src="/js/services/persist.js")
+    script(type="text/javascript", src="/js/services/fetch.js")
+    script(type="text/javascript", src="/js/services/auth.js")
 
+    script(type="text/javascript", src="/js/directives/input.js")
+    script(type="text/javascript", src="/js/directives/rendering.js")
+    script(type="text/javascript"  src="/js/controllers/controllers.js")

@@ -1,4 +1,4 @@
-roadFravel.factory('rf_auth', function($http,$q) {
+roadFravel.factory('rf_auth', ["$http","$q",function($http,$q) {
 
 	function isLoggedIn (inp) {
 		var q = $q.defer();
@@ -24,4 +24,4 @@ roadFravel.factory('rf_auth', function($http,$q) {
      			return isLoggedIn(inp);
      		}
      	};
-});
+}]);

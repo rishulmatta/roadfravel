@@ -1,4 +1,4 @@
-roadFravel.factory('rf_persistPool', function($http,$q) {
+roadFravel.factory('rf_persistPool',["$http","$q", function($http,$q) {
 
 	function persistPool (inp) {
 		var q = $q.defer();
@@ -24,9 +24,9 @@ roadFravel.factory('rf_persistPool', function($http,$q) {
      			return persistPool(inp);
      		}
      	};
-});
+}]);
 
-roadFravel.factory('rf_deleteMyPool', function($http,$q) {
+roadFravel.factory('rf_deleteMyPool',["$http","$q", function($http,$q) {
 
      function persistPool (inp) {
           var q = $q.defer();
@@ -51,4 +51,4 @@ roadFravel.factory('rf_deleteMyPool', function($http,$q) {
                     return persistPool(inp);
                }
           };
-});
+}]);

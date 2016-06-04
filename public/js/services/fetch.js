@@ -1,4 +1,4 @@
-roadFravel.factory('rf_fetchResults', function($http,$q) {
+roadFravel.factory('rf_fetchResults',["$http","$q", function($http,$q) {
 
      var aggregationsRequired = true;
 
@@ -50,12 +50,12 @@ roadFravel.factory('rf_fetchResults', function($http,$q) {
      		},
                aggregationsRequired : aggregationsRequired
      	};
-});
+}]);
 
 
 
 
-roadFravel.factory('rf_fetchMyPools', function($http,$q) {
+roadFravel.factory('rf_fetchMyPools',["$http","$q", function($http,$q) {
 
     
 
@@ -87,4 +87,4 @@ roadFravel.factory('rf_fetchMyPools', function($http,$q) {
                     return fetch(inp);
                }
           };
-});
+}]);

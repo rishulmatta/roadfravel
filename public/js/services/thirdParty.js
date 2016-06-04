@@ -1,4 +1,4 @@
-roadFravel.factory('g_placesautocomplete', function($http,$q) {
+roadFravel.factory('g_placesautocomplete', ["$http","$q",function($http,$q) {
 
 	function getResultsFromService (inp) {
 		var promise = $q.defer();
@@ -20,10 +20,10 @@ roadFravel.factory('g_placesautocomplete', function($http,$q) {
      			return getResultsFromService(inp);
      		}
      	};
-});
+}]);
 
 
-roadFravel.factory('g_direction', function($http,$q) {
+roadFravel.factory('g_direction',["$http","$q", function($http,$q) {
 
      function getDirectionFromService (inp) {
           var q = $q.defer();
@@ -45,4 +45,4 @@ roadFravel.factory('g_direction', function($http,$q) {
                     return getDirectionFromService(inp);
                }
           };
-});
+}]);

@@ -900,7 +900,6 @@ footer .container-fluid.landing-row2 a:focus, footer .container-fluid.landing-ro
   position:absolute;
   color:#FF6600;
   background-color:rgba(0,0,0,0.6);
-  border-radius:20px;
   padding:5px;
   font-size:30px;
   z-index:9999;

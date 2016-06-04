@@ -197,7 +197,7 @@ Date.prototype.getFormattedTime = function () {
 }
 
 
-roadFravel.controller('MapCtrl',function ($scope,$state,$q,$timeout) { 
+roadFravel.controller('MapCtrl',["$scope","$state","$q","$timeout",function ($scope,$state,$q,$timeout) { 
 	 var lat,lng, bounds;
 	resultsFetched = false;
 
@@ -456,9 +456,9 @@ roadFravel.controller('MapCtrl',function ($scope,$state,$q,$timeout) {
 
 	    /*-- code for date picker  END--*/
 
-});
+}]);
 
-roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$timeout) {
+roadFravel.controller('SearchCtrl',["$scope","rf_fetchResults","toastr","$timeout",function ($scope,rf_fetchResults,toastr,$timeout) {
 		var polyLine , polyLinePoints , appliedFilters , proximity;
 		$scope.clearMarker(true);  //this method is in global contrl it clears destination marker
 		$scope.pools = [];		
@@ -762,10 +762,10 @@ roadFravel.controller('SearchCtrl',function ($scope,rf_fetchResults,toastr,$time
 
 		}
 
-	});
+	}]);
 
 
-roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool,rf_auth,$uibModal,$state,$timeout,$interval,$state) {
+roadFravel.controller('OfferCtrl',["$scope","rf_persistPool","rf_auth","$uibModal","$state","$timeout","$interval","$state",function ($scope,rf_persistPool,rf_auth,$uibModal,$state,$timeout,$interval,$state) {
 		
 		var todaysDate,authProm;
 		$scope.clearMarker(true); 
@@ -886,10 +886,10 @@ roadFravel.controller('OfferCtrl',function ($scope,rf_persistPool,rf_auth,$uibMo
 
 
      /* --   code for time picker END --*/
-	});
+	}]);
 
 
-roadFravel.controller('GlobalCtrl',function ($scope,g_direction,rf_fetchResults) {
+roadFravel.controller('GlobalCtrl',["$scope","g_direction","rf_fetchResults",function ($scope,g_direction,rf_fetchResults) {
 		
 		$scope.locations = {
 			source :{
@@ -1065,24 +1065,24 @@ roadFravel.controller('GlobalCtrl',function ($scope,g_direction,rf_fetchResults)
 			}
 		});*/
 		
-	});
+	}]);
 
 
-roadFravel.controller('LandingCtrl',function ($scope) { 
+roadFravel.controller('LandingCtrl',["$scope",function ($scope) { 
 	$scope.setActiveNav("landing");
 
-});
+}]);
 
-roadFravel.controller('LoginCtrl',function ($scope) { 
+roadFravel.controller('LoginCtrl',["$scope",function ($scope) { 
 	$scope.setActiveNav("login");
 
-});
-roadFravel.controller('AboutUsCtrl',function ($scope) { 
+}]);
+roadFravel.controller('AboutUsCtrl',["$scope",function ($scope) { 
 	$scope.setActiveNav("aboutus");
 
-});
+}]);
 
-roadFravel.controller('FaqCtrl',function ($scope) { 
+roadFravel.controller('FaqCtrl',["$scope",function ($scope) { 
 
 	$scope.setActiveNav("faq");
 
@@ -1111,10 +1111,10 @@ roadFravel.controller('FaqCtrl',function ($scope) {
 
 
 	]
-});
+}]);
 
 
-roadFravel.controller('MyPoolsCtrl',function ($scope,rf_fetchMyPools) { 
+roadFravel.controller('MyPoolsCtrl',["$scope","rf_fetchMyPools", function ($scope,rf_fetchMyPools) { 
 
 		$scope.setActiveNav("mypools");
 
@@ -1154,6 +1154,6 @@ roadFravel.controller('MyPoolsCtrl',function ($scope,rf_fetchMyPools) {
 	fetchMyPools({page:$scope.currentPage,pageSize:$scope.itemsPerPage});
 
 
-});
+}]);
 
 
