@@ -315,6 +315,8 @@ roadFravel.controller('MapCtrl',["$scope","$state","$q","$timeout",function ($sc
 					},2000)
 					//map.fitBounds(bounds);
 					previousMarker = marker;
+					$scope.setSelectedSearch(marker.index);
+					$scope.$apply();
 				});
 
 
@@ -456,6 +458,15 @@ roadFravel.controller('MapCtrl',["$scope","$state","$q","$timeout",function ($sc
 
 	    /*-- code for date picker  END--*/
 
+
+	    //for icon selection
+
+	    $scope.selectedSearchItem = undefined;
+
+	    $scope.setSelectedSearch = function (val) {
+	    		$scope.selectedSearchItem = val;
+	    }
+
 }]);
 
 roadFravel.controller('SearchCtrl',["$scope","rf_fetchResults","toastr","$timeout",function ($scope,rf_fetchResults,toastr,$timeout) {
@@ -510,12 +521,13 @@ roadFravel.controller('SearchCtrl',["$scope","rf_fetchResults","toastr","$timeou
 		}
 
      //for collapsable sidebar
+     var width = 310;
 		$scope.height = window.screen.availHeight/2 ;
 		$scope.isExpanded = true;
-		$scope.left = 260;
+		$scope.left = width;
 		$scope.toggle = function () {
 					$scope.isExpanded  = !$scope.isExpanded;
-					$scope.left = $scope.isExpanded ? 260 : 5;
+					$scope.left = $scope.isExpanded ? width : 5;
 				}
 
 		 //for collapsable sidebar ends
@@ -710,8 +722,7 @@ roadFravel.controller('SearchCtrl',["$scope","rf_fetchResults","toastr","$timeou
 			promise.then(drawAvailablePools);
 			promise.then(drawFilters);
 
-			$scope.selectedSearchItem = undefined;
-
+				$scope.setSelectedSearch(undefined);
 
 
 		}
@@ -728,7 +739,9 @@ roadFravel.controller('SearchCtrl',["$scope","rf_fetchResults","toastr","$timeou
 		$scope.searchListItemClicked = function (index) {
 			var promise;
 
-			$scope.selectedSearchItem = index;
+				$scope.setSelectedSearch(index);
+
+
 			
 			google.maps.event.trigger(markers[index], 'click');
 			//map.setCenter(markers[index].latLng);

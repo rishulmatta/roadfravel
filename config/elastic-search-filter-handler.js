@@ -203,7 +203,12 @@ elasticSearch.prototype.applyOperators = function(appliedFilters) {
                 }
             }
 
+            
+                            
+
             newObj.bool.should.push({"range":filter.bool.must[index]["range"]});
+            newObj.bool.should.push({"constant_score":{"filter": {"missing" : { "field" : "planneddate" }}}});
+            //planneddate is null for recurring pools so we put in two filters one is the one time pool which has planneddsate and recurtype which has null for planneddate
             filter.bool.must[index] = newObj;
             delete filter.bool.should;
             break;

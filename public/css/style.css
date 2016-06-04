@@ -407,6 +407,9 @@ label {
     height:100%;
 }
 
+.logo {
+  height:30px;
+}
 
 .mask-btn-text {
   color: #d2776a;
@@ -507,8 +510,8 @@ label {
   background-position: center; 
    background-image: 
     linear-gradient(
-      rgba(0, 0, 0, 0.5),
-      rgba(0, 0, 0, 0)
+      rgba(0, 0, 0, 0.3),
+      rgba(0, 0, 0, 0.6)
     ),
     url("/img/bck/landing.jpg");
 }
@@ -887,7 +890,7 @@ footer .container-fluid.landing-row2 a:focus, footer .container-fluid.landing-ro
 
 
 #sidebar-wrapper {
-        width: 260px;
+        width: 310px;
     } 
 
 

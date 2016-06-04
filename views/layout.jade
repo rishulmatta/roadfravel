@@ -8,8 +8,8 @@ html(ng-app = "roadFravel" , xmlns:og="http://ogp.me/ns#")
       meta(name='description', content='Road Fravel is a map based vehicle pooling app with seamless interface and advanced features.')/
       meta(property='og:title', content='Road Fravel')/
       meta(property='og:type', content='website')/
-      meta(property='og:image', content='http://www.roadfravel.com/img/bck/faq.jpg')/
-      meta(property='og:url', content='http://www.roadfravel.com/#/landing')/
+      meta(property='og:image', content='http://www.roadfravel.com/img/rf/b_logo.png')/
+      meta(property='og:url', content='http://roadfravel.herokuapp.com')/
       meta(property='og:description', content='Road Fravel is a next generation vehicle pooling application with a map based interface and advanced filtering options')/
       meta(name='keywords', content='car,pooling,road,fravel,even,odd,rishul,matta')/
       meta(property="fb:app_id" , content="739055686226660" )/
@@ -25,18 +25,20 @@ html(ng-app = "roadFravel" , xmlns:og="http://ogp.me/ns#")
 
       
 
-  link(rel='stylesheet', href='/css/bootstrap.css')   
-  link(rel='stylesheet', href='/css/angular-wizard.css')
-  link(rel='stylesheet', href='/css/angular-toastr.css')
-  link(rel='stylesheet', href='/css/rzslider.css')
-  link(rel='stylesheet', href='/css/style.css')
+  
 
   body(ng-controller = "GlobalCtrl")
       block content 
 
   -if (env != 'development')
-    script(type="text/javascript", src="dist/built.min.js")
+    link(rel='stylesheet', href='dist/built.min.css')
+    script(type="text/javascript", src="dist/built.min.js")    
   -else
+    link(rel='stylesheet', href='/css/bootstrap.css')   
+    link(rel='stylesheet', href='/css/angular-wizard.css')
+    link(rel='stylesheet', href='/css/angular-toastr.css')
+    link(rel='stylesheet', href='/css/rzslider.css')
+    link(rel='stylesheet', href='/css/style.css')
     script(type="text/javascript", src="/js/lib/oms.min.js")
     script(type="text/javascript", src="/js/lib/jquery.js")
     script(type="text/javascript", src="/js/lib/angular.js")
