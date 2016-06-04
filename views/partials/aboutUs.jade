@@ -1,12 +1,43 @@
+.navbar-wrapper.nobck-page
+  div(ng-include="'partials/header'")
 
-.container-fluid.landing-row2
+#about-us
+  .faq-container
+    .login-header About Us
+    p The idea of this site started as a conversation with my colleagues. I don't intend to make money out of this website , infact I plan to make the complete source code public if ever this site becomes famous. It will help people understand MEAN stack and Elastic Search and this also will be a way for me to return something in exchange for all that I have learnt from open source, stackoverflow , blogs and youtube. If you find this website useful do buy me :) a beer.
+.faq-questions-container
   .row
-    .col-md-3
-      .contact-container
-        a(ui.sref = "aboutus") About Us
-    .col-md-3
-      .contact-container
-        |Questions? Please check FAQ
-    .col-md-6
-      .contact-container
-        |fACEBOOK Feedback
+    .col-md-12
+      .feature-container
+        .feature-header.header-1
+          | Rishul Matta
+        .feature-image.image-me
+        .feature-content
+          | Guitaring Eagles' song on the Himlayas, having Rum/Baba , some coding, nice book, food and a nap. That's me.
+  .row
+    .col-md-12
+      .list-group
+        a.list-group-item.shout-out(href='javascript:;')
+          h4.list-group-item-heading A shout out to the people 
+        a.list-group-item(href='javascript:;')
+          h4.list-group-item-heading My momma 
+          p.list-group-item-text The perfect home maker. She helped me out with colors and design!
+
+        a.list-group-item(href='https://www.youtube.com/user/Profyx' target = "_blank")
+          h4.list-group-item-heading Brent Aureli 
+          p.list-group-item-text The video lessons of this youtuber helped me a lot to build up the Node side of this website.
+
+        a.list-group-item(href='http://stackoverflow.com/' target = "_blank")
+          h4.list-group-item-heading Stack Overflow 
+          p.list-group-item-text This website is oxygen for me.
+
+        a.list-group-item(href='https://css-tricks.com/snippets/css/a-guide-to-flexbox/' target = "_blank")
+          h4.list-group-item-heading Css Tricks 
+          p.list-group-item-text I have referred this website a million times.
+        a.list-group-item(href='http://www.flaticon.com/authors/madebyoliver' target = "_blank")
+          h4.list-group-item-heading Madebyoliver @ Flaticon 
+          p.list-group-item-text The artists who have contributed to this.
+
+
+
+div(ng-include="'partials/footer'")

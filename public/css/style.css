@@ -526,7 +526,7 @@ label {
   height:200px;
   border-bottom:1px solid #e1e1e1;
   text-align:center;
-  background-color:rgba(236, 232, 223, 1);
+  background-color:#f3f1eb;
 }
 
 .feature-header {
@@ -557,16 +557,13 @@ label {
    color:#a85f54;
 }
 
-.feature-image {
+.image-me {
 
-  height:100px;
-  width:100px;
+
+  background: url("/img/bck/me.jpg") no-repeat;
   border-radius:100px;
-  margin:auto;
-  background-position: center; 
-
-
-}
+   
+  }
 
 .image-1 {
 
@@ -576,7 +573,7 @@ label {
   }
 
 .image-2 {
-  background: url("/img/bck/evenodd1.jpg") no-repeat;
+  background: url("/img/bck/evenodd.png") no-repeat;
    
 }
 
@@ -585,6 +582,25 @@ label {
 
   
 }
+
+
+.image-4 {
+  background: url("/img/bck/offerorask.png") no-repeat;
+
+  
+}
+.feature-image {
+
+  height:100px;
+  width:100px;
+  margin:auto;
+  background-position: center; 
+  background-size: contain;
+
+
+}
+
+
 
 .feature-content {
   width:70%;
@@ -627,6 +643,7 @@ label {
 
 .landing-blockquote {
     color:#a85f54;
+    font-style:italic;
 }
 
 .caption {
@@ -731,6 +748,35 @@ footer .container-fluid.landing-row2 a:focus, footer .container-fluid.landing-ro
   width:40%;
 }
 
+
+
+/*---------------------------- about us ----------------------------*/
+
+
+#about-us {
+  background: url("/img/bck/landing2.jpg") no-repeat;
+   background-size:auto;
+  height:85%;
+  width:100%;
+  margin:auto;
+  background-size: cover;
+  background-position: 0% 100%; 
+   background-image: 
+    linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0)
+    ),
+    url("/img/bck/landing2.jpg");
+    position:relative;
+}
+
+a.list-group-item.shout-out h4{
+  text-align:center;
+  color:#d2776a;
+  font-size:1.5em;
+}
+
+
 /*---------------------------- FAQ ----------------------------*/
 #faq {
   background: url("/img/bck/faq.jpg") no-repeat;
@@ -749,6 +795,9 @@ footer .container-fluid.landing-row2 a:focus, footer .container-fluid.landing-ro
     position:relative;
 }
 
+.faq-questions-container .panel-group {
+  margin-bottom:0px;
+}
 
 
 .row {
@@ -759,7 +808,6 @@ footer .container-fluid.landing-row2 a:focus, footer .container-fluid.landing-ro
 .faq-questions-container {
   max-width:950px;
   margin:auto;
-  padding-bottom:20px;
 }
 
 .faq-container {
@@ -835,12 +883,25 @@ footer .container-fluid.landing-row2 a:focus, footer .container-fluid.landing-ro
 
 /*------------------------My Pools --------------------------------------*/
 
+#myPools {
+  background: url("/img/bck/myPools.jpg") no-repeat;
+   background-size:auto;
+  height:85%;
+  width:100%;
+  margin:auto;
+  background-size: cover;
+  background-position: 0% 0%; 
+   background-image: 
+    linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0)
+    ),
+    url("/img/bck/myPools.jpg");
+    position:relative;
+}
 
 .my-pools-container {
-  position:absolute;
-  top:100px;
-  left:10%;
-  right:10%;
+
 }
 
 .my-pools-container .bg-info {
@@ -884,6 +945,10 @@ footer .container-fluid.landing-row2 a:focus, footer .container-fluid.landing-ro
 
 .my-places-meta div:last-child {
   text-align:right;
+}
+
+.my-places-meta div:first-child {
+  text-align:left;
 }
 
 
@@ -960,8 +1025,24 @@ footer .container-fluid.landing-row2 a:focus, footer .container-fluid.landing-ro
   .offer-wizard {
     left:20%;
   }
+
+
 }
 
+
+
+@media (max-width:480px) {
+
+  .section-feature {
+    font-size:3em;
+  }
+
+  .caption {
+    padding:0px;
+    text-align:center;
+  }
+
+}
 
 
 @media (min-width:481px) { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ 
@@ -969,7 +1050,7 @@ footer .container-fluid.landing-row2 a:focus, footer .container-fluid.landing-ro
 
   .faq-container {
     padding:1em;
-    height:40%;
+    max-height:40%;
     width:100%;
 
   }
@@ -983,7 +1064,7 @@ footer .container-fluid.landing-row2 a:focus, footer .container-fluid.landing-ro
 
   .faq-container {
     padding:1em;
-    height:30%;
+    max-height:60%;
     width:100%;
 
   }

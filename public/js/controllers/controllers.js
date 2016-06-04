@@ -474,7 +474,7 @@ roadFravel.controller('SearchCtrl',["$scope","rf_fetchResults","toastr","$timeou
 		$scope.clearMarker(true);  //this method is in global contrl it clears destination marker
 		$scope.pools = [];		
 		$scope.currentPage = 1;
-		$scope.itemsPerPage = 4;
+		$scope.itemsPerPage = Math.floor(screen.width/200);
 		$scope.searchDate = {
 			selDate :null
 		};

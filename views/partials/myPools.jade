@@ -1,22 +1,14 @@
 div.navbar-wrapper
   div(ng-include="'partials/header'")
 #myPools
-  .my-pools-container
-    blockquote
-      p
-        | I know you love your car very much. So think about it this way - What will you do when there is not enough pure oxygen left for your car to breathe?
-      footer
-        | Nah Nah I am not famous I just made this website.
-    .panel.panel-default
-      // Default panel contents
-      .panel-heading.bg-info 
-        h3 Pools offered by me
-      .panel-body
-        | This section the list of pools that you have offered. You cannot edit these , but you can delete the ones which are scheduled for the future. The ones which happened in the past have been disabled.
-      // List group
-      .list-group
-        div(rf-my-pool-row ng-repeat = "pool in myPools" ng-init = "pool.index = $index")
-    div.text-center
+  .faq-container
+    .login-header Pools offered by me
+    p This section the list of pools that you have offered. You cannot edit these , but you can delete the ones which are scheduled for the future. The ones which happened in the past have been disabled.
+.faq-questions-container
+  .list-group
+    div(rf-my-pool-row ng-repeat = "pool in myPools" ng-init = "pool.index = $index")
+  div.text-center
       uib-pagination(total-items='totalItems', items-per-page = "{{itemsPerPage}}",ng-model='currentPage', ng-change='pageChanged()')
+div(ng-include="'partials/footer'")
 
 
