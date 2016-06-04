@@ -9,10 +9,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-css');
 
     // on the dev server, only concat
-    grunt.registerTask('default', ['concat','cssmin']);
+    grunt.registerTask('default', ['concat']);
 
     // on production, concat and minify
-    grunt.registerTask('prod', ['concat', 'uglify','cssmin']);
+    grunt.registerTask('prod', ['concat', 'uglify']);
 
 
     // Project configuration.
