@@ -19,8 +19,15 @@ html(ng-app = "roadFravel" , xmlns:og="http://ogp.me/ns#")
       link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/angular-toastr/1.7.0/angular-toastr.min.css')
       link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/4.0.1/rzslider.min.css')
       link(rel='stylesheet', href='/css/style.css')
-      
-        
+     -if (env == 'development') 
+       script( type="text/javascript", src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry")
+       script
+         |var googleBrowserKey = "AIzaSyDfm10vYkgpP5WFVcScDm64iiAtGV4l4jI";
+     -else
+       script( type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBab8wu7ql6hGAXF7MYmHN8-KL_xqOZvaw&libraries=places,geometry",defer)
+       script
+         |var googleBrowserKey = "AIzaSyBab8wu7ql6hGAXF7MYmHN8-KL_xqOZvaw";
+
 
       
 
@@ -31,20 +38,19 @@ html(ng-app = "roadFravel" , xmlns:og="http://ogp.me/ns#")
 
   -if (env != 'development')
     
-    script(src='https://code.jquery.com/jquery-2.2.4.min.js', integrity='sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=', crossorigin='anonymous')
-    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js')
+    script(src='https://code.jquery.com/jquery-2.2.4.min.js', integrity='sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=', crossorigin='anonymous',defer)
+    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js',defer)
     script(src='https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js',defer)
     script(src='https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.3/ui-bootstrap-tpls.min.js',defer)
     script(src='https://cdnjs.cloudflare.com/ajax/libs/angular-wizard/0.6.1/angular-wizard.min.js',defer)
     script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/angular-toastr/1.7.0/angular-toastr.tpls.min.js',defer)
     script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/4.0.1/rzslider.min.js',defer)
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js', integrity='sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS', crossorigin='anonymous',defer)
-
-    script(type="text/javascript", src="dist/built.min.js", defer)
-    script( type="text/javascript", src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry" , defer)
     script(type="text/javascript", src="js/lib/oms.min.js", defer)
-    script
-      |var googleBrowserKey = "AIzaSyDfm10vYkgpP5WFVcScDm64iiAtGV4l4jI";
+    script(type="text/javascript", src="dist/built.min.js", defer)
+    
+    
+    
   -else
     
     script(type="text/javascript", src="/js/lib/jquery.js")
@@ -55,7 +61,7 @@ html(ng-app = "roadFravel" , xmlns:og="http://ogp.me/ns#")
     script(type="text/javascript", src="/js/lib/angular-wizard.js")
     script(type="text/javascript", src="/js/lib/angular-toastr.js")
     script(type="text/javascript", src="/js/lib/rzslider.js")
-
+    script(type="text/javascript", src="/js/lib/oms.min.js")
     script(type="text/javascript", src="/js/initialize.js")
     script(type="text/javascript", src="/js/services/thirdParty.js")
     script(type="text/javascript", src="/js/services/persist.js")
@@ -65,7 +71,5 @@ html(ng-app = "roadFravel" , xmlns:og="http://ogp.me/ns#")
     script(type="text/javascript", src="/js/directives/input.js")
     script(type="text/javascript", src="/js/directives/rendering.js")
     script(type="text/javascript"  src="/js/controllers/controllers.js")
-    script( type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBab8wu7ql6hGAXF7MYmHN8-KL_xqOZvaw&libraries=places,geometry")
-    script(type="text/javascript", src="/js/lib/oms.min.js")
-    script
-      |var googleBrowserKey = "AIzaSyBab8wu7ql6hGAXF7MYmHN8-KL_xqOZvaw";
+    
+    
