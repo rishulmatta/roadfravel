@@ -23,8 +23,7 @@ module.exports = function(grunt) {
                 separator: ';',
             },
             js: {
-                src: ["public/js/lib/oms.min.js", "public/js/lib/jquery.js", "public/js/lib/angular.js", "public/js/lib/angular-ui-router.js", "public/js/lib/ui-bootstrap.js", "public/js/lib/bootstrap.js", "public/js/lib/angular-wizard.js", "public/js/lib/angular-toastr.js", "public/js/lib/rzslider.js",
-                    "public/js/initialize.js", "public/js/services/thirdParty.js", "public/js/services/persist.js", "public/js/services/fetch.js", "public/js/services/auth.js",
+                src: ["public/js/initialize.js", "public/js/services/thirdParty.js", "public/js/services/persist.js", "public/js/services/fetch.js", "public/js/services/auth.js",
                     "public/js/directives/input.js", "public/js/directives/rendering.js", "public/js/controllers/controllers.js"
                 ],
                 dest: 'public/dist/built.js'
