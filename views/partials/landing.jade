@@ -1,41 +1,65 @@
 .navbar-wrapper.nobck-page
   div(ng-include="'partials/header'")
 #landing
+  .site-name
+    .section-feature
+      | Road Fravel
+    .caption
+      | on the 
+      span Road
+      |  , meet a 
+      span Friend
+      |  as you 
+      span Travel
+
 div.landing-rows-container
-  .section-feature
-    | Road Fravel
-  .caption
-    | Find a friend on the road.
   .container-fluid.landing-row1
-    .row
-      .col-md-3(ui-sref="map.search")
-        .feature-container(rf-mask,  btntext = "Experience It" , redirecturl = "/map/search")
-          .feature-header.header-1
-            | Seamless
-          .feature-image.image-1
-          .feature-content
-            | Vehicle Pooling. 
-      .col-md-3(ui-sref="map.search")
-        .feature-container(rf-mask,  btntext = "Use It" , redirecturl = "/map/search")
-          .feature-header.header-2
-            | Even - Odd
-          .feature-image.image-2
-          .feature-content
-            | Advanced filtering options.
-      .col-md-3(ui-sref="map.offer")
-        .feature-container(rf-mask ,  btntext = "Cheg Out" ,  redirecturl = "/map/offer")
-          .feature-header.header-2
-            | Offer or Ask
-          .feature-image.image-4
-          .feature-content
-            | All that you ever thought of.
-      .col-md-3(ui-sref="map.offer")
-        .feature-container(rf-mask ,  btntext = "It's Easy" , redirecturl = "/map/offer")
+    .row.how-it-works
+      .col-md-12(ui-sref="map.search")
+        .row
+          .col-md-4
+            .feature-container()
+              .feature-header.header-1
+                | Step 1
+              .feature-image
+                span.glyphicon.glyphicon-search(aria-hidden='true')
+              .feature-content
+                | Search for pools.
+          .col-md-4
+            .feature-container()
+              .feature-header.header-1
+                | Step 2
+              .feature-image
+                span.glyphicon.glyphicon-user(aria-hidden='true')
+              .feature-content
+                | Connect on Facebook.
+          .col-md-4
+            .feature-container()
+              .feature-header.header-1
+                | Step 3
+              .feature-image
+                span.glyphicon.glyphicon-road(aria-hidden='true')
+              .feature-content
+                | Share the ride.
+    .row.how-it-works 
+      .col-md-12(ui-sref="faq")
+        .feature-container.faq-landing()
+          span.faq-title Got Questions ?
+          span.faq-description.position-bottom This website also allows you to offer pooled rides and to post your requirements which is easily searchable by others. Check out our FAQ section or feel free to drop us a mail at the below mentioned mail id.
+    .row.how-it-works
+      .col-md-12(ui-sref="aboutus")
+        .feature-container.faq-landing.about-us-landing()          
+          span.faq-description Presently we are just a platform for commuters to get in touch with each other and optimize their costs. Click to read more about how we were formed and what we plant to do.
+          span.faq-title.position-bottom.right About Us
+    .row.how-it-works
+      .col-md-12(ui-sref="map.offer")
+        .feature-container()
           .feature-header.header-3
-            | Advanced
-          .feature-image.image-3
+            | Offer A Pool
+          .feature-image
+            span.glyphicon.glyphicon-globe(aria-hidden='true')
           .feature-content
-            | Explore yourself.
+            | Just login with facebook and get started. We dont paste on facebook.
     .row.quote-row
       .col-md-12
         blockquote.landing-blockquote

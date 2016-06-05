@@ -915,7 +915,7 @@ roadFravel.controller('GlobalCtrl',["$scope","g_direction","rf_fetchResults","$t
 		$timeout(function() {
 
 		$(".loader").remove();
-	},300);
+	},500);
 
 
 		$scope.locations = {

@@ -5,6 +5,19 @@
       padding: 0;
       font-family: "Century Gothic";
   }
+
+  @font-face {
+    font-family: 'gothic';
+    src: url('./gothic.eot');
+    src: local('gothic'), url('./gothic.woff') format('woff'), url('./gothic.ttf') format('truetype');
+  }
+  /* use this class to attach this font to any element i.e. <p class="fontsforweb_fontid_9785">Text with this font applied</p> */
+  .fontsforweb_fontid_9785 {
+    font-family: 'gothic' !important;
+  }
+
+  /* Font downloaded from FontsForWeb.com */
+
   #map {
       height: 100%;
   }
@@ -304,6 +317,22 @@
   }
   /*-------------------------------------Landing ------------------------------*/
   
+.site-name {
+  position:absolute;
+  bottom:20px;
+  left:10px;
+}
+
+
+.how-it-works {
+  background-color:#f3f1eb;
+
+}
+
+.how-it-works .col-md-12, .how-it-works .col-md-4{
+  cursor:pointer;
+}
+
 .loader {
   position:fixed;
   top:0px;
@@ -312,14 +341,15 @@
   right:0px;
   background:rgba(0,0,0,0.7);
   z-index:10000;
+  display:flex;
+  justify-content: center;
+  align-items:center;
 }
 
 .loader img {
-  top:48%;
-  left:48%;
+
   height:100px;
   width:100px;
-  position:absolute;
 }
 
   #page-content-wrapper {
@@ -432,24 +462,27 @@
       height: 50%;
       width: 100%;
       margin: auto;
+      position:relative;
       background-position: center;
-      background-image: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url("/img/bck/landing.jpg");
+      background-image: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.9)), url("/img/bck/landing.jpg");
   }
   .first-div {
       height: 100%;
       width: 100%;
   }
   .feature-container {
-      height: 200px;
+      height: 300px;
       border-bottom: 1px solid #e1e1e1;
       text-align: center;
-      background-color: #f3f1eb;
+      display: flex;
+      flex-direction:column;
+      font-size:10px;
   }
   .feature-header {
       position: relative;
       top: 0px;
       text-transform: uppercase;
-      font-size: 1.2em;
+      font-size: 1.5em;
       background-color: transparent;
       margin: auto;
       font-family: "Lucida Sans Unicode";
@@ -482,27 +515,69 @@
       background: url("/img/bck/offerorask.png") no-repeat;
   }
   .feature-image {
-      height: 100px;
-      width: 100px;
+      height: 150px;
+      width: 150px;
       margin: auto;
       background-position: center;
       background-size: contain;
+      font-size:4em;
+      border-radius:200px;
+      display:flex;
+      align-items: center;
+      justify-content: center;
+      background:#d2776a;
+      color:#fff;
   }
   .feature-content {
       width: 70%;
       margin: 10px auto;
       color: #3D72A4;
+      font-size:1.3em;
   }
-  .landing-row1 {
-      padding: 30px 0px;
-  }
+  
 
-  .landing-row1 .col-md-3 {
-    cursor:pointer;
-  }
+
   .quote-row {
       margin-top: 20px;
   }
+
+.faq-landing {
+  background-color:rgba(0,0,0,0.7);
+  padding:20px;
+  align-items:flex-start;
+  position:relative;
+  -webkit-box-shadow: 2px 6px 24px 12px rgba(0,0,0,0.53);
+-moz-box-shadow: 2px 6px 24px 12px rgba(0,0,0,0.53);
+box-shadow: 2px 6px 24px 12px rgba(0,0,0,0.53);
+  text-align:left;
+}
+
+.faq-title {
+  color:#fff;
+  font-size:2.2em;
+}
+
+.faq-description {
+  font-size:1.8em;
+  color:#d2776a;
+ 
+
+}
+
+.position-bottom {
+   position:absolute;
+  bottom:2em;
+}
+
+.right {
+  right:20px;
+}
+
+.about-us-landing {
+  align-items:flex-end;
+  text-align:right;
+}
+
   /* -------------------- Footer ----------------------------  */
   
   .feature-row2 {
@@ -532,6 +607,12 @@
       text-align: center;
       padding-right: 0px;
   }
+
+  .caption span {
+    color:#fff;
+  }
+
+
   .contact-container {
       height: 150px;
       display: flex;
@@ -825,7 +906,9 @@
   }
   @media (min-width: 961px) {
       /* tablet, landscape iPad, lo-res laptops ands desktops */
-      
+      .feature-container {
+        font-size:16px;
+      }
       #faq {
           background-size: cover;
       }
@@ -838,10 +921,6 @@
       .login-container {
           height: 50%;
           width: 40%;
-      }
-      .caption {
-          text-align: right;
-          padding-right: 30%;
       }
   }
   @media (min-width: 1025px) {
