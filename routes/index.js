@@ -32,7 +32,7 @@ module.exports = function(app, passport) {
         if (req.user) {
             res.render('index', {
                 title: 'Road Fravel',
-                user: req.user.facebook
+                user: req.user
 
             });
         } else {

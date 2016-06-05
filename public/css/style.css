@@ -210,8 +210,8 @@
       align-items: center;
   }
   .search-list {} .profile-pic-circle {
-      border-radius: 40px;
-      height: 40px;
+      border-radius: 37px;
+      height: 37px;
   }
   .search-item-list-item {
       display: inline-block;
@@ -304,6 +304,24 @@
   }
   /*-------------------------------------Landing ------------------------------*/
   
+.loader {
+  position:fixed;
+  top:0px;
+  bottom:0px;
+  left:0px;
+  right:0px;
+  background:rgba(0,0,0,0.7);
+  z-index:10000;
+}
+
+.loader img {
+  top:48%;
+  left:48%;
+  height:100px;
+  width:100px;
+  position:absolute;
+}
+
   #page-content-wrapper {
       width: 100%;
       position: absolute;
@@ -380,9 +398,25 @@
   .navbar-added .navbar-nav > li > a:focus {
       color: #EAE0C8;
   }
-  .navbar-added .navbar-right {
-      margin-right: 0px;
-  }
+  
+.navbar-default .navbar-toggle, .navbar-default .navbar-toggle{
+  background-color:#ddd;
+}
+
+.navbar-nav {
+  margin:0px;
+}
+
+.navbar-collapse.collapse.in {
+  background:rgba(0,0,0,0.7);
+  border-radius:4px;
+  padding-bottom:20px;
+}
+
+
+
+
+
   .navbar-wrapper {
       position: absolute;
       top: 0px;
@@ -462,6 +496,10 @@
   .landing-row1 {
       padding: 30px 0px;
   }
+
+  .landing-row1 .col-md-3 {
+    cursor:pointer;
+  }
   .quote-row {
       margin-top: 20px;
   }
@@ -518,6 +556,10 @@
       background-color: #696770;
       color: white;
   }
+
+   .navbar-added .navbar-nav > li > a.active-nav-bar {
+      color: #FF6600;
+  }
   /* -------------------- Offer Pool ----------------------------  */
   
   .offer-wizard {
@@ -552,21 +594,14 @@
       line-height: 37px !important;
       margin-left: 15px;
   }
+ .custom-height {
+      height: 80px;
+  }
+
   .active-nav-bar {
       border: 1px solid #FF6600;
   }
-  .navbar-added .navbar-nav > li > a.active-nav-bar {
-      color: #FF6600;
-  }
-  .navbar-added ul li:last-child {
-      float: right;
-  }
-  .custom-height {
-      height: 80px;
-  }
-  .navbar-added ul {
-      width: 40%;
-  }
+ 
   /*---------------------------- about us ----------------------------*/
   
   #about-us {
@@ -765,7 +800,7 @@
       
       .faq-container {
           padding: 1em;
-          max-height: 40%;
+          max-height: 60%;
           width: 100%;
       }
       .section-feature {

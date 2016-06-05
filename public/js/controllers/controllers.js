@@ -1,7 +1,7 @@
 polyLine = null;
 destinationMarker = null;
 sourceMarker = null;
-
+homeLoaded = false;
 function getInfoWindowTemplate(obj) {
 	var mainTemplate, templateObj,timetemplate;
 
@@ -76,6 +76,9 @@ function getTemplateType(info) {
 
 function CustomMarker (obj) {
 
+	if (!CustomMarker.prototype.clickable) {
+		CustomMarker.prototype = new google.maps.Marker();
+	}
 	var icon , marker;
 	switch (obj.type) {
 		case 'source' :
@@ -123,10 +126,10 @@ function CustomMarker (obj) {
 
 }
 
-onload = function () {
+
 	
 CustomMarker.prototype = new google.maps.Marker();
-}
+
 
 
 
@@ -177,7 +180,9 @@ Date.prototype.getFormattedDate = function () {
 	var monthIndex = this.getMonth();
 	var year = this.getFullYear().toString().substring(2);
 
-	return day + '-' + monthNames[monthIndex] + '-' + year;
+	//return day + '-' + monthNames[monthIndex] + '-' + year;
+
+	return day + '-' + monthNames[monthIndex];
 }
 
 Date.prototype.getFormattedTime = function () {
@@ -482,7 +487,6 @@ roadFravel.controller('SearchCtrl',["$scope","rf_fetchResults","toastr","$timeou
 		$scope.searchDate = {
 			selDate :null
 		};
-
 		$scope.setActiveNav("pool");
 
 		proximity = 10;
@@ -782,7 +786,7 @@ roadFravel.controller('SearchCtrl',["$scope","rf_fetchResults","toastr","$timeou
 	}]);
 
 
-roadFravel.controller('OfferCtrl',["$scope","rf_persistPool","rf_auth","$uibModal","$state","$timeout","$interval","$state",function ($scope,rf_persistPool,rf_auth,$uibModal,$state,$timeout,$interval,$state) {
+roadFravel.controller('OfferCtrl',["$scope","rf_persistPool","rf_auth","$uibModal","$state","$timeout","$interval",function ($scope,rf_persistPool,rf_auth,$uibModal,$state,$timeout,$interval) {
 		
 		var todaysDate,authProm;
 		$scope.clearMarker(true); 
@@ -906,8 +910,14 @@ roadFravel.controller('OfferCtrl',["$scope","rf_persistPool","rf_auth","$uibModa
 	}]);
 
 
-roadFravel.controller('GlobalCtrl',["$scope","g_direction","rf_fetchResults",function ($scope,g_direction,rf_fetchResults) {
+roadFravel.controller('GlobalCtrl',["$scope","g_direction","rf_fetchResults","$timeout",function ($scope,g_direction,rf_fetchResults,$timeout) {
 		
+		$timeout(function() {
+
+		$(".loader").remove();
+	},300);
+
+
 		$scope.locations = {
 			source :{
 				name:"",
@@ -1089,6 +1099,7 @@ roadFravel.controller('LandingCtrl',["$scope",function ($scope) {
 	$scope.setActiveNav("landing");
 
 }]);
+
 
 roadFravel.controller('LoginCtrl',["$scope",function ($scope) { 
 	$scope.setActiveNav("login");

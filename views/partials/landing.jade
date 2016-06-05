@@ -8,28 +8,28 @@ div.landing-rows-container
     | Find a friend on the road.
   .container-fluid.landing-row1
     .row
-      .col-md-3
+      .col-md-3(ui-sref="map.search")
         .feature-container(rf-mask,  btntext = "Experience It" , redirecturl = "/map/search")
           .feature-header.header-1
             | Seamless
           .feature-image.image-1
           .feature-content
             | Vehicle Pooling. 
-      .col-md-3
+      .col-md-3(ui-sref="map.search")
         .feature-container(rf-mask,  btntext = "Use It" , redirecturl = "/map/search")
           .feature-header.header-2
             | Even - Odd
           .feature-image.image-2
           .feature-content
             | Advanced filtering options.
-      .col-md-3
+      .col-md-3(ui-sref="map.offer")
         .feature-container(rf-mask ,  btntext = "Cheg Out" ,  redirecturl = "/map/offer")
           .feature-header.header-2
             | Offer or Ask
           .feature-image.image-4
           .feature-content
             | All that you ever thought of.
-      .col-md-3
+      .col-md-3(ui-sref="map.offer")
         .feature-container(rf-mask ,  btntext = "It's Easy" , redirecturl = "/map/offer")
           .feature-header.header-3
             | Advanced
@@ -43,7 +43,5 @@ div.landing-rows-container
             | I know you love your car very much. So think about it this way - What will you do when there is not enough pure oxygen left for your car to burn the fuel?
           footer
             | Nah Nah I am not famous I just made this website.
-
-
 div(ng-include="'partials/footer'")
 

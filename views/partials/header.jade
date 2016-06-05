@@ -16,23 +16,19 @@ nav.navbar.navbar-default.navbar-added
           a.navbar-color.anchor-as-button(ui-sref='faq' , ng-class = "{'active-nav-bar': activeNav =='faq'}") FAQ
         li
           a.navbar-color.anchor-as-button(ui-sref='map.search' , ng-class = "{'active-nav-bar': activeNav =='pool'}") Pool
-        
-      ul.nav.navbar-nav.navbar-right
         li
           a.navbar-color.anchor-as-button(ui-sref='map.offer',  ng-class = "{'active-nav-bar': activeNav =='offer'}") Offer
+      ul.nav.navbar-nav.navbar-right
+        li
+          a.navbar-color.anchor-as-button(ui-sref='aboutus',  ng-class = "{'active-nav-bar': activeNav =='aboutus'}") About        
         if user
-          li.dropdown
-            a.dropdown-toggle.profile-pic-anchor(href= '#{user.facebook.profileUrl}', target = "_blank" ,data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
-              img.profile-pic-circle(src = '#{user.facebook.profilePicUrl}') 
-              span.caret
-            ul.dropdown-menu
-              li
-                a(ui-sref='mypools') Offered History
-              li.divider(role='separator')
-              li
-                a(href='/logout') Logout
+          li
+            a.profile-pic-anchor(ui-sref='mypools')
+              img.profile-pic-circle(src = '#{user.facebook.profilePicUrl}')
+          li
+            a.navbar-color.anchor-as-button(href='/logout') Logout
         else
-          li.dropdown
+          li
             a.navbar-color.anchor-as-button(ui-sref='login') Login             
       // /.navbar-collapse
   // /.container-fluid
