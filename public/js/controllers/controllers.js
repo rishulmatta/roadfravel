@@ -123,7 +123,7 @@ function CustomMarker (obj) {
 
 }
 
-onLoad = function () {
+onload = function () {
 	
 CustomMarker.prototype = new google.maps.Marker();
 }

@@ -19,9 +19,6 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         concat: {
-            options: {
-                separator: ';',
-            },
             js: {
                 src: ["public/js/initialize.js", "public/js/services/thirdParty.js", "public/js/services/persist.js", "public/js/services/fetch.js", "public/js/services/auth.js",
                     "public/js/directives/input.js", "public/js/directives/rendering.js", "public/js/controllers/controllers.js"
