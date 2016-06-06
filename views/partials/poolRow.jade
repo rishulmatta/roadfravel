@@ -1,11 +1,11 @@
 .search-list-container(ng-click = 'searchListItemClicked($index)' , ng-class = "{'search-item-active':selectedSearchItem == $index}")
   .search-list-contents
     .search-item-left
-      a(target = "_blank" ng-href = "{{pool.profileUrl}}")
+      a( href = "javascript:;")
         img.media-object.img-circle(ng-src="{{pool.profilePicUrl ? pool.profilePicUrl : 'img/defaults/profile.png'}}", style='max-width:50px', alt='customer image')
     .search-item-right
       div(style='font-weight:bold;')
-        a(  target = "_blank" ng-href = "{{pool.profileUrl}}") {{pool.name}}
+        a(  href = "javascript:;") {{pool.name}}
         //span.pull-right(title='Facebook Profile')
           //a( target = "_blank" ng-href = "{{pool.profileUrl}}" style='cursor:pointer')
             //img(src = "img/defaults/facebook.png")

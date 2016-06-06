@@ -1,12 +1,4 @@
-  html,
-  body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      font-family: "Century Gothic";
-  }
-
-  @font-face {
+   @font-face {
     font-family: 'gothic';
     src: url('./gothic.eot');
     src: local('gothic'), url('./gothic.woff') format('woff'), url('./gothic.ttf') format('truetype');
@@ -15,6 +7,17 @@
   .fontsforweb_fontid_9785 {
     font-family: 'gothic' !important;
   }
+
+
+  html,
+  body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: "gothic";
+  }
+
+ 
 
   /* Font downloaded from FontsForWeb.com */
 
@@ -203,6 +206,35 @@
   }
   /*------------------------------ search pool page------------------------------------------- */
   
+    .collapse-nav {
+      width:120px !important;
+      height:65px;
+    }
+
+    .collapse-nav button {
+      display:none;
+    }
+
+
+  .info-window-profile {
+    text-align:center;
+    background:#3B5998;
+    color:white;
+    border-radius:4px;
+  }
+
+   .info-window-profile a {
+    color:white;
+    display:inline-block;
+    width:100%;
+   }
+
+  .info-window-profile img {
+    max-height:50px;
+    border-radius:25px;
+    margin:5px;
+  }
+
   .info-window-container {} .info-window-container .well {
       margin: 10px 0px;
   }
@@ -406,6 +438,9 @@
       padding: 5px;
       background-color: rgba(0, 0, 0, 0.6) !important;
       box-sizing: border-box;
+      overflow:hidden;
+      width:100%;
+      transition:width 1s ease;
   }
   .nobck-page .navbar-added {
       background-color: transparent !important;
@@ -459,7 +494,7 @@
   }
   #landing {
       background: url("/img/bck/landing.jpg") no-repeat;
-      height: 50%;
+      height: 300px;
       width: 100%;
       margin: auto;
       position:relative;
@@ -478,8 +513,14 @@
       flex-direction:column;
       font-size:10px;
   }
+
+
+  .feature-container:hover , .feature-container:focus{
+      background:rgba(0,0,0,0.3);
+  }
   .feature-header {
       position: relative;
+
       top: 0px;
       text-transform: uppercase;
       font-size: 1.5em;
@@ -488,6 +529,7 @@
       font-family: "Lucida Sans Unicode";
       color: #a85f54;
       padding: 10px;
+      margin-bottom:0px;
   }
   .header-1 {
       color: #a85f54;
@@ -499,7 +541,7 @@
       color: #a85f54;
   }
   .image-me {
-      background: url("/img/bck/me.jpg") no-repeat;
+      background: url("/img/bck/me.jpg") no-repeat !important;
       border-radius: 100px;
   }
   .image-1 {
@@ -515,13 +557,13 @@
       background: url("/img/bck/offerorask.png") no-repeat;
   }
   .feature-image {
-      height: 150px;
-      width: 150px;
+      height: 100px;
+      width: 100px;
       margin: auto;
       background-position: center;
       background-size: contain;
-      font-size:4em;
-      border-radius:200px;
+      font-size:2em;
+      border-radius:50px;
       display:flex;
       align-items: center;
       justify-content: center;
@@ -554,11 +596,11 @@ box-shadow: 2px 6px 24px 12px rgba(0,0,0,0.53);
 
 .faq-title {
   color:#fff;
-  font-size:2.2em;
+  font-size:1.8em;
 }
 
 .faq-description {
-  font-size:1.8em;
+  font-size:1.2em;
   color:#d2776a;
  
 
@@ -580,6 +622,11 @@ box-shadow: 2px 6px 24px 12px rgba(0,0,0,0.53);
 
   /* -------------------- Footer ----------------------------  */
   
+
+footer {
+  font-size:16px;
+}
+
   .feature-row2 {
       margin-top: 20px;
   }
@@ -688,7 +735,7 @@ box-shadow: 2px 6px 24px 12px rgba(0,0,0,0.53);
   #about-us {
       background: url("/img/bck/landing2.jpg") no-repeat;
       background-size: auto;
-      height: 85%;
+      height: 500px;
       width: 100%;
       margin: auto;
       background-size: cover;
@@ -706,11 +753,11 @@ box-shadow: 2px 6px 24px 12px rgba(0,0,0,0.53);
   #faq {
       background: url("/img/bck/faq.jpg") no-repeat;
       background-size: auto;
-      height: 85%;
+      height: 400px;
       width: 100%;
       margin: auto;
       background-size: cover;
-      background-position: 0% 0%;
+      background-position: 0% 40px;
       background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)), url("/img/bck/faq.jpg");
       position: relative;
   }
@@ -826,7 +873,7 @@ box-shadow: 2px 6px 24px 12px rgba(0,0,0,0.53);
       top: 67px;
       position: fixed;
       overflow-y: scroll;
-      width: 0;
+        width: 310px;
       height: 95%;
       background-color: rgba(255, 255, 255, 0.8);
       -webkit-transition: width 0.5s ease;
@@ -834,12 +881,14 @@ box-shadow: 2px 6px 24px 12px rgba(0,0,0,0.53);
       -o-transition: width 0.5s ease;
       transition: width 0.5s ease;
       padding: 5px;
+       -webkit-box-shadow: 3px 2px 24px 6px rgba(0,0,0,0.75);
+-moz-box-shadow: 3px 2px 24px 6px rgba(0,0,0,0.75);
+box-shadow: 3px 2px 24px 6px rgba(0,0,0,0.75);
   }
-  #sidebar-wrapper {
-      width: 310px;
-  }
+
   #sidebar-wrapper.zero-width {
-      width: 0px;
+     width: 15px;
+     overflow:hidden;
   }
   .collapse-action-icon-search {
       position: absolute;
@@ -862,7 +911,7 @@ box-shadow: 2px 6px 24px 12px rgba(0,0,0,0.53);
       /* Styles */
       
       #faq {
-          background-size: contain;
+          background-position: 40% 40%;
       }
       .faq-container {
           padding: 1em;
