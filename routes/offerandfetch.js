@@ -294,13 +294,16 @@ module.exports = function(app, elasticSearchClient) {
                 type: 'pool',
                 from: (pageNum - 1) * pageSize,
                 size: pageSize,   
-                    query:{
-                        "query_string": {
-                            "query": req.user._id,
-                            "fields": ["user_id"]
+                body : {"query":{
+                            "term":{
+                                "user_id":req.user.getValue("_id").toString()
+                                }
+                            }
                         }
-                    }
-                };
+                 };
+
+            console.log(req.user.getValue("_id").toString());
+            console.log(JSON.stringify(searchObj));
             elasticSearchClient.search(searchObj, function(error, response) {
                 if(!error) {
                        res.json(response);

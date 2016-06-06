@@ -8,14 +8,20 @@
     font-family: 'gothic' !important;
   }
 
-
+  .info-text {
+    font-family:"Calibri";
+    font-size:1.3em;
+  }
   html,
   body {
       height: 100%;
       margin: 0;
       padding: 0;
       font-family: "gothic";
+
   }
+
+
 
  
 
@@ -499,6 +505,7 @@
       margin: auto;
       position:relative;
       background-position: center;
+      background-size:cover;
       background-image: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.9)), url("/img/bck/landing.jpg");
   }
   .first-div {
@@ -597,10 +604,10 @@ box-shadow: 2px 6px 24px 12px rgba(0,0,0,0.53);
 .faq-title {
   color:#fff;
   font-size:1.8em;
+  font-family:"Lucida Sans Unicode";
 }
 
 .faq-description {
-  font-size:1.2em;
   color:#d2776a;
  
 
@@ -639,7 +646,7 @@ footer {
       text-align: center;
       font-size: 3em;
       padding: 10px;
-      font-family: "GT Walsheim";
+
   }
   .landing-rows-container {
       background-color: #dbdbdb;
@@ -836,7 +843,7 @@ footer {
       margin: auto;
       background-size: cover;
       background-position: 0% 0%;
-      background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)), url("/img/bck/myPools.jpg");
+      background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)), url("/img/bck/mypools.jpg");
       position: relative;
   }
   .my-pools-container {} .my-pools-container .bg-info {
@@ -933,9 +940,8 @@ box-shadow: 3px 2px 24px 6px rgba(0,0,0,0.75);
           max-height: 60%;
           width: 100%;
       }
-      .section-feature {
-          font-size: 5em;
-      }
+      
+
   }
   @media (min-width: 641px) {
       /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
@@ -951,6 +957,10 @@ box-shadow: 3px 2px 24px 6px rgba(0,0,0,0.75);
       .login-container {
           height: 70%;
           width: 50%;
+      }
+
+       body {
+        font-size:16px;
       }
   }
   @media (min-width: 961px) {
@@ -974,7 +984,13 @@ box-shadow: 3px 2px 24px 6px rgba(0,0,0,0.75);
   }
   @media (min-width: 1025px) {
       /* big landscape tablets, laptops, and desktops */
+                body {
+      max-width:2400px;
+      margin:auto;
+      position:relative;
+}
   }
   @media (min-width: 1281px) {
       /* hi-res laptops and desktops */
+
   }
