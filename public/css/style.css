@@ -838,11 +838,10 @@ footer {
   #myPools {
       background: url("/img/bck/mypools.jpg") no-repeat;
       background-size: auto;
-      height: 85%;
+      height: 400px;
       width: 100%;
       margin: auto;
       background-size: cover;
-      background-position: 0% 0%;
       background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)), url("/img/bck/mypools.jpg");
       position: relative;
   }

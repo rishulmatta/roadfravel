@@ -789,6 +789,7 @@ roadFravel.controller('SearchCtrl', ["$scope", "rf_fetchResults", "toastr", "$ti
             }
         }
 
+            $(".loader").css("display","");
 
 
 
@@ -801,6 +802,10 @@ roadFravel.controller('SearchCtrl', ["$scope", "rf_fetchResults", "toastr", "$ti
             }] : undefined,
             page: $scope.currentPage,
             pageSize: $scope.itemsPerPage
+        });
+
+        promise.then(function() {
+            $(".loader").css("display","none");
         });
         promise.then(drawAvailablePools);
         promise.then(drawFilters);
@@ -1005,7 +1010,7 @@ roadFravel.controller('GlobalCtrl', ["$scope", "g_direction", "rf_fetchResults",
 
     $timeout(function() {
 
-        $(".loader").remove();
+        $(".loader").css("display","none");
     }, 500);
 
 
