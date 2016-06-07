@@ -253,6 +253,7 @@ roadFravel.controller('MapCtrl', ["$scope", "$state", "$q", "$timeout", function
 
             drawSourceMarker(latLng)
             setSourceProperties(latLng);
+            $scope.$broadcast("sourceSet",{latLng:latLng});
         });
     }
 
