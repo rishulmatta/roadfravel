@@ -535,6 +535,8 @@ roadFravel.controller('SearchCtrl', ["$scope", "rf_fetchResults", "toastr", "$ti
     };
     $scope.setActiveNav("pool");
 
+    rf_fetchResults.aggregationsRequired = true; //this is set to ensure that facets are fetched
+
 
     proximity = 10;
 
