@@ -229,6 +229,7 @@ roadFravel.controller('MapCtrl', ["$scope", "$state", "$q", "$timeout", function
         initMap(latLng);
          drawSourceMarker(latLng);
         setSourceProperties(latLng);
+        $scope.$broadcast("sourceSet",{latLng:latLng});
 
     }
 
@@ -393,6 +394,7 @@ roadFravel.controller('MapCtrl', ["$scope", "$state", "$q", "$timeout", function
         initMap(latLng);
         drawSourceMarker(latLng);
         setSourceProperties(latLng);
+        $scope.$broadcast("sourceSet",{latLng:latLng});
         return latLng;
 
     }
@@ -826,13 +828,16 @@ roadFravel.controller('SearchCtrl', ["$scope", "rf_fetchResults", "toastr", "$ti
             }
         }]);
     }
+    $scope.$on("sourceSet",function(val){
+        fetchResultsWithSource(val.latLng);
+    });
 
-    $scope.$watch('locations.source.latLng',function (newVal,oldVal) {
-    	if (newVal.lat && newVal.lng) {
-    		fetchResultsWithSource(newVal);
+  /*  $scope.$watch('locations.source.latLng',function (newVal,oldVal) {
+    	if ((newVal.lat && newVal.lng) && (newVal.lat != oldVal.lat)) {
+    		
     	}
     	
-    });
+    });*/
 
 
     $scope.searchListItemClicked = function(index) {
@@ -894,7 +899,7 @@ roadFravel.controller('OfferCtrl', ["$scope", "rf_persistPool", "rf_auth", "$uib
 
     authProm = rf_auth.isLoggedIn();
     authProm.then(function(res) {
-        if (!res.isLoggedIn) {
+        if (!res.isLoggedIn && $state.current.name == 'map.offer') {
 
 
 
