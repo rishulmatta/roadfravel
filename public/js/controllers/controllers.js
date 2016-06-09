@@ -2,8 +2,12 @@ polyLine = null;
 destinationMarker = null;
 sourceMarker = null;
 homeLoaded = false;
-
+map = null;
 oms = null;
+
+
+
+
 
 function getInfoWindowTemplate(obj) {
     var mainTemplate, templateObj, timetemplate;
@@ -106,8 +110,7 @@ function CustomMarker(obj) {
         position: obj.source.latLng,
         map: map,
         title: 'From ' + obj.source.name + " to " + obj.destination.name,
-        icon: icon,
-        animation: google.maps.Animation.DROP
+        icon: icon
     });
 
     this.index = obj.index;
@@ -135,6 +138,21 @@ function CustomMarker(obj) {
 CustomMarker.prototype = new google.maps.Marker();
 
 
+function drawSourceMarker(source) {
+    if (sourceMarker) {
+        sourceMarker.setMap(null);
+    }
+
+    sourceMarker = new google.maps.Marker({
+        position: source.latLng,
+        map: map,
+        title: source.name,
+        icon: '/img/icons/source.png',
+        zIndex: 100,
+        optimized: false
+    });
+}
+
 
 
 function drawDestinationMarker(destination) {
@@ -146,7 +164,9 @@ function drawDestinationMarker(destination) {
         position: destination.latLng,
         map: map,
         title: destination.name,
-        icon: '/img/icons/stop.png'
+        icon: '/img/icons/stop.png',
+        zIndex: 100,
+        optimized: false
     });
 }
 
@@ -207,39 +227,36 @@ Date.prototype.getFormattedTime = function() {
 
 
 roadFravel.controller('MapCtrl', ["$scope", "$state", "$q", "$timeout", function($scope, $state, $q, $timeout) {
-    var lat, lng, bounds;
+    var lat, lng, bounds,latLng;
     resultsFetched = false;
 
-
-    //google.maps.event.addDomListener(window, 'load', initialize);
-    //for using geolocation api the protocol must be https which sucks! as i got to know this after moving into prod
-    $timeout(initialize, 1);
-
-    function initialize() {
-        var latLng;
-        latLng = navigator.geolocation.getCurrentPosition(GetLocation, geoError);
-
-    }
-
-    function geoError() {
-    	var latLng = {
-            lat: 12.9715987,
-            lng: 77.5945627
-        };
+    if ($scope.locations.source.latLng.lat) {
+        //if uiser has selected a source in home page then! do this for both search and offer 
+        latLng = $scope.locations.source.latLng;
         initMap(latLng);
-         drawSourceMarker(latLng);
-        setSourceProperties(latLng);
-        $scope.$broadcast("sourceSet",{latLng:latLng});
+        drawSourceMarker($scope.locations.source);
+       
+        
 
+    }else {
+        latLng  = {
+                lat: 22.973423,
+                lng: 78.656894
+            };
+
+            //second parameter is the zoom level
+         initMap(latLng,5);
     }
 
+    
 
-    function createMap(latLng) {
+
+    function createMap(latLng,zoomLevel) {
         map = new google.maps.Map(document.getElementById('map'), {
             center: latLng,
             mapTypeControl: false,
             streetViewControl: false,
-            zoom: 10,
+            zoom: zoomLevel || 10,
             maxZoom: 15,
             minZoom: 5,
             zoomControl: false
@@ -251,35 +268,17 @@ roadFravel.controller('MapCtrl', ["$scope", "$state", "$q", "$timeout", function
                 lng: event.latLng.lng()
             };
 
-            drawSourceMarker(latLng)
-            setSourceProperties(latLng);
+            
+            $scope.setSourceProperties(latLng);
             $scope.$broadcast("sourceSet",{latLng:latLng});
         });
     }
 
-    function drawSourceMarker(latLng) {
-    		if (sourceMarker) {
-    			sourceMarker.setMap(null);
-    		}
-        sourceMarker = new google.maps.Marker({
-            position: latLng,
-            map: map,
-            title: 'Source',
-            icon: '/img/icons/source.png'
-        });
-    }
 
-    function setSourceProperties(latLng) {
-        var prom = getTheNameFromLatLng(latLng);
-        prom.then(function(obj) {
-            $scope.locations.source = obj;
-        });
-    }
-
-    function initMap(latLng) {
+    function initMap(latLng,zoomLevel) {
 
 
-        createMap(latLng);
+        createMap(latLng,zoomLevel);
 
 
 
@@ -334,13 +333,14 @@ roadFravel.controller('MapCtrl', ["$scope", "$state", "$q", "$timeout", function
         });
         var iw = new google.maps.InfoWindow();
         var clickedMarker, previousMarker;
+        var t;
         oms.addListener('click', function(marker, event) {
-            var t;
+            
             if (t) {
                 clearTimeout(t);
 
-                previousMarker.setAnimation(null);
-                destinationMarker.setAnimation(null);
+                previousMarker ? previousMarker.setAnimation(null):null;
+              destinationMarker ?  destinationMarker.setAnimation(null):null;
             }
 
 
@@ -357,8 +357,9 @@ roadFravel.controller('MapCtrl', ["$scope", "$state", "$q", "$timeout", function
             destinationMarker.setAnimation(google.maps.Animation.BOUNCE);
 
             t = setTimeout(function() {
-                    marker.setAnimation(null);
-                    destinationMarker.setAnimation(null);
+
+                    marker ? marker.setAnimation(null) : null;
+                    destinationMarker ? destinationMarker.setAnimation(null):null;
                 }, 2000)
                 //map.fitBounds(bounds);
             previousMarker = marker;
@@ -382,57 +383,10 @@ roadFravel.controller('MapCtrl', ["$scope", "$state", "$q", "$timeout", function
 
 
 
-    function GetLocation(location) {
-
-        //this is called if browser can access location but it is not valid in http it is valid on https
-        lat = location.coords.latitude;
-        lng = location.coords.longitude;
-        var latLng = {
-            lat: lat,
-            lng: lng
-        };
-        $scope.locations.source.latLng = latLng;
-        initMap(latLng);
-        drawSourceMarker(latLng);
-        setSourceProperties(latLng);
-        $scope.$broadcast("sourceSet",{latLng:latLng});
-        return latLng;
-
-    }
+   
 
 
-    function getTheNameFromLatLng(latLng) {
-        var geocoder;
-        geocoder = new google.maps.Geocoder();
-        var latlngObj = new google.maps.LatLng(latLng.lat, latLng.lng);
-        var defered = $q.defer();
-        geocoder.geocode({
-                'latLng': latlngObj
-            },
-            function(results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    if (results[0]) {
-
-                        var obj = {
-                            name: results[0].formatted_address,
-                            latLng: latLng,
-                            id: results[0].place_id,
-                            vicinity: results[1] ? results[1].formatted_address : null
-                        }
-
-
-                        defered.resolve(obj);
-
-                    } else {
-                        console.log("address not found");
-                    }
-                } else {
-                    console.log("Geocoder failed due to: " + status);
-                }
-            }
-        );
-        return defered.promise
-    }
+    
 
 
     /*-- code for date picker --*/
@@ -535,6 +489,10 @@ roadFravel.controller('SearchCtrl', ["$scope", "rf_fetchResults", "toastr", "$ti
     };
     $scope.setActiveNav("pool");
 
+
+
+           
+
     rf_fetchResults.aggregationsRequired = true; //this is set to ensure that facets are fetched
 
 
@@ -591,6 +549,7 @@ roadFravel.controller('SearchCtrl', ["$scope", "rf_fetchResults", "toastr", "$ti
     $scope.isExpanded = false;
     $scope.left = 5;
     $scope.toggle = function(val) {
+        //this is for expand collapse of the left search panel
         if (typeof val != 'undefined') {
             $scope.isExpanded = val;
         } else {
@@ -600,9 +559,29 @@ roadFravel.controller('SearchCtrl', ["$scope", "rf_fetchResults", "toastr", "$ti
         $scope.left = $scope.isExpanded ? width : 15;
     }
 
+    function checkForSource () {
+        if (!$scope.locations.source.latLng.lat) { 
+            $(".loader").css("display","none");
+            $("#map-source").focus();
+             toastr.error('On the left hand side enter the place where you want to search for pools', 'Enter a Source');
+             return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     $timeout(function() {
+        //this executes when one comes to the search page 
         $scope.toggle(true);
         $("nav").addClass("collapse-nav");
+        var isSourceSetFromHome = checkForSource();
+
+         if (isSourceSetFromHome) {
+          //from browser api we just get the lat and lng   so we dont wait till we obtain the names and id from google api instead we fire the search query to our elastic search index
+            $scope.$broadcast("sourceSet",{latLng:$scope.locations.source.latLng});  
+            //drawSourceMarker($scope.locations.source.latLng);
+         } 
 
     }, 2000);
 
@@ -682,7 +661,7 @@ roadFravel.controller('SearchCtrl', ["$scope", "rf_fetchResults", "toastr", "$ti
 
     //this function iterates over the fetched results
     function drawAvailablePools(data) {
-        var fetcedData, length, sourceMarker, time, date;
+        var fetcedData, length, srcMarker, time, date;
         var arrMarkerPositions = [];
         resultsFetched = true; //this is a global variable which decides when the source marker should reposition
         //each time when the result is fetched the old set of data has to be removed
@@ -748,11 +727,11 @@ roadFravel.controller('SearchCtrl', ["$scope", "rf_fetchResults", "toastr", "$ti
             };
 
             $scope.pools.push(obj);
-            sourceMarker = new CustomMarker(obj);
+            srcMarker = new CustomMarker(obj);
 
-            oms.addMarker(sourceMarker);
-            markers.push(sourceMarker);
-            arrMarkerPositions.push(sourceMarker.getPosition())
+            oms.addMarker(srcMarker);
+            markers.push(srcMarker);
+            arrMarkerPositions.push(srcMarker.getPosition())
 
 
         }
@@ -784,6 +763,15 @@ roadFravel.controller('SearchCtrl', ["$scope", "rf_fetchResults", "toastr", "$ti
     }
 
     function fetchResults() {
+
+        var shouldProceed = checkForSource();
+
+
+
+        if (!shouldProceed) {
+            return false;
+        }
+
         var recurtype = null;
         if ($scope.searchDate.selDate) {
             var day = $scope.searchDate.selDate.getDay();
@@ -1014,35 +1002,100 @@ roadFravel.controller('OfferCtrl', ["$scope", "rf_persistPool", "rf_auth", "$uib
 }]);
 
 
-roadFravel.controller('GlobalCtrl', ["$scope", "g_direction", "rf_fetchResults", "$timeout", function($scope, g_direction, rf_fetchResults, $timeout) {
+roadFravel.controller('GlobalCtrl', ["$scope", "g_direction", "rf_fetchResults", "$timeout","$q", function($scope, g_direction, rf_fetchResults, $timeout,$q) {
 
     $timeout(function() {
 
         $(".loader").css("display","none");
-        initialize();
+         
+    
     }, 500);
 
 
-      function initialize() {
-        var latLng;
-        latLng = navigator.geolocation.getCurrentPosition(GetLocation, GetLocation);
 
-    }
 
-     function GetLocation(location) {
+        $scope.setSourceProperties = function(latLng) {
+            var prom = getTheNameFromLatLng(latLng);
+            prom.then(function(obj) {
+                $scope.locations.source = obj;
+                drawSourceMarker(obj)
+            });
+        }
 
-        //this is called if browser can access location but it is not valid in http it is valid on https
-        lat = location.coords.latitude;
-        lng = location.coords.longitude;
-        var latLng = {
-            lat: lat,
-            lng: lng
-        };
-        console.log(location)
+    function getTheNameFromLatLng(latLng) {
+            var geocoder;
+            geocoder = new google.maps.Geocoder();
+            var latlngObj = new google.maps.LatLng(latLng.lat, latLng.lng);
+            var defered = $q.defer();
+            geocoder.geocode({
+                    'latLng': latlngObj
+                },
+                function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        if (results[0]) {
 
-        console.log(latLng)
+                            var obj = {
+                                name: results[0].formatted_address,
+                                latLng: latLng,
+                                id: results[0].place_id,
+                                vicinity: results[1] ? results[1].formatted_address : null
+                            }
 
-    }
+
+                            defered.resolve(obj);
+
+                        } else {
+                            console.log("address not found");
+                        }
+                    } else {
+                        console.log("Geocoder failed due to: " + status);
+                    }
+                }
+            );
+            return defered.promise
+        }
+
+
+
+
+
+
+    //google.maps.event.addDomListener(window, 'load', initialize);
+        //for using geolocation api the protocol must be https which sucks! as i got to know this after moving into prod
+        $timeout(initialize, 1);
+
+        function initialize() {
+            var latLng;
+            latLng = navigator.geolocation.getCurrentPosition(GetLocation, geoError);
+
+        }
+
+        function geoError() {
+            console.error("Geo Location fetch failed",arguments)
+
+
+        }
+
+         function GetLocation(location) {
+
+            //this is called if browser can access location but it is not valid in http it is valid on https
+            lat = location.coords.latitude;
+            lng = location.coords.longitude;
+            var latLng = {
+                lat: lat,
+                lng: lng
+            };
+            $scope.locations.source.latLng = latLng;
+            if ($scope.locations.source.name == '') {
+                $scope.setSourceProperties(latLng);
+            }
+           
+            return latLng;
+
+        }
+
+
+
 
 
     $scope.locations = {
@@ -1084,7 +1137,11 @@ roadFravel.controller('GlobalCtrl', ["$scope", "g_direction", "rf_fetchResults",
             }
 
         }
-        bounds.extend(sourceMarker.getPosition());
+
+        if (sourceMarker && sourceMarker.getPosition()) {
+
+             bounds.extend(sourceMarker.getPosition());
+        }
         map.fitBounds(bounds);
 
         //this might not be required
@@ -1149,10 +1206,12 @@ roadFravel.controller('GlobalCtrl', ["$scope", "g_direction", "rf_fetchResults",
         type = type.toLowerCase();
         $scope.locations[type] = obj;
         rf_fetchResults.aggregationsRequired = true;
-
+        if (!map) {
+            return false;
+        }
         switch (type) {
             case 'source':
-                sourceMarker ? sourceMarker.setPosition(obj.latLng) : null;
+                sourceMarker ? sourceMarker.setPosition(obj.latLng) : drawSourceMarker(obj);
                 map.setCenter(obj.latLng);
                 $scope.fitInAllMarkers();
                 break;
@@ -1222,8 +1281,12 @@ roadFravel.controller('GlobalCtrl', ["$scope", "g_direction", "rf_fetchResults",
 }]);
 
 
-roadFravel.controller('LandingCtrl', ["$scope", function($scope) {
+roadFravel.controller('LandingCtrl', ["$scope","$state", function($scope,$state) {
     $scope.setActiveNav("landing");
+     $("#landing-source").focus();
+     $scope.go = function () {
+        $state.go("map.search");
+     }
 
 }]);
 

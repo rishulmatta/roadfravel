@@ -5,10 +5,10 @@ span.glyphicon.collapse-action-icon-search( ng-click = 'toggle()' ng-class = "{'
 #sidebar-wrapper(ng-class = '{"zero-width":!isExpanded}')
   div.filter-container
     div.filter-title Source
-    input.form-control(type='text', placeholder='Source' g-auto-complete ng-model = "locations.source.name" )
+    input.form-control(type='text', placeholder='Source' ,markertype = "source", id = "map-source" g-auto-complete ng-model = "locations.source.name" )
   div.filter-container
     div.filter-title Destination
-    input.form-control(type='text', placeholder='Destination' page = "search", g-auto-complete ng-bind = "locations.source.name")
+    input.form-control(type='text', placeholder='Destination' page = "search", markertype = "destination" , g-auto-complete ng-bind = "locations.source.name")
   div.filter-container
     div.filter-title Proximity to Source (Km)    
     rzslider(rz-slider-model="slider.value" , rz-slider-options="slider.options")

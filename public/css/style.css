@@ -362,6 +362,16 @@
 }
 
 
+.search-bar {
+  position:absolute;
+  bottom:250px;
+  left:20px;
+  right:20px;
+  padding:5px;
+  background:#d1d1d1; 
+  border-radius: 8px;
+}
+
 .how-it-works {
   background-color:#f3f1eb;
 
@@ -500,11 +510,11 @@
   }
   #landing {
       background: url("/img/bck/landing.jpg") no-repeat;
-      height: 300px;
+      height: 400px;
       width: 100%;
       margin: auto;
       position:relative;
-      background-position: center;
+      background-position: 0 30%;
       background-size:cover;
       background-image: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.9)), url("/img/bck/landing.jpg");
   }
@@ -881,6 +891,7 @@ footer {
       overflow-y: scroll;
         width: 310px;
       height: 95%;
+
       background-color: rgba(255, 255, 255, 0.8);
       -webkit-transition: width 0.5s ease;
       -moz-transition: width 0.5s ease;
@@ -980,6 +991,13 @@ box-shadow: 3px 2px 24px 6px rgba(0,0,0,0.75);
           height: 50%;
           width: 40%;
       }
+
+      .search-bar {
+  position:absolute;
+  bottom:250px;
+  left:200px;
+  right:200px;
+}
   }
   @media (min-width: 1025px) {
       /* big landscape tablets, laptops, and desktops */

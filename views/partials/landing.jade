@@ -1,6 +1,12 @@
 .navbar-wrapper.nobck-page
   div(ng-include="'partials/header'")
 #landing
+  .search-bar
+    .input-group.input-group-lg
+      span.input-group-addon Source
+      input.form-control(type='text', placeholder='Enter your present location',markertype = "source", id = "landing-source", g-auto-complete ,ng-model = "locations.source.name")
+      span.input-group-btn
+          button.btn.btn-default.btn-info(type='button',ng-click = "go()") Go!
   .site-name.info-text
     .section-feature
       | Road Fravel

@@ -13,11 +13,11 @@ roadFravel.directive('gAutoComplete',["$state",function ($state) {
 			restrict : 'A',
 			scope:true,
 			link : function (scope ,element ,attr) {
-				
+				//dont change placeholders they have damn impact on these!
 			var autocomplete = new google.maps.places.Autocomplete(element[0]);
 				element.on('keyup',function () {
 					console.log("user typed something");
-					scope.resetMarkers(attr.placeholder);
+					scope.resetMarkers(attr.markertype);
 				});
 
 			   autocomplete.addListener('place_changed', function() { 
@@ -36,14 +36,20 @@ roadFravel.directive('gAutoComplete',["$state",function ($state) {
 			   		};
 			   		
 
-			   		scope.updateLocations(attr.placeholder,obj);
-			   		if ($state.$current.name != 'map.search')  {
+			   		scope.updateLocations(attr.markertype,obj); //this goes to global crl
+
+			   		if ($state.$current.name == 'map.offer')  {
 
 			   			scope.fetchPolyLine();
 			   		}
-			   		if (scope.applyFilter) { //this checks if the user is in search route have to change this
-			   			scope.applyFilter({type:attr.placeholder.toLowerCase(),value : obj.latLng});
+			   		else 
+			   		if ($state.$current.name == 'map.search'){ //this goes to search ctrl
+			   			scope.applyFilter({type:attr.markertype.toLowerCase(),value : obj.latLng});
+			   		}else 
+			   		if ($state.$current.name == 'landing'){ //this goes to search ctrl
+			   			$state.go("map.search");
 			   		}
+
 			   });
 			}
 		}
