@@ -1019,7 +1019,30 @@ roadFravel.controller('GlobalCtrl', ["$scope", "g_direction", "rf_fetchResults",
     $timeout(function() {
 
         $(".loader").css("display","none");
+        initialize();
     }, 500);
+
+
+      function initialize() {
+        var latLng;
+        latLng = navigator.geolocation.getCurrentPosition(GetLocation, GetLocation);
+
+    }
+
+     function GetLocation(location) {
+
+        //this is called if browser can access location but it is not valid in http it is valid on https
+        lat = location.coords.latitude;
+        lng = location.coords.longitude;
+        var latLng = {
+            lat: lat,
+            lng: lng
+        };
+        console.log(location)
+
+        console.log(latLng)
+
+    }
 
 
     $scope.locations = {
