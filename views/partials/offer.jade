@@ -11,12 +11,12 @@ wizard.offer-wizard(on-finish='finishedWizard()')
         label(for='source') Source
         #source.input-group
           span#basic-addon1.input-group-addon.source-img
-          input.form-control(type='text', placeholder='Source', ng-model='locations.source.name', g-auto-complete='g-auto-complete')
+          input.form-control(type='text', placeholder='Source',markertype = "source", ng-model='locations.source.name', g-auto-complete='g-auto-complete')
       .form-group
         label(for='destination') Destination
         #destination.input-group
           span#basic-addon1.input-group-addon.destination-img
-          input.form-control(type='text', placeholder='Destination', g-auto-complete='g-auto-complete' , page = "offer")
+          input.form-control(type='text',markertype = "destination" , placeholder='Destination', g-auto-complete='g-auto-complete' , page = "offer")
       .form-group
         label(for='cost') Estimated total trip cost
         .input-group
